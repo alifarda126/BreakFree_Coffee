@@ -108,21 +108,16 @@ function DetailPOAndKartuStokInner() {
     return sortedPOs.filter((p) => p.status === filterStatus);
   }, [sortedPOs, filterStatus]);
 
-  // Qty masuk form state keyed by `${poId}:${bahanId}`
   const [receiveInputs, setReceiveInputs] = useState<Record<string, number>>({});
-
-  // Reject PO modal
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [rejectNote, setRejectNote] = useState('');
 
-  // Quick Manual PO modal
   const [newPoOpen, setNewPoOpen] = useState(false);
   const [newPoSupplierId, setNewPoSupplierId] = useState(() => suppliers[0]?.id ?? '');
   const [newPoBahanId, setNewPoBahanId] = useState(() => bahan[0]?.id ?? '');
   const [newPoQty, setNewPoQty] = useState(1);
   const [newPoNote, setNewPoNote] = useState('');
 
-  // Kartu Stok state
   const [selectedBahanId, setSelectedBahanId] = useState<string>(() => bahan[0]?.id ?? '');
   const activeBahanId = selectedBahanId || bahan[0]?.id || '';
   const activeBahan = useMemo(
@@ -130,7 +125,6 @@ function DetailPOAndKartuStokInner() {
     [bahan, activeBahanId]
   );
 
-  // Manual Adjust Modal
   const [adjustOpen, setAdjustOpen] = useState(false);
   const [adjustDelta, setAdjustDelta] = useState<number>(0);
   const [adjustNote, setAdjustNote] = useState('');
@@ -265,53 +259,53 @@ function DetailPOAndKartuStokInner() {
         desc: activePO.disetujuiOleh
           ? `Oleh ${activePO.disetujuiOleh}`
           : isRejected
-          ? activePO.catatan || 'Pengajuan dihentikan'
-          : 'Owner / Manajemen menyetujui anggaran PO',
+            ? activePO.catatan || 'Pengajuan dihentikan'
+            : 'Owner / Manajemen menyetujui anggaran PO',
         state: isRejected
           ? ('error' as const)
           : reachedApprove
-          ? ('done' as const)
-          : ('todo' as const),
+            ? ('done' as const)
+            : ('todo' as const),
       },
       {
         title: 'Penerimaan Barang & Kartu Stok',
         desc: reachedDone
           ? 'Seluruh qty pesanan masuk ke stok sistem'
           : reachedPartial
-          ? 'Sebagian barang diterima, menunggu sisa pengiriman'
-          : 'Menunggu kedatangan barang dari supplier',
+            ? 'Sebagian barang diterima, menunggu sisa pengiriman'
+            : 'Menunggu kedatangan barang dari supplier',
         state: reachedDone
           ? ('done' as const)
           : reachedPartial
-          ? ('active' as const)
-          : ('todo' as const),
+            ? ('active' as const)
+            : ('todo' as const),
       },
     ];
   }, [activePO]);
 
   return (
-    <AppShell pageTitle="Detail PO, Penerimaan & Kartu Stok">
+    <AppShell pageTitle="Persetujuan PO, Penerimaan & Kartu Stok">
       <div className="space-y-6">
         {/* Top Action Strip */}
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Link href="/logistik">
               <Button variant="secondary" size="sm">
-                <ArrowLeft className="h-4 w-4" />
-                Kembali ke Verifikasi & Retur
+                <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+                Kembali ke Verifikasi &amp; Retur
               </Button>
             </Link>
-            <div className="flex items-center gap-1 overflow-x-auto">
+            <div className="inline-flex items-center gap-1 overflow-x-auto rounded-lg border border-[#E2E8F0] bg-[#F1F5F9] p-1">
               {(['semua', 'diajukan', 'disetujui', 'diterima_sebagian', 'diterima'] as const).map(
                 (st) => (
                   <button
                     key={st}
                     type="button"
                     onClick={() => setFilterStatus(st)}
-                    className={`rounded-lg px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors ${
+                    className={`rounded-md px-2.5 py-1 text-xs whitespace-nowrap transition-all ${
                       filterStatus === st
-                        ? 'bg-[#221C17] text-white'
-                        : 'bg-white border border-[#E6DFD5] text-[#70675E] hover:text-[#221C17]'
+                        ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
+                        : 'font-medium text-[#64748B] hover:text-[#0F172A]'
                     }`}
                   >
                     {st === 'semua' ? 'Semua PO' : poStatusLabel(st)}
@@ -327,7 +321,7 @@ function DetailPOAndKartuStokInner() {
             onClick={() => setNewPoOpen(true)}
             disabled={bahan.length === 0 || suppliers.length === 0}
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-4 w-4" aria-hidden="true" />
             Buat PO Cepat
           </Button>
         </div>
@@ -346,17 +340,17 @@ function DetailPOAndKartuStokInner() {
             />
           </Card>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
             {/* Sidebar List PO (3 cols) */}
-            <Card className="lg:col-span-3 p-4 space-y-3">
+            <Card className="space-y-3 p-4 lg:col-span-3">
               <div className="flex items-center justify-between">
-                <h2 className="text-sm font-bold text-[#221C17]">
+                <h2 className="text-sm font-semibold text-[#0F172A]">
                   Daftar PO ({filteredPOs.length})
                 </h2>
               </div>
-              <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1">
+              <div className="max-h-[420px] space-y-2 overflow-y-auto pr-1">
                 {filteredPOs.length === 0 ? (
-                  <p className="text-xs text-[#70675E] py-4 text-center">
+                  <p className="py-6 text-center text-xs text-[#64748B]">
                     Tidak ada PO pada filter ini.
                   </p>
                 ) : (
@@ -368,26 +362,26 @@ function DetailPOAndKartuStokInner() {
                         key={po.id}
                         type="button"
                         onClick={() => setManualSelectedPoId(po.id)}
-                        className={`w-full text-left rounded-xl border p-3 transition-colors ${
+                        className={`w-full rounded-xl border p-3 text-left transition-colors ${
                           isSelected
-                            ? 'border-[#9C5B2E] bg-[#F5EDE6]/70'
-                            : 'border-[#E6DFD5] bg-white hover:bg-[#FAF8F5]'
+                            ? 'border-[#2563EB] bg-[#EFF6FF]/60'
+                            : 'border-[#E2E8F0] bg-white hover:bg-[#F8FAFC]'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs font-bold tabular-mono text-[#221C17]">
+                          <span className="tabular-mono text-xs font-semibold text-[#0F172A]">
                             {po.nomor}
                           </span>
-                          <Badge tone={poStatusTone(po.status)}>
+                          <Badge tone={poStatusTone(po.status)} dot={false}>
                             {poStatusLabel(po.status)}
                           </Badge>
                         </div>
-                        <p className="text-xs font-semibold text-[#221C17] mt-1 truncate">
+                        <p className="mt-1 truncate text-xs font-semibold text-[#0F172A]">
                           {sup?.nama || 'Supplier'}
                         </p>
-                        <div className="flex items-center justify-between mt-1 text-[11px] text-[#70675E]">
+                        <div className="mt-1 flex items-center justify-between text-[11px] text-[#64748B]">
                           <span>{formatTanggal(po.tanggal)}</span>
-                          <span className="font-bold tabular-mono text-[#221C17]">
+                          <span className="tabular-mono font-semibold text-[#0F172A]">
                             {formatRp(po.total)}
                           </span>
                         </div>
@@ -399,13 +393,13 @@ function DetailPOAndKartuStokInner() {
             </Card>
 
             {/* Detail PO Card (6 cols) */}
-            <Card className="lg:col-span-6 p-5 space-y-4">
+            <Card className="space-y-4 p-5 lg:col-span-6">
               {activePO && (
                 <>
-                  <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#E6DFD5] pb-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#E2E8F0] pb-4">
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <h2 className="text-lg font-extrabold tabular-mono text-[#221C17]">
+                        <h2 className="tabular-mono text-lg font-bold text-[#0F172A]">
                           {activePO.nomor}
                         </h2>
                         <Badge tone={poStatusTone(activePO.status)}>
@@ -415,24 +409,24 @@ function DetailPOAndKartuStokInner() {
                           <Badge tone="info">Pengganti {linkedRetur.nomor}</Badge>
                         )}
                       </div>
-                      <p className="text-xs text-[#70675E] mt-1">
+                      <p className="mt-1 text-xs text-[#64748B]">
                         Supplier:{' '}
-                        <strong className="text-[#221C17]">
+                        <strong className="font-semibold text-[#0F172A]">
                           {supplierObj?.nama || 'Supplier'}
                         </strong>{' '}
                         {supplierObj?.kontak ? `(${supplierObj.kontak})` : ''} · Tanggal:{' '}
                         {formatTanggal(activePO.tanggal)}
                       </p>
                       {activePO.catatan && (
-                        <p className="text-xs italic text-[#70675E] mt-1">
+                        <p className="mt-1 text-xs italic text-[#64748B]">
                           Catatan: {activePO.catatan}
                         </p>
                       )}
                     </div>
 
                     <div className="text-right">
-                      <p className="text-[11px] font-medium text-[#70675E]">Total Nilai PO</p>
-                      <p className="text-xl font-extrabold tabular-mono text-[#9C5B2E]">
+                      <p className="text-[11px] font-medium text-[#64748B]">Total Nilai PO</p>
+                      <p className="tabular-mono text-xl font-bold text-[#2563EB]">
                         {formatRp(activePO.total)}
                       </p>
                     </div>
@@ -440,21 +434,21 @@ function DetailPOAndKartuStokInner() {
 
                   {/* Tabel Item PO */}
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse text-xs">
+                    <table className="w-full border-collapse text-left text-xs">
                       <thead>
-                        <tr className="border-b border-[#E6DFD5] text-[11px] font-bold uppercase tracking-wider text-[#70675E]">
-                          <th className="py-2 pr-2">Bahan</th>
-                          <th className="py-2 px-2 text-right">Pesan</th>
-                          <th className="py-2 px-2 text-right">Diterima</th>
+                        <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                          <th className="rounded-l-lg py-2.5 pl-2 pr-2">Bahan</th>
+                          <th className="px-2 py-2.5 text-right">Pesan</th>
+                          <th className="px-2 py-2.5 text-right">Diterima</th>
                           {(activePO.status === 'disetujui' ||
                             activePO.status === 'diterima_sebagian') && (
-                            <th className="py-2 px-2 text-right">Terima Skrg</th>
+                            <th className="px-2 py-2.5 text-right">Terima Skrg</th>
                           )}
-                          <th className="py-2 px-2 text-right">Harga</th>
-                          <th className="py-2 pl-2 text-right">Subtotal</th>
+                          <th className="px-2 py-2.5 text-right">Harga</th>
+                          <th className="rounded-r-lg py-2.5 pl-2 pr-2 text-right">Subtotal</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-[#E6DFD5]">
+                      <tbody className="divide-y divide-[#E2E8F0]">
                         {activePO.items.map((item) => {
                           const b = bahan.find((x) => x.id === item.bahanId);
                           const sisa = Math.max(0, item.qty - item.qtyDiterima);
@@ -462,29 +456,29 @@ function DetailPOAndKartuStokInner() {
                             activePO.status === 'disetujui' ||
                             activePO.status === 'diterima_sebagian';
                           return (
-                            <tr key={item.bahanId}>
-                              <td className="py-2.5 pr-2 font-semibold text-[#221C17]">
+                            <tr key={item.bahanId} className="hover:bg-[#F8FAFC]">
+                              <td className="py-2.5 pl-2 pr-2 font-semibold text-[#0F172A]">
                                 {b?.nama || item.bahanId}
-                                <span className="block text-[11px] font-normal text-[#70675E]">
+                                <span className="block text-[11px] font-normal text-[#64748B]">
                                   Satuan: {b?.satuan || '-'}
                                 </span>
                               </td>
-                              <td className="py-2.5 px-2 text-right tabular-mono font-bold">
+                              <td className="tabular-mono px-2 py-2.5 text-right font-semibold">
                                 {item.qty}
                               </td>
-                              <td className="py-2.5 px-2 text-right tabular-mono">
+                              <td className="tabular-mono px-2 py-2.5 text-right">
                                 <span
                                   className={
                                     item.qtyDiterima >= item.qty
-                                      ? 'font-bold text-[#236B42]'
-                                      : 'text-[#70675E]'
+                                      ? 'font-semibold text-[#15803D]'
+                                      : 'text-[#64748B]'
                                   }
                                 >
                                   {item.qtyDiterima} / {item.qty}
                                 </span>
                               </td>
                               {canReceive && (
-                                <td className="py-2.5 px-2 text-right">
+                                <td className="px-2 py-2.5 text-right">
                                   {sisa > 0 ? (
                                     <input
                                       type="number"
@@ -501,17 +495,17 @@ function DetailPOAndKartuStokInner() {
                                           [`${activePO.id}:${item.bahanId}`]: v,
                                         }));
                                       }}
-                                      className="w-16 rounded-lg border border-[#E6DFD5] bg-white px-2 py-1 text-right font-bold tabular-mono text-[#221C17] focus:border-[#9C5B2E] focus:outline-none"
+                                      className="tabular-mono w-16 rounded-lg border border-[#E2E8F0] bg-white px-2 py-1 text-right font-semibold text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
                                     />
                                   ) : (
-                                    <span className="text-[#236B42] font-semibold">Lunas</span>
+                                    <span className="font-semibold text-[#15803D]">Lunas</span>
                                   )}
                                 </td>
                               )}
-                              <td className="py-2.5 px-2 text-right tabular-mono text-[#70675E]">
+                              <td className="tabular-mono px-2 py-2.5 text-right text-[#64748B]">
                                 {formatRp(item.harga)}
                               </td>
-                              <td className="py-2.5 pl-2 text-right tabular-mono font-bold text-[#221C17]">
+                              <td className="tabular-mono py-2.5 pl-2 pr-2 text-right font-semibold text-[#0F172A]">
                                 {formatRp(item.qty * item.harga)}
                               </td>
                             </tr>
@@ -522,8 +516,8 @@ function DetailPOAndKartuStokInner() {
                   </div>
 
                   {/* Aksi Status PO */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-[#E6DFD5]">
-                    <span className="text-[11px] text-[#70675E]">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#E2E8F0] pt-3">
+                    <span className="text-[11px] text-[#64748B]">
                       Pembaruan terakhir: {formatWaktu(activePO.updatedAt)}
                     </span>
 
@@ -548,7 +542,7 @@ function DetailPOAndKartuStokInner() {
                               pushToast(`PO ${activePO.nomor} diajukan ke Manajemen.`, 'success');
                             }}
                           >
-                            <Send className="h-4 w-4" />
+                            <Send className="h-3.5 w-3.5" aria-hidden="true" />
                             Ajukan ke Manajemen
                           </Button>
                         </>
@@ -561,7 +555,7 @@ function DetailPOAndKartuStokInner() {
                             size="sm"
                             onClick={() => setRejectModalOpen(true)}
                           >
-                            <XCircle className="h-4 w-4" />
+                            <XCircle className="h-3.5 w-3.5" aria-hidden="true" />
                             Tolak PO
                           </Button>
                           <Button
@@ -572,7 +566,7 @@ function DetailPOAndKartuStokInner() {
                               pushToast(`PO ${activePO.nomor} disetujui.`, 'success');
                             }}
                           >
-                            <CheckCircle2 className="h-4 w-4" />
+                            <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
                             Setujui PO (Manajemen)
                           </Button>
                         </>
@@ -581,8 +575,8 @@ function DetailPOAndKartuStokInner() {
                       {(activePO.status === 'disetujui' ||
                         activePO.status === 'diterima_sebagian') && (
                         <Button variant="primary" size="sm" onClick={handleTerimaBarang}>
-                          <PackageCheck className="h-4 w-4" />
-                          Konfirmasi Terima Barang & Tambah Stok
+                          <PackageCheck className="h-3.5 w-3.5" aria-hidden="true" />
+                          Konfirmasi Terima Barang &amp; Tambah Stok
                         </Button>
                       )}
                     </div>
@@ -592,35 +586,35 @@ function DetailPOAndKartuStokInner() {
             </Card>
 
             {/* Vertical Status Timeline (3 cols) */}
-            <Card className="lg:col-span-3 p-5 space-y-4">
+            <Card className="space-y-4 p-5 lg:col-span-3">
               <div className="flex items-center gap-2">
-                <ClipboardList className="h-4 w-4 text-[#9C5B2E]" />
-                <h2 className="text-sm font-bold text-[#221C17]">Alur Status PO</h2>
+                <ClipboardList className="h-4 w-4 text-[#2563EB]" aria-hidden="true" />
+                <h2 className="text-sm font-semibold text-[#0F172A]">Alur Status PO</h2>
               </div>
 
               <div className="space-y-4">
                 {timelineSteps.map((step, idx) => {
                   const dotCls =
                     step.state === 'done'
-                      ? 'bg-[#236B42] border-[#236B42] text-white'
+                      ? 'bg-[#16A34A] border-[#16A34A] text-white'
                       : step.state === 'active'
-                      ? 'bg-[#9C5B2E] border-[#9C5B2E] text-white'
-                      : step.state === 'error'
-                      ? 'bg-[#B83227] border-[#B83227] text-white'
-                      : 'bg-white border-[#D6CEC2] text-[#70675E]';
+                        ? 'bg-[#2563EB] border-[#2563EB] text-white'
+                        : step.state === 'error'
+                          ? 'bg-[#DC2626] border-[#DC2626] text-white'
+                          : 'bg-white border-[#CBD5E1] text-[#64748B]';
                   return (
                     <div key={step.title} className="relative flex gap-3">
                       {idx < timelineSteps.length - 1 && (
-                        <div className="absolute left-[11px] top-6 bottom-[-16px] w-0.5 bg-[#E6DFD5]" />
+                        <div className="absolute bottom-[-16px] left-[11px] top-6 w-0.5 bg-[#E2E8F0]" />
                       )}
                       <div
-                        className={`relative z-10 h-6 w-6 rounded-full border-2 flex items-center justify-center text-[11px] font-bold shrink-0 ${dotCls}`}
+                        className={`relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 text-[11px] font-bold ${dotCls}`}
                       >
                         {idx + 1}
                       </div>
                       <div className="pb-1">
-                        <p className="text-xs font-bold text-[#221C17]">{step.title}</p>
-                        <p className="text-[11px] text-[#70675E] mt-0.5">{step.desc}</p>
+                        <p className="text-xs font-semibold text-[#0F172A]">{step.title}</p>
+                        <p className="mt-0.5 text-[11px] text-[#64748B]">{step.desc}</p>
                       </div>
                     </div>
                   );
@@ -631,13 +625,13 @@ function DetailPOAndKartuStokInner() {
         )}
 
         {/* Section 2: Kartu Stok Ledger */}
-        <Card className="p-5 space-y-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E6DFD5] pb-4">
+        <Card className="space-y-4 p-5">
+          <div className="flex flex-col justify-between gap-4 border-b border-[#E2E8F0] pb-4 md:flex-row md:items-center">
             <div>
-              <h2 className="text-base font-bold text-[#221C17]">
+              <h2 className="text-[16px] font-semibold text-[#0F172A]">
                 Kartu Stok Bahan Baku (Ledger Mutasi Real-Time)
               </h2>
-              <p className="text-xs text-[#70675E]">
+              <p className="mt-0.5 text-xs text-[#64748B]">
                 Jejak audit setiap perubahan stok dari stok awal, opname terverifikasi, waste, retur, penerimaan PO, dan penyesuaian manual.
               </p>
             </div>
@@ -646,7 +640,8 @@ function DetailPOAndKartuStokInner() {
               <select
                 value={activeBahanId}
                 onChange={(e) => setSelectedBahanId(e.target.value)}
-                className="rounded-lg border border-[#E6DFD5] bg-white px-3 py-2 text-xs font-semibold text-[#221C17] focus:border-[#9C5B2E] focus:outline-none min-w-[240px]"
+                aria-label="Pilih bahan kartu stok"
+                className="min-w-[240px] rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-xs font-medium text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
               >
                 {bahan.length === 0 && <option value="">Belum ada master bahan</option>}
                 {bahan.map((b) => (
@@ -658,7 +653,7 @@ function DetailPOAndKartuStokInner() {
 
               {activeBahan && (
                 <Button variant="secondary" size="sm" onClick={() => setAdjustOpen(true)}>
-                  <SlidersHorizontal className="h-4 w-4" />
+                  <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
                   Penyesuaian Manual
                 </Button>
               )}
@@ -672,36 +667,36 @@ function DetailPOAndKartuStokInner() {
             />
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 rounded-xl border border-[#E6DFD5] bg-[#FAF8F5] p-4">
+              <div className="grid grid-cols-1 gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 sm:grid-cols-4">
                 <div>
-                  <p className="text-[11px] font-medium text-[#70675E]">Stok Saat Ini</p>
-                  <p className="text-lg font-extrabold tabular-mono text-[#221C17] mt-0.5">
+                  <p className="text-[11px] font-medium text-[#64748B]">Stok Saat Ini</p>
+                  <p className="tabular-mono mt-0.5 text-lg font-bold text-[#0F172A]">
                     {formatQty(activeBahanStok, activeBahan.satuan)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[11px] font-medium text-[#70675E]">Stok Minimum</p>
-                  <p className="text-lg font-extrabold tabular-mono text-[#221C17] mt-0.5">
+                  <p className="text-[11px] font-medium text-[#64748B]">Stok Minimum</p>
+                  <p className="tabular-mono mt-0.5 text-lg font-bold text-[#0F172A]">
                     {formatQty(activeBahan.stokMinimum, activeBahan.satuan)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[11px] font-medium text-[#70675E]">Harga Satuan</p>
-                  <p className="text-lg font-extrabold tabular-mono text-[#221C17] mt-0.5">
+                  <p className="text-[11px] font-medium text-[#64748B]">Harga Satuan</p>
+                  <p className="tabular-mono mt-0.5 text-lg font-bold text-[#0F172A]">
                     {formatRp(activeBahan.hargaSatuan)}
                   </p>
                 </div>
                 <div className="flex flex-col justify-center gap-1.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-[#70675E]">Status</span>
+                    <span className="text-[#64748B]">Status</span>
                     <Badge
                       tone={
                         evaluasiStatusStok(activeBahanStok, activeBahan.stokMinimum) === 'aman'
                           ? 'success'
                           : evaluasiStatusStok(activeBahanStok, activeBahan.stokMinimum) ===
-                            'menipis'
-                          ? 'warning'
-                          : 'danger'
+                              'menipis'
+                            ? 'warning'
+                            : 'danger'
                       }
                     >
                       {evaluasiStatusStok(activeBahanStok, activeBahan.stokMinimum).toUpperCase()}
@@ -722,38 +717,38 @@ function DetailPOAndKartuStokInner() {
                 />
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse text-xs">
+                  <table className="w-full border-collapse text-left text-xs">
                     <thead>
-                      <tr className="border-b border-[#E6DFD5] text-[11px] font-bold uppercase tracking-wider text-[#70675E]">
-                        <th className="py-2.5 px-3">Waktu</th>
-                        <th className="py-2.5 px-3">Tipe Mutasi</th>
-                        <th className="py-2.5 px-3 text-right">Qty</th>
-                        <th className="py-2.5 px-3">Referensi</th>
-                        <th className="py-2.5 px-3">Catatan</th>
-                        <th className="py-2.5 px-3">Oleh</th>
+                      <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                        <th className="rounded-l-lg px-3 py-2.5">Waktu</th>
+                        <th className="px-3 py-2.5">Tipe Mutasi</th>
+                        <th className="px-3 py-2.5 text-right">Qty</th>
+                        <th className="px-3 py-2.5">Referensi</th>
+                        <th className="px-3 py-2.5">Catatan</th>
+                        <th className="rounded-r-lg px-3 py-2.5">Oleh</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#E6DFD5]">
+                    <tbody className="divide-y divide-[#E2E8F0]">
                       {activeBahanMovements.map((mv) => (
-                        <tr key={mv.id} className="hover:bg-[#FAF8F5]">
-                          <td className="py-2.5 px-3 tabular-mono text-[#70675E]">
+                        <tr key={mv.id} className="hover:bg-[#F8FAFC]">
+                          <td className="tabular-mono px-3 py-2.5 text-[#64748B]">
                             {formatTanggal(mv.createdAt)} · {formatWaktu(mv.createdAt)}
                           </td>
-                          <td className="py-2.5 px-3">
+                          <td className="px-3 py-2.5">
                             <Badge tone={movementBadgeTone(mv.tipe)}>{mv.tipe}</Badge>
                           </td>
                           <td
-                            className={`py-2.5 px-3 text-right tabular-mono font-bold ${
-                              mv.qty >= 0 ? 'text-[#236B42]' : 'text-[#B83227]'
+                            className={`tabular-mono px-3 py-2.5 text-right font-semibold ${
+                              mv.qty >= 0 ? 'text-[#15803D]' : 'text-[#DC2626]'
                             }`}
                           >
                             {mv.qty > 0 ? `+${mv.qty}` : mv.qty} {activeBahan.satuan}
                           </td>
-                          <td className="py-2.5 px-3 tabular-mono text-[#70675E]">
+                          <td className="tabular-mono px-3 py-2.5 text-[#64748B]">
                             {mv.refType} ({mv.refId})
                           </td>
-                          <td className="py-2.5 px-3 text-[#221C17]">{mv.catatan || '—'}</td>
-                          <td className="py-2.5 px-3 font-medium text-[#70675E]">{mv.oleh}</td>
+                          <td className="px-3 py-2.5 text-[#0F172A]">{mv.catatan || '-'}</td>
+                          <td className="px-3 py-2.5 font-medium text-[#64748B]">{mv.oleh}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -772,15 +767,16 @@ function DetailPOAndKartuStokInner() {
         title="Tolak Purchase Order"
       >
         <div className="space-y-4">
-          <p className="text-xs text-[#70675E]">
-            Berikan alasan penolakan untuk dokumen <strong className="text-[#221C17]">{activePO?.nomor}</strong>.
+          <p className="text-xs text-[#64748B]">
+            Berikan alasan penolakan untuk dokumen{' '}
+            <strong className="font-semibold text-[#0F172A]">{activePO?.nomor}</strong>.
           </p>
           <textarea
             rows={3}
             value={rejectNote}
             onChange={(e) => setRejectNote(e.target.value)}
             placeholder="Misal: Anggaran dialihkan ke supplier lokal / tunda minggu depan."
-            className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm text-[#221C17] focus:border-[#9C5B2E] focus:outline-none"
+            className="w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
           />
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => setRejectModalOpen(false)}>
@@ -797,11 +793,14 @@ function DetailPOAndKartuStokInner() {
       <Modal open={newPoOpen} onClose={() => setNewPoOpen(false)} title="Buat Purchase Order Cepat">
         <div className="space-y-4 text-sm">
           <div>
-            <label className="block text-xs font-bold text-[#70675E] mb-1">Supplier</label>
+            <label htmlFor="po-sup" className="mb-1 block text-xs font-medium text-[#475569]">
+              Supplier
+            </label>
             <select
+              id="po-sup"
               value={newPoSupplierId}
               onChange={(e) => setNewPoSupplierId(e.target.value)}
-              className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
             >
               {suppliers.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -812,11 +811,14 @@ function DetailPOAndKartuStokInner() {
           </div>
           <div className="grid grid-cols-3 gap-3">
             <div className="col-span-2">
-              <label className="block text-xs font-bold text-[#70675E] mb-1">Bahan Baku</label>
+              <label htmlFor="po-bahan" className="mb-1 block text-xs font-medium text-[#475569]">
+                Bahan Baku
+              </label>
               <select
+                id="po-bahan"
                 value={newPoBahanId}
                 onChange={(e) => setNewPoBahanId(e.target.value)}
-                className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+                className="w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
               >
                 {bahan.map((b) => (
                   <option key={b.id} value={b.id}>
@@ -826,24 +828,30 @@ function DetailPOAndKartuStokInner() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#70675E] mb-1">Qty Beli</label>
+              <label htmlFor="po-qty" className="mb-1 block text-xs font-medium text-[#475569]">
+                Qty Beli
+              </label>
               <input
+                id="po-qty"
                 type="number"
                 min={1}
                 value={newPoQty}
                 onChange={(e) => setNewPoQty(Math.max(1, Number(e.target.value) || 1))}
-                className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm font-bold tabular-mono"
+                className="tabular-mono w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm font-normal text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
               />
             </div>
           </div>
           <div>
-            <label className="block text-xs font-bold text-[#70675E] mb-1">Catatan (Opsional)</label>
+            <label htmlFor="po-note" className="mb-1 block text-xs font-medium text-[#475569]">
+              Catatan (Opsional)
+            </label>
             <input
+              id="po-note"
               type="text"
               value={newPoNote}
               onChange={(e) => setNewPoNote(e.target.value)}
               placeholder="Catatan pengiriman..."
-              className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
             />
           </div>
           <div className="flex justify-end gap-2 pt-2">
@@ -851,7 +859,7 @@ function DetailPOAndKartuStokInner() {
               Batal
             </Button>
             <Button variant="primary" onClick={handleCreateQuickPO}>
-              Buat & Ajukan PO
+              Buat &amp; Ajukan PO
             </Button>
           </div>
         </div>
@@ -861,33 +869,37 @@ function DetailPOAndKartuStokInner() {
       <Modal
         open={adjustOpen}
         onClose={() => setAdjustOpen(false)}
-        title={`Penyesuaian Stok — ${activeBahan?.nama || ''}`}
+        title={`Penyesuaian Stok: ${activeBahan?.nama || ''}`}
       >
         <div className="space-y-4 text-sm">
-          <p className="text-xs text-[#70675E]">
-            Gunakan angka positif (misal <code className="font-mono">+5</code>) untuk penambahan
-            atau negatif (misal <code className="font-mono">-2</code>) untuk koreksi pengurangan.
+          <p className="text-xs text-[#64748B]">
+            Gunakan angka positif (misal <code className="font-semibold text-[#0F172A]">+5</code>) untuk penambahan
+            atau negatif (misal <code className="font-semibold text-[#0F172A]">-2</code>) untuk koreksi pengurangan.
           </p>
           <div>
-            <label className="block text-xs font-bold text-[#70675E] mb-1">
+            <label htmlFor="adj-delta" className="mb-1 block text-xs font-medium text-[#475569]">
               Selisih Qty ({activeBahan?.satuan})
             </label>
             <input
+              id="adj-delta"
               type="number"
               step="0.5"
               value={adjustDelta}
               onChange={(e) => setAdjustDelta(Number(e.target.value) || 0)}
-              className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm font-bold tabular-mono"
+              className="tabular-mono w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm font-semibold text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-[#70675E] mb-1">Alasan Koreksi</label>
+            <label htmlFor="adj-note" className="mb-1 block text-xs font-medium text-[#475569]">
+              Alasan Koreksi
+            </label>
             <input
+              id="adj-note"
               type="text"
               value={adjustNote}
               onChange={(e) => setAdjustNote(e.target.value)}
               placeholder="Misal: Koreksi hitung fisik akhir bulan..."
-              className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
             />
           </div>
           <div className="flex justify-end gap-2">
@@ -908,8 +920,8 @@ export default function DetailPOPage() {
   return (
     <Suspense
       fallback={
-        <AppShell pageTitle="Detail PO, Penerimaan & Kartu Stok">
-          <Card className="p-8 text-sm text-[#70675E]">Memuat data Purchase Order...</Card>
+        <AppShell pageTitle="Persetujuan PO, Penerimaan & Kartu Stok">
+          <Card className="p-8 text-sm text-[#64748B]">Memuat data Purchase Order...</Card>
         </AppShell>
       }
     >

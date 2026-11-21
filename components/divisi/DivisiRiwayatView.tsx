@@ -21,12 +21,12 @@ export function DivisiRiwayatView({ divisi }: { divisi: Divisi }) {
     <AppShell pageTitle={`Riwayat Laporan Stok & Verifikasi (${divTitle})`}>
       <Card className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-base font-bold text-[#221C17]">
+          <h2 className="text-[16px] font-semibold text-[#0F172A]">
             Daftar Pengiriman Stock List &amp; Waste Divisi {divTitle}
           </h2>
           <Link href={`/${divisi}/rekap`}>
             <Button size="sm">
-              <Plus className="h-3.5 w-3.5" />
+              <Plus className="h-3.5 w-3.5" aria-hidden="true" />
               Input Rekap Shift Baru
             </Button>
           </Link>
@@ -68,20 +68,20 @@ export function DivisiRiwayatView({ divisi }: { divisi: Divisi }) {
               return (
                 <div
                   key={lap.id}
-                  className={`flex flex-col gap-2 rounded-[10px] border bg-[#FBF9F6] p-4 ${
-                    lap.status === 'dikembalikan' ? 'border-[#A86A12]' : 'border-[#E6E0D8]'
+                  className={`flex flex-col gap-2 rounded-xl border bg-[#F8FAFC] p-4 ${
+                    lap.status === 'dikembalikan' ? 'border-[#FDE68A]' : 'border-[#E2E8F0]'
                   }`}
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-sm font-bold text-[#221C17]">
+                    <span className="text-sm font-semibold text-[#0F172A]">
                       {formatTanggal(lap.tanggal)} · {lap.sesi === 'opening' ? 'Opening' : 'Closing'}{' '}
                       {sh?.nama ?? ''} · Petugas: {peg?.nama ?? '-'}
                     </span>
                     <Badge tone={tone}>{label}</Badge>
                   </div>
-                  <p className="text-[13px] text-[#3D342C]">
+                  <p className="text-[13px] text-[#334155]">
                     {lap.items.length} bahan direkap · {lap.waste.length} item waste (Total rugi{' '}
-                    <span className="tabular-mono font-bold text-[#B23A2E]">
+                    <span className="tabular-mono font-semibold text-[#DC2626]">
                       {formatRp(totalWaste)}
                     </span>
                     )
@@ -89,7 +89,7 @@ export function DivisiRiwayatView({ divisi }: { divisi: Divisi }) {
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span
                       className={`text-xs ${
-                        lap.status === 'dikembalikan' ? 'font-semibold text-[#A86A12]' : 'text-[#8A7F73]'
+                        lap.status === 'dikembalikan' ? 'font-semibold text-[#B45309]' : 'text-[#64748B]'
                       }`}
                     >
                       {lap.catatanVerifikasi

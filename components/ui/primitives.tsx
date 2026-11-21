@@ -1,27 +1,27 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Minus, Plus, X, ClipboardList } from 'lucide-react';
 import type { StatusStokLevel } from '@/lib/domain/calculations';
 
 export type BadgeTone = 'success' | 'warning' | 'danger' | 'info' | 'primary' | 'neutral';
 
 const BADGE_CLASSES: Record<BadgeTone, string> = {
-  success: 'bg-[#E6F1E8] text-[#3F7A4F]',
-  warning: 'bg-[#FBF0DC] text-[#A86A12]',
-  danger: 'bg-[#F8E3E0] text-[#B23A2E]',
-  info: 'bg-[#E3EEF5] text-[#3B6C8F]',
-  primary: 'bg-[#F4E8DD] text-[#9C5B2E]',
-  neutral: 'bg-[#F3EFE9] text-[#8A7F73]',
+  success: 'bg-[#F0FDF4] text-[#15803D] ring-1 ring-inset ring-[#BBF7D0]',
+  warning: 'bg-[#FFFBEB] text-[#B45309] ring-1 ring-inset ring-[#FDE68A]',
+  danger: 'bg-[#FEF2F2] text-[#B91C1C] ring-1 ring-inset ring-[#FECACA]',
+  info: 'bg-[#EFF6FF] text-[#1E40AF] ring-1 ring-inset ring-[#BFDBFE]',
+  primary: 'bg-[#EFF6FF] text-[#2563EB] ring-1 ring-inset ring-[#BFDBFE]',
+  neutral: 'bg-[#F1F5F9] text-[#475569] ring-1 ring-inset ring-[#E2E8F0]',
 };
 
 const DOT_CLASSES: Record<BadgeTone, string> = {
-  success: 'bg-[#3F7A4F]',
-  warning: 'bg-[#A86A12]',
-  danger: 'bg-[#B23A2E]',
-  info: 'bg-[#3B6C8F]',
-  primary: 'bg-[#9C5B2E]',
-  neutral: 'bg-[#8A7F73]',
+  success: 'bg-[#16A34A]',
+  warning: 'bg-[#F59E0B]',
+  danger: 'bg-[#DC2626]',
+  info: 'bg-[#2563EB]',
+  primary: 'bg-[#2563EB]',
+  neutral: 'bg-[#64748B]',
 };
 
 export function Badge({
@@ -37,9 +37,9 @@ export function Badge({
 }) {
   return (
     <span
-      className={`inline-flex h-6 shrink-0 items-center gap-1.5 rounded-full px-2.5 text-xs font-semibold whitespace-nowrap ${BADGE_CLASSES[tone]} ${className}`}
+      className={`inline-flex h-6 shrink-0 items-center gap-1.5 rounded-md px-2 text-xs font-medium whitespace-nowrap ${BADGE_CLASSES[tone]} ${className}`}
     >
-      {dot && <span className={`h-1.5 w-1.5 rounded-full ${DOT_CLASSES[tone]}`} />}
+      {dot && <span className={`h-1.5 w-1.5 rounded-full ${DOT_CLASSES[tone]}`} aria-hidden="true" />}
       {children}
     </span>
   );
@@ -48,11 +48,11 @@ export function Badge({
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'dangerSolid' | 'ghost';
 
 const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
-  primary: 'bg-[#9C5B2E] text-white hover:bg-[#84491F] border border-transparent',
-  secondary: 'bg-white text-[#3D342C] border border-[#E6E0D8] hover:bg-[#F3EFE9]',
-  danger: 'bg-white text-[#B23A2E] border border-[#B23A2E] hover:bg-[#F8E3E0]',
-  dangerSolid: 'bg-[#B23A2E] text-white hover:bg-[#922F25] border border-transparent',
-  ghost: 'bg-[#F4E8DD] text-[#9C5B2E] border border-transparent hover:bg-[#ECD8C7]',
+  primary: 'bg-[#2563EB] text-white font-semibold hover:bg-[#1E40AF] border border-transparent shadow-[0_1px_2px_rgba(37,99,235,0.18)]',
+  secondary: 'bg-white text-[#0F172A] font-medium border border-[#E2E8F0] hover:bg-[#F8FAFC] hover:border-[#CBD5E1]',
+  danger: 'bg-white text-[#DC2626] font-medium border border-[#FECACA] hover:bg-[#FEF2F2] hover:border-[#FCA5A5]',
+  dangerSolid: 'bg-[#DC2626] text-white font-semibold hover:bg-[#B91C1C] border border-transparent',
+  ghost: 'bg-transparent text-[#475569] font-medium border border-transparent hover:bg-[#F1F5F9] hover:text-[#0F172A]',
 };
 
 export function Button({
@@ -66,11 +66,16 @@ export function Button({
   variant?: ButtonVariant;
   size?: 'sm' | 'md' | 'lg';
 }) {
-  const heightCls = size === 'sm' ? 'h-8 px-3 text-xs' : size === 'lg' ? 'h-11 px-4 text-sm' : 'h-10 px-4 text-[13px]';
+  const heightCls =
+    size === 'sm'
+      ? 'h-8 px-3 text-[13px]'
+      : size === 'lg'
+        ? 'h-11 px-4 text-[14px]'
+        : 'h-9 px-3.5 text-[13px]';
   return (
     <button
       type={type}
-      className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-[10px] font-semibold whitespace-nowrap transition-all duration-150 active:translate-y-[1px] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9C5B2E] ${heightCls} ${BUTTON_VARIANTS[variant]} ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-lg whitespace-nowrap transition-colors duration-150 active:scale-[0.99] disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB] ${heightCls} ${BUTTON_VARIANTS[variant]} ${className}`}
       {...props}
     >
       {children}
@@ -87,12 +92,20 @@ export function Card({
 }) {
   return (
     <div
-      className={`rounded-[14px] border border-[#E6E0D8] bg-white p-5 ${className}`}
+      className={`rounded-xl border border-[#E2E8F0] bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] ${className}`}
     >
       {children}
     </div>
   );
 }
+
+const KPI_ICON_TONES = {
+  primary: 'bg-[#EFF6FF] text-[#2563EB]',
+  success: 'bg-[#F0FDF4] text-[#16A34A]',
+  warning: 'bg-[#FFFBEB] text-[#D97706]',
+  danger: 'bg-[#FEF2F2] text-[#DC2626]',
+  neutral: 'bg-[#F1F5F9] text-[#475569]',
+};
 
 export function KpiCard({
   label,
@@ -100,39 +113,61 @@ export function KpiCard({
   subtext,
   tone = 'neutral',
   hero = false,
+  icon,
+  iconTone,
   className = '',
 }: {
   label: string;
   value: string;
   subtext?: string;
-  tone?: 'neutral' | 'success' | 'warning' | 'danger';
+  tone?: 'neutral' | 'success' | 'warning' | 'danger' | 'primary';
   hero?: boolean;
+  icon?: React.ReactNode;
+  iconTone?: 'primary' | 'success' | 'warning' | 'danger' | 'neutral';
   className?: string;
 }) {
   const valColor =
     tone === 'danger'
-      ? 'text-[#B23A2E]'
+      ? 'text-[#DC2626]'
       : tone === 'warning'
-        ? 'text-[#A86A12]'
+        ? 'text-[#B45309]'
         : tone === 'success'
-          ? 'text-[#3F7A4F]'
-          : 'text-[#221C17]';
+          ? 'text-[#15803D]'
+          : tone === 'primary'
+            ? 'text-[#2563EB]'
+            : 'text-[#0F172A]';
+
+  const resolvedIconTone = iconTone ?? (hero ? 'primary' : tone);
 
   return (
     <div
-      className={`flex flex-col gap-1.5 rounded-[14px] border bg-white p-5 ${
-        hero ? 'border-[#D4CBBF]' : 'border-[#E6E0D8]'
+      className={`flex flex-col justify-between gap-3 rounded-xl border bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors ${
+        hero ? 'border-[#BFDBFE] bg-gradient-to-b from-white to-[#F8FAFF]' : 'border-[#E2E8F0]'
       } ${className}`}
     >
-      <span className="text-[13px] font-medium text-[#8A7F73]">{label}</span>
-      <span
-        className={`tabular-mono font-bold tracking-tight ${
-          hero ? 'text-[28px] leading-[34px]' : 'text-[24px] leading-[30px]'
-        } ${valColor}`}
-      >
-        {value}
-      </span>
-      {subtext && <span className="text-xs text-[#8A7F73]">{subtext}</span>}
+      <div className="flex items-start justify-between gap-3">
+        <span className="text-[13px] font-medium leading-[1.4] text-[#64748B]">{label}</span>
+        {icon && (
+          <div
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${KPI_ICON_TONES[resolvedIconTone]}`}
+            aria-hidden="true"
+          >
+            {icon}
+          </div>
+        )}
+      </div>
+      <div className="flex flex-col gap-1">
+        <span
+          className={`tabular-mono font-bold tracking-[-0.02em] ${
+            hero ? 'text-[30px] leading-[1.2] sm:text-[32px]' : 'text-[28px] leading-[1.2]'
+          } ${valColor}`}
+        >
+          {value}
+        </span>
+        {subtext && (
+          <span className="text-[12px] font-normal leading-[1.5] text-[#64748B]">{subtext}</span>
+        )}
+      </div>
     </div>
   );
 }
@@ -146,18 +181,19 @@ export function StockBar({
   min: number;
   status: StatusStokLevel;
 }) {
-  const pct = min > 0 ? Math.min(100, Math.max(8, Math.round((current / (min * 2)) * 100))) : current > 0 ? 100 : 8;
+  const pct =
+    min > 0 ? Math.min(100, Math.max(8, Math.round((current / (min * 2)) * 100))) : current > 0 ? 100 : 8;
   const barColor =
     status === 'aman'
-      ? 'bg-[#3F7A4F]'
+      ? 'bg-[#16A34A]'
       : status === 'menipis'
-        ? 'bg-[#A86A12]'
+        ? 'bg-[#F59E0B]'
         : status === 'kritis'
-          ? 'bg-[#B23A2E]'
-          : 'bg-[#D4CBBF]';
+          ? 'bg-[#DC2626]'
+          : 'bg-[#CBD5E1]';
 
   return (
-    <div className="h-[5px] w-24 overflow-hidden rounded-full bg-[#F3EFE9]">
+    <div className="h-1.5 w-24 overflow-hidden rounded-full bg-[#F1F5F9]">
       <div
         className={`h-full rounded-full transition-all duration-150 ${barColor}`}
         style={{ width: `${status === 'habis' ? 6 : pct}%` }}
@@ -194,12 +230,12 @@ export function StepperQty({
         type="button"
         onClick={() => adjust(-step)}
         aria-label={`Kurangi ${ariaLabel ?? 'jumlah'}`}
-        className={`flex shrink-0 items-center justify-center rounded-[6px] border border-[#E6E0D8] bg-[#F3EFE9] text-[#221C17] transition hover:border-[#D4CBBF] active:translate-y-[1px] ${btnCls}`}
+        className={`flex shrink-0 items-center justify-center rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] text-[#0F172A] transition hover:border-[#CBD5E1] hover:bg-[#F1F5F9] focus-visible:outline-2 focus-visible:outline-[#2563EB] ${btnCls}`}
       >
-        <Minus className="h-3.5 w-3.5" strokeWidth={2} />
+        <Minus className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />
       </button>
       <div
-        className={`flex items-center gap-1 rounded-[6px] border border-[#E6E0D8] bg-white px-2 focus-within:border-[#9C5B2E] ${inputH}`}
+        className={`flex items-center gap-1 rounded-lg border border-[#E2E8F0] bg-white px-2.5 transition focus-within:border-[#2563EB] focus-within:ring-2 focus-within:ring-[#2563EB]/15 ${inputH}`}
       >
         <input
           type="number"
@@ -211,17 +247,17 @@ export function StepperQty({
             onChange(Number.isNaN(parsed) ? 0 : Math.max(0, parsed));
           }}
           aria-label={ariaLabel ?? 'Input stok fisik'}
-          className="tabular-mono w-14 bg-transparent text-right text-sm font-bold text-[#221C17] focus:outline-none"
+          className="tabular-mono w-14 bg-transparent text-right text-[14px] font-normal text-[#0F172A] focus:outline-none"
         />
-        <span className="tabular-mono text-xs text-[#8A7F73]">{unit}</span>
+        <span className="tabular-mono text-[12px] font-normal text-[#64748B]">{unit}</span>
       </div>
       <button
         type="button"
         onClick={() => adjust(step)}
         aria-label={`Tambah ${ariaLabel ?? 'jumlah'}`}
-        className={`flex shrink-0 items-center justify-center rounded-[6px] border border-[#E6E0D8] bg-[#F3EFE9] text-[#221C17] transition hover:border-[#D4CBBF] active:translate-y-[1px] ${btnCls}`}
+        className={`flex shrink-0 items-center justify-center rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] text-[#0F172A] transition hover:border-[#CBD5E1] hover:bg-[#F1F5F9] focus-visible:outline-2 focus-visible:outline-[#2563EB] ${btnCls}`}
       >
-        <Plus className="h-3.5 w-3.5" strokeWidth={2} />
+        <Plus className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />
       </button>
     </div>
   );
@@ -248,15 +284,15 @@ export function CurrencyInput({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-[13px] font-semibold text-[#221C17]">
+      <label htmlFor={id} className="text-[13px] font-medium text-[#0F172A]">
         {label}
       </label>
       <div
-        className={`flex h-10 items-center justify-between gap-2 rounded-[10px] border bg-white px-3 transition focus-within:ring-2 focus-within:ring-[#9C5B2E]/25 ${
-          error ? 'border-[#B23A2E]' : 'border-[#E6E0D8] focus-within:border-[#9C5B2E]'
+        className={`flex h-10 items-center justify-between gap-2 rounded-lg border bg-white px-3 transition focus-within:ring-2 focus-within:ring-[#2563EB]/20 ${
+          error ? 'border-[#DC2626]' : 'border-[#E2E8F0] focus-within:border-[#2563EB]'
         }`}
       >
-        {prefix && <span className="tabular-mono text-[13px] font-semibold text-[#8A7F73]">{prefix}</span>}
+        {prefix && <span className="tabular-mono text-[13px] font-normal text-[#64748B]">{prefix}</span>}
         <input
           id={id}
           type="number"
@@ -268,14 +304,14 @@ export function CurrencyInput({
             const v = Number.parseFloat(e.target.value);
             onChange(Number.isNaN(v) ? 0 : Math.max(0, v));
           }}
-          className="tabular-mono w-full bg-transparent text-right text-sm font-bold text-[#221C17] focus:outline-none"
+          className="tabular-mono w-full bg-transparent text-right text-[14px] font-normal text-[#0F172A] focus:outline-none"
         />
-        {suffix && <span className="tabular-mono text-xs font-medium text-[#8A7F73]">{suffix}</span>}
+        {suffix && <span className="tabular-mono text-[12px] font-normal text-[#64748B]">{suffix}</span>}
       </div>
       {error ? (
-        <span className="text-xs text-[#B23A2E]">{error}</span>
+        <span className="text-[12px] font-normal leading-[1.5] text-[#DC2626]">{error}</span>
       ) : helper ? (
-        <span className="text-xs text-[#8A7F73]">{helper}</span>
+        <span className="text-[12px] font-normal leading-[1.5] text-[#64748B]">{helper}</span>
       ) : null}
     </div>
   );
@@ -294,29 +330,39 @@ export function Modal({
   badgeEl?: React.ReactNode;
   children: React.ReactNode;
 }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open, onClose]);
+
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#221C17]/35 p-4 backdrop-blur-[1px]"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0F172A]/40 p-4"
       role="dialog"
       aria-modal="true"
+      aria-label={title}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="w-full max-w-[540px] rounded-[14px] border border-[#D4CBBF] bg-white p-6 shadow-[0_24px_48px_-12px_rgba(61,52,44,0.28)]">
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <h2 className="text-lg font-bold text-[#221C17]">{title}</h2>
+      <div className="max-h-[90vh] w-full max-w-[540px] overflow-y-auto rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-[0_24px_48px_-12px_rgba(15,23,42,0.22)]">
+        <div className="mb-4 flex items-center justify-between gap-3 border-b border-[#E2E8F0] pb-3.5">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <h2 className="text-[16px] font-semibold leading-[1.3] text-[#0F172A]">{title}</h2>
             {badgeEl}
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-1.5 text-[#8A7F73] hover:bg-[#F3EFE9] hover:text-[#221C17]"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-[#64748B] transition hover:bg-[#F1F5F9] hover:text-[#0F172A] focus-visible:outline-2 focus-visible:outline-[#2563EB]"
             aria-label="Tutup dialog"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
         {children}
@@ -329,19 +375,24 @@ export function EmptyState({
   title,
   description,
   action,
+  icon,
 }: {
   title: string;
   description: string;
   action?: React.ReactNode;
+  icon?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 rounded-[14px] border border-dashed border-[#D4CBBF] bg-[#FBF9F6] px-6 py-10 text-center">
-      <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E6E0D8] bg-white text-[#8A7F73]">
-        <ClipboardList className="h-5 w-5" strokeWidth={1.75} />
+    <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-6 py-10 text-center">
+      <div
+        className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#E2E8F0] bg-white text-[#64748B] shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
+        aria-hidden="true"
+      >
+        {icon ?? <ClipboardList className="h-5 w-5" strokeWidth={1.75} />}
       </div>
       <div className="max-w-md space-y-1">
-        <p className="text-sm font-bold text-[#221C17]">{title}</p>
-        <p className="text-xs leading-relaxed text-[#8A7F73]">{description}</p>
+        <p className="text-[14px] font-semibold leading-[1.4] text-[#0F172A]">{title}</p>
+        <p className="text-[13px] font-normal leading-[1.5] text-[#64748B]">{description}</p>
       </div>
       {action}
     </div>

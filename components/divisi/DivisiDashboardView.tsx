@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { AlertTriangle, ClipboardCheck } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, ClipboardCheck, PackageMinus, Trash2 } from 'lucide-react';
 import { useBreakfreeStore } from '@/lib/store/useBreakfreeStore';
 import {
   detectActiveShiftId,
@@ -60,9 +60,9 @@ export function DivisiDashboardView({ divisi }: { divisi: Divisi }) {
   return (
     <AppShell pageTitle={`Dashboard & Stok Divisi ${divTitle}`}>
       {/* Asymmetric KPI Row */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <KpiCard
-          className="md:col-span-2"
+          className="sm:col-span-2"
           hero
           label={`Status Shift ${divTitle} (${shifts.find((s) => s.id === activeShiftId)?.nama ?? 'Aktif'})`}
           value={
@@ -77,25 +77,29 @@ export function DivisiDashboardView({ divisi }: { divisi: Divisi }) {
               ? 'Opening dan closing shift ini sudah tercatat & divalidasi'
               : 'Lakukan opname stok fisik & pencatatan spoil/waste sebelum ganti shift'
           }
-          tone={closingDone ? 'success' : openingDone ? 'neutral' : 'warning'}
+          tone={closingDone ? 'success' : openingDone ? 'primary' : 'warning'}
+          icon={<CheckCircle2 className="h-[18px] w-[18px]" strokeWidth={1.75} />}
         />
         <KpiCard
           label="Bahan Kritis / Habis"
           value={`${kritisRows.length} Bahan`}
           subtext={kritisRows[0]?.b.nama ?? 'Tidak ada stok kritis'}
           tone={kritisRows.length > 0 ? 'danger' : 'success'}
+          icon={<AlertTriangle className="h-[18px] w-[18px]" strokeWidth={1.75} />}
         />
         <KpiCard
           label="Bahan Menipis"
           value={`${menipisRows.length} Bahan`}
           subtext={menipisRows[0]?.b.nama ?? 'Persediaan aman'}
           tone={menipisRows.length > 0 ? 'warning' : 'success'}
+          icon={<PackageMinus className="h-[18px] w-[18px]" strokeWidth={1.75} />}
         />
         <KpiCard
           label="Total Waste Hari Ini"
           value={formatRp(wasteHariIni)}
           subtext={`${todayReports.reduce((a, l) => a + l.waste.length, 0)} item tidak layak`}
           tone={wasteHariIni > 0 ? 'danger' : 'neutral'}
+          icon={<Trash2 className="h-[18px] w-[18px]" strokeWidth={1.75} />}
         />
       </div>
 
@@ -103,22 +107,22 @@ export function DivisiDashboardView({ divisi }: { divisi: Divisi }) {
       <Card className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-base font-bold text-[#221C17]">
+            <h2 className="text-[16px] font-semibold text-[#0F172A]">
               Daftar Stok Aktif Divisi {divTitle} (
               {divisi === 'barista' ? 'Minuman Panas & Dingin' : 'Makanan & Camilan'})
             </h2>
-            <p className="text-xs text-[#8A7F73]">
+            <p className="text-xs text-[#64748B]">
               Cek ketersediaan bahan saat membaca struk POS Pawoon. Stok dihitung dari ledger keluar-masuk.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2.5">
             <Button variant="danger" onClick={() => setKosongOpen(true)}>
-              <AlertTriangle className="h-4 w-4" strokeWidth={1.75} />
+              <AlertTriangle className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
               Lapor Bahan Kosong
             </Button>
             <Link href={`${basePath}/rekap`}>
               <Button>
-                <ClipboardCheck className="h-4 w-4" strokeWidth={1.75} />
+                <ClipboardCheck className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
                 Mulai Rekap Stok Shift
               </Button>
             </Link>
@@ -137,17 +141,17 @@ export function DivisiDashboardView({ divisi }: { divisi: Divisi }) {
           />
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
+            <table className="w-full text-left text-[13px]">
               <thead>
-                <tr className="border-b border-[#E6E0D8] bg-[#F3EFE9] text-[11px] font-bold uppercase tracking-wider text-[#8A7F73]">
-                  <th className="px-3 py-2.5">Nama Bahan</th>
+                <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                  <th className="rounded-l-lg px-3 py-2.5">Nama Bahan</th>
                   <th className="px-3 py-2.5">Sumber</th>
                   <th className="px-3 py-2.5 text-right">Stok Saat Ini</th>
                   <th className="px-3 py-2.5 text-right">Stok Min</th>
-                  <th className="px-3 py-2.5">Indikator</th>
+                  <th className="rounded-r-lg px-3 py-2.5">Indikator</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-[#E2E8F0]">
                 {rows.map(({ b, cur, st }) => {
                   const label =
                     st === 'habis'
@@ -159,31 +163,31 @@ export function DivisiDashboardView({ divisi }: { divisi: Divisi }) {
                           : 'Aman';
                   const clr =
                     st === 'habis' || st === 'kritis'
-                      ? 'text-[#B23A2E]'
+                      ? 'text-[#DC2626]'
                       : st === 'menipis'
-                        ? 'text-[#A86A12]'
-                        : 'text-[#3F7A4F]';
+                        ? 'text-[#B45309]'
+                        : 'text-[#15803D]';
                   return (
-                    <tr key={b.id} className="border-b border-[#E6E0D8] hover:bg-[#FBF9F6]">
+                    <tr key={b.id} className="transition-colors hover:bg-[#F8FAFC]">
                       <td className="px-3 py-3">
-                        <div className="font-bold text-[#221C17]">{b.nama}</div>
-                        <div className="text-[11px] text-[#8A7F73]">{b.kategori}</div>
+                        <div className="font-semibold text-[#0F172A]">{b.nama}</div>
+                        <div className="text-[11px] text-[#64748B]">{b.kategori}</div>
                       </td>
                       <td className="px-3 py-3">
-                        <Badge tone={b.sumber === 'internal' ? 'primary' : 'info'} dot={false}>
+                        <Badge tone={b.sumber === 'internal' ? 'primary' : 'neutral'} dot={false}>
                           {b.sumber === 'internal' ? 'Internal' : 'Eksternal'}
                         </Badge>
                       </td>
-                      <td className={`tabular-mono px-3 py-3 text-right font-bold ${clr}`}>
+                      <td className={`tabular-mono px-3 py-3 text-right font-semibold ${clr}`}>
                         {formatQty(cur, b.satuan)}
                       </td>
-                      <td className="tabular-mono px-3 py-3 text-right text-[#8A7F73]">
+                      <td className="tabular-mono px-3 py-3 text-right text-[#64748B]">
                         {formatQty(b.stokMinimum, b.satuan)}
                       </td>
                       <td className="px-3 py-3">
                         <div className="flex items-center gap-2.5">
                           <StockBar current={cur} min={b.stokMinimum} status={st} />
-                          <span className={`text-xs font-bold ${clr}`}>{label}</span>
+                          <span className={`text-xs font-semibold ${clr}`}>{label}</span>
                         </div>
                       </td>
                     </tr>

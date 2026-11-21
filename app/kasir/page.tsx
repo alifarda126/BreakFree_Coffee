@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { AlertTriangle, Wallet } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, CreditCard, Wallet } from 'lucide-react';
 import { useBreakfreeStore } from '@/lib/store/useBreakfreeStore';
 import {
   detectActiveShiftId,
@@ -39,18 +39,22 @@ export default function KasirDashboardPage() {
   return (
     <AppShell pageTitle="Dashboard Kasir">
       {/* Asymmetric KPI Row */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <KpiCard
-          className="md:col-span-2"
+          className="sm:col-span-2"
           hero
           label="Total Omzet Tervalidasi Hari Ini"
           value={formatRp(totalHariIni)}
           subtext={`${todayRekap.length} shift tercatat hari ini · Sumber POS Pawoon`}
+          icon={<Wallet className="h-[18px] w-[18px]" strokeWidth={1.75} />}
+          iconTone="primary"
         />
         <KpiCard
           label="Cash vs QRIS Hari Ini"
           value={totalHariIni > 0 ? `${cashPct} / ${qrisPct}%` : '0 / 0%'}
           subtext={`Cash ${formatRp(totalCash)} · QRIS ${formatRp(totalQris)}`}
+          icon={<CreditCard className="h-[18px] w-[18px]" strokeWidth={1.75} />}
+          iconTone="primary"
         />
         <KpiCard
           label={`Status ${activeShift?.nama ?? 'Shift Aktif'}`}
@@ -71,6 +75,7 @@ export default function KasirDashboardPage() {
                 ? 'danger'
                 : 'warning'
           }
+          icon={<CheckCircle2 className="h-[18px] w-[18px]" strokeWidth={1.75} />}
         />
         <KpiCard
           label="Menu Kosong Aktif"
@@ -81,37 +86,38 @@ export default function KasirDashboardPage() {
               : 'Seluruh menu tersedia'
           }
           tone={activeKosong.length > 0 ? 'danger' : 'success'}
+          icon={<AlertTriangle className="h-[18px] w-[18px]" strokeWidth={1.75} />}
         />
       </div>
 
       {/* 8 / 4 Content Grid */}
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <Card className="flex flex-col gap-4 lg:col-span-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-base font-bold text-[#221C17]">
-                Checklist {activeShift?.nama ?? 'Shift Aktif'} ({activeShift?.jamMulai ?? ''}–
+              <h2 className="text-[16px] font-semibold text-[#0F172A]">
+                Checklist {activeShift?.nama ?? 'Shift Aktif'} ({activeShift?.jamMulai ?? ''}-
                 {activeShift?.jamSelesai ?? ''})
               </h2>
-              <p className="text-xs text-[#8A7F73]">
+              <p className="text-xs text-[#64748B]">
                 Pastikan seluruh transaksi POS Pawoon direkap sebelum closing outlet
               </p>
             </div>
             <Link href="/kasir/omzet">
               <Button>
-                <Wallet className="h-4 w-4" strokeWidth={1.75} />
+                <Wallet className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
                 Buka Form Rekap Omzet
               </Button>
             </Link>
           </div>
 
           <div className="flex flex-col gap-2.5">
-            <div className="flex items-center justify-between gap-3 rounded-[10px] border border-[#E6E0D8] bg-[#FBF9F6] p-3.5">
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5">
               <div>
-                <div className="text-[13px] font-bold text-[#221C17]">
+                <div className="text-[13px] font-semibold text-[#0F172A]">
                   1. Cek pemberitahuan Menu Kosong dari Kitchen/Barista
                 </div>
-                <div className="text-xs text-[#8A7F73]">
+                <div className="text-xs text-[#64748B]">
                   {activeKosong.length > 0
                     ? `${activeKosong.length} laporan bahan habis menunggu penyampaian ke pelanggan`
                     : 'Tidak ada laporan bahan habis saat ini'}
@@ -122,12 +128,12 @@ export default function KasirDashboardPage() {
               </Badge>
             </div>
 
-            <div className="flex items-center justify-between gap-3 rounded-[10px] border border-[#E6E0D8] bg-[#FBF9F6] p-3.5">
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5">
               <div>
-                <div className="text-[13px] font-bold text-[#221C17]">
+                <div className="text-[13px] font-semibold text-[#0F172A]">
                   2. Hitung uang laci Cash &amp; settlement mesin QRIS
                 </div>
-                <div className="text-xs text-[#8A7F73]">
+                <div className="text-xs text-[#64748B]">
                   Masukkan nominal cash fisik &amp; rekap transaksi QRIS dari EDC/QRIS
                 </div>
               </div>
@@ -136,12 +142,12 @@ export default function KasirDashboardPage() {
               </Badge>
             </div>
 
-            <div className="flex items-center justify-between gap-3 rounded-[10px] border border-[#E6E0D8] bg-[#FBF9F6] p-3.5">
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5">
               <div>
-                <div className="text-[13px] font-bold text-[#221C17]">
+                <div className="text-[13px] font-semibold text-[#0F172A]">
                   3. Cocokkan total terhadap laporan shift POS Pawoon
                 </div>
-                <div className="text-xs text-[#8A7F73]">
+                <div className="text-xs text-[#64748B]">
                   Selisih wajib Rp 0 (atau isi keterangan selisih) sebelum dikirim ke Manajemen
                 </div>
               </div>
@@ -158,16 +164,16 @@ export default function KasirDashboardPage() {
           </div>
         </Card>
 
-        <Card className="flex flex-col gap-3 border-[#E5B8B3] lg:col-span-4">
+        <Card className="flex flex-col gap-3 border-[#FECACA] lg:col-span-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-[15px] font-bold text-[#B23A2E]">Peringatan Menu Kosong</h2>
+            <h2 className="text-[15px] font-semibold text-[#B91C1C]">Peringatan Menu Kosong</h2>
             <Badge tone={activeKosong.length > 0 ? 'danger' : 'success'}>
               {activeKosong.length} Aktif
             </Badge>
           </div>
 
           {activeKosong.length === 0 ? (
-            <p className="rounded-[10px] bg-[#FBF9F6] p-4 text-center text-xs text-[#8A7F73]">
+            <p className="rounded-xl bg-[#F8FAFC] p-4 text-center text-xs text-[#64748B]">
               Semua bahan baku di Barista &amp; Kitchen tersedia.
             </p>
           ) : (
@@ -176,17 +182,17 @@ export default function KasirDashboardPage() {
                 const b = bahan.find((x) => x.id === lk.bahanId);
                 const pelapor = pegawai.find((p) => p.id === lk.pelaporId);
                 return (
-                  <div key={lk.id} className="rounded-[10px] bg-[#F8E3E0] p-3.5">
-                    <div className="text-[13px] font-bold text-[#221C17]">
+                  <div key={lk.id} className="rounded-xl border border-[#FECACA] bg-[#FEF2F2] p-3.5">
+                    <div className="text-[13px] font-semibold text-[#0F172A]">
                       {b?.nama ?? 'Bahan'} ({lk.divisi})
                     </div>
-                    <div className="mt-1 text-xs text-[#3D342C]">
+                    <div className="mt-1 text-xs text-[#334155]">
                       Terdampak:{' '}
                       {lk.menuTerdampak.length > 0
                         ? lk.menuTerdampak.join(', ')
                         : 'Cek ketersediaan manual'}
                     </div>
-                    <div className="mt-1 text-[11px] text-[#8A7F73]">
+                    <div className="mt-1 text-[11px] text-[#64748B]">
                       Dilaporkan {pelapor?.nama ?? lk.divisi} · {formatWaktu(lk.createdAt)}
                     </div>
                   </div>
@@ -200,7 +206,7 @@ export default function KasirDashboardPage() {
               variant={activeKosong.length > 0 ? 'dangerSolid' : 'secondary'}
               className="w-full"
             >
-              <AlertTriangle className="h-4 w-4" />
+              <AlertTriangle className="h-4 w-4" aria-hidden="true" />
               Kelola Status Menu Kosong
             </Button>
           </Link>

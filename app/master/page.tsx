@@ -110,7 +110,6 @@ export default function MasterDataPage() {
     });
   }, [suppliers, q]);
 
-  // Open Bahan Modal
   const openAddBahan = () => {
     setEditingBahanId(undefined);
     setBNama('');
@@ -161,7 +160,6 @@ export default function MasterDataPage() {
     );
   };
 
-  // Open Menu Modal
   const openAddMenu = () => {
     setEditingMenuId(undefined);
     setMNama('');
@@ -222,7 +220,6 @@ export default function MasterDataPage() {
     );
   };
 
-  // Open Supplier Modal
   const openAddSup = () => {
     setEditingSupId(undefined);
     setSNama('');
@@ -258,86 +255,103 @@ export default function MasterDataPage() {
     );
   };
 
+  const inputCls =
+    'w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20';
+
   return (
     <AppShell pageTitle="Master Bahan Baku, Menu & Supplier">
       <div className="space-y-6">
         {/* Tabs + Primary Action */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="inline-flex rounded-xl border border-[#E6DFD5] bg-white p-1">
+        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+          <div
+            className="inline-flex rounded-lg border border-[#E2E8F0] bg-[#F1F5F9] p-1"
+            role="tablist"
+            aria-label="Kategori master data"
+          >
             <button
               type="button"
+              role="tab"
+              aria-selected={tab === 'bahan'}
               onClick={() => setTab('bahan')}
-              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-bold transition-colors ${
+              className={`inline-flex items-center gap-2 rounded-md px-3.5 py-1.5 text-xs transition-all ${
                 tab === 'bahan'
-                  ? 'bg-[#221C17] text-white'
-                  : 'text-[#70675E] hover:text-[#221C17]'
+                  ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
+                  : 'font-medium text-[#64748B] hover:text-[#0F172A]'
               }`}
             >
-              <Package className="h-4 w-4" />
+              <Package className="h-3.5 w-3.5" aria-hidden="true" />
               Bahan Baku ({bahan.length})
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={tab === 'menu'}
               onClick={() => setTab('menu')}
-              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-bold transition-colors ${
+              className={`inline-flex items-center gap-2 rounded-md px-3.5 py-1.5 text-xs transition-all ${
                 tab === 'menu'
-                  ? 'bg-[#221C17] text-white'
-                  : 'text-[#70675E] hover:text-[#221C17]'
+                  ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
+                  : 'font-medium text-[#64748B] hover:text-[#0F172A]'
               }`}
             >
-              <Coffee className="h-4 w-4" />
-              Menu & Resep ({menu.length})
+              <Coffee className="h-3.5 w-3.5" aria-hidden="true" />
+              Menu &amp; Resep ({menu.length})
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={tab === 'supplier'}
               onClick={() => setTab('supplier')}
-              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-bold transition-colors ${
+              className={`inline-flex items-center gap-2 rounded-md px-3.5 py-1.5 text-xs transition-all ${
                 tab === 'supplier'
-                  ? 'bg-[#221C17] text-white'
-                  : 'text-[#70675E] hover:text-[#221C17]'
+                  ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
+                  : 'font-medium text-[#64748B] hover:text-[#0F172A]'
               }`}
             >
-              <Truck className="h-4 w-4" />
+              <Truck className="h-3.5 w-3.5" aria-hidden="true" />
               Supplier ({suppliers.length})
             </button>
           </div>
 
           {tab === 'bahan' && (
             <Button variant="primary" size="sm" onClick={openAddBahan}>
-              <Plus className="h-4 w-4" />
+              <Plus className="h-4 w-4" aria-hidden="true" />
               Tambah Bahan Baku
             </Button>
           )}
           {tab === 'menu' && (
             <Button variant="primary" size="sm" onClick={openAddMenu}>
-              <Plus className="h-4 w-4" />
-              Tambah Menu & Resep
+              <Plus className="h-4 w-4" aria-hidden="true" />
+              Tambah Menu &amp; Resep
             </Button>
           )}
           {tab === 'supplier' && (
             <Button variant="primary" size="sm" onClick={openAddSup}>
-              <Plus className="h-4 w-4" />
+              <Plus className="h-4 w-4" aria-hidden="true" />
               Tambah Supplier
             </Button>
           )}
         </div>
 
         {/* Filter Bar */}
-        <Card className="p-4 flex flex-wrap items-center gap-3">
-          <div className="relative flex-1 min-w-[220px]">
-            <Search className="h-4 w-4 text-[#70675E] absolute left-3 top-1/2 -translate-y-1/2" />
+        <Card className="flex flex-wrap items-center gap-3 p-4">
+          <div className="relative min-w-[220px] flex-1">
+            <Search
+              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#64748B]"
+              aria-hidden="true"
+            />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              aria-label="Cari data master"
               placeholder={
                 tab === 'bahan'
                   ? 'Cari nama bahan atau kategori...'
                   : tab === 'menu'
-                  ? 'Cari nama menu...'
-                  : 'Cari supplier atau kategori pasokan...'
+                    ? 'Cari nama menu...'
+                    : 'Cari supplier atau kategori pasokan...'
               }
-              className="w-full rounded-xl border border-[#E6DFD5] bg-[#FAF8F5] pl-9 pr-3 py-2 text-xs text-[#221C17] focus:border-[#9C5B2E] focus:bg-white focus:outline-none"
+              className="w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] py-2 pl-9 pr-3 text-xs text-[#0F172A] transition focus:border-[#2563EB] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
             />
           </div>
 
@@ -345,7 +359,8 @@ export default function MasterDataPage() {
             <select
               value={filterDivisi}
               onChange={(e) => setFilterDivisi(e.target.value as 'semua' | DivisiBahan)}
-              className="rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-xs font-semibold text-[#221C17]"
+              aria-label="Filter divisi"
+              className="rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-xs font-medium text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
             >
               <option value="semua">Semua Divisi</option>
               <option value="barista">Barista</option>
@@ -358,7 +373,8 @@ export default function MasterDataPage() {
             <select
               value={filterSumber}
               onChange={(e) => setFilterSumber(e.target.value as 'semua' | SumberBahan)}
-              className="rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-xs font-semibold text-[#221C17]"
+              aria-label="Filter sumber bahan"
+              className="rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-xs font-medium text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
             >
               <option value="semua">Semua Sumber</option>
               <option value="eksternal">Eksternal (Beli PO)</option>
@@ -382,36 +398,36 @@ export default function MasterDataPage() {
               />
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-xs">
+                <table className="w-full border-collapse text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#E6DFD5] text-[11px] font-bold uppercase tracking-wider text-[#70675E]">
-                      <th className="py-2.5 px-3">Nama Bahan</th>
-                      <th className="py-2.5 px-3">Divisi & Sumber</th>
-                      <th className="py-2.5 px-3 text-right">Stok Saat Ini</th>
-                      <th className="py-2.5 px-3 text-right">Stok Min</th>
-                      <th className="py-2.5 px-3 text-right">Harga Satuan</th>
-                      <th className="py-2.5 px-3">Sifat</th>
-                      <th className="py-2.5 px-3 text-right">Aksi</th>
+                    <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                      <th className="rounded-l-lg px-3 py-2.5">Nama Bahan</th>
+                      <th className="px-3 py-2.5">Divisi &amp; Sumber</th>
+                      <th className="px-3 py-2.5 text-right">Stok Saat Ini</th>
+                      <th className="px-3 py-2.5 text-right">Stok Min</th>
+                      <th className="px-3 py-2.5 text-right">Harga Satuan</th>
+                      <th className="px-3 py-2.5">Sifat</th>
+                      <th className="rounded-r-lg px-3 py-2.5 text-right">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E6DFD5]">
+                  <tbody className="divide-y divide-[#E2E8F0]">
                     {filteredBahan.map((b) => {
                       const stok = hitungStokSaatIni(b.id, stockMovements);
                       return (
-                        <tr key={b.id} className="hover:bg-[#FAF8F5]">
-                          <td className="py-3 px-3">
-                            <p className="font-bold text-sm text-[#221C17]">{b.nama}</p>
-                            <p className="text-[11px] text-[#70675E]">{b.kategori}</p>
+                        <tr key={b.id} className="transition-colors hover:bg-[#F8FAFC]">
+                          <td className="px-3 py-3">
+                            <p className="text-[13px] font-semibold text-[#0F172A]">{b.nama}</p>
+                            <p className="text-[11px] text-[#64748B]">{b.kategori}</p>
                           </td>
-                          <td className="py-3 px-3">
+                          <td className="px-3 py-3">
                             <div className="flex flex-wrap items-center gap-1.5">
                               <Badge
                                 tone={
                                   b.divisi === 'barista'
                                     ? 'primary'
                                     : b.divisi === 'kitchen'
-                                    ? 'info'
-                                    : 'neutral'
+                                      ? 'success'
+                                      : 'neutral'
                                 }
                               >
                                 {b.divisi}
@@ -421,23 +437,23 @@ export default function MasterDataPage() {
                               </Badge>
                             </div>
                           </td>
-                          <td className="py-3 px-3 text-right font-bold tabular-mono text-[#221C17]">
+                          <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#0F172A]">
                             {formatQty(stok, b.satuan)}
                           </td>
-                          <td className="py-3 px-3 text-right tabular-mono text-[#70675E]">
+                          <td className="tabular-mono px-3 py-3 text-right text-[#64748B]">
                             {formatQty(b.stokMinimum, b.satuan)}
                           </td>
-                          <td className="py-3 px-3 text-right tabular-mono font-semibold text-[#221C17]">
+                          <td className="tabular-mono px-3 py-3 text-right font-medium text-[#0F172A]">
                             {formatRp(b.hargaSatuan)}
                           </td>
-                          <td className="py-3 px-3">
+                          <td className="px-3 py-3">
                             {b.perishable ? (
                               <Badge tone="danger">Mudah Basi</Badge>
                             ) : (
                               <Badge tone="neutral">Reguler</Badge>
                             )}
                           </td>
-                          <td className="py-3 px-3 text-right">
+                          <td className="px-3 py-3 text-right">
                             <div className="inline-flex items-center gap-1">
                               <Button
                                 variant="ghost"
@@ -445,7 +461,7 @@ export default function MasterDataPage() {
                                 onClick={() => openEditBahan(b)}
                                 aria-label={`Edit ${b.nama}`}
                               >
-                                <Pencil className="h-3.5 w-3.5" />
+                                <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
                               </Button>
                               <Button
                                 variant="ghost"
@@ -456,7 +472,7 @@ export default function MasterDataPage() {
                                 }}
                                 aria-label={`Hapus ${b.nama}`}
                               >
-                                <Trash2 className="h-3.5 w-3.5 text-[#B83227]" />
+                                <Trash2 className="h-3.5 w-3.5 text-[#DC2626]" aria-hidden="true" />
                               </Button>
                             </div>
                           </td>
@@ -485,45 +501,47 @@ export default function MasterDataPage() {
               />
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-xs">
+                <table className="w-full border-collapse text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#E6DFD5] text-[11px] font-bold uppercase tracking-wider text-[#70675E]">
-                      <th className="py-2.5 px-3">Nama Menu</th>
-                      <th className="py-2.5 px-3">Divisi & Kategori</th>
-                      <th className="py-2.5 px-3 text-right">Harga Jual</th>
-                      <th className="py-2.5 px-3">Komposisi Resep (Bahan Terkait)</th>
-                      <th className="py-2.5 px-3 text-right">Aksi</th>
+                    <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                      <th className="rounded-l-lg px-3 py-2.5">Nama Menu</th>
+                      <th className="px-3 py-2.5">Divisi &amp; Kategori</th>
+                      <th className="px-3 py-2.5 text-right">Harga Jual</th>
+                      <th className="px-3 py-2.5">Komposisi Resep (Bahan Terkait)</th>
+                      <th className="rounded-r-lg px-3 py-2.5 text-right">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E6DFD5]">
+                  <tbody className="divide-y divide-[#E2E8F0]">
                     {filteredMenu.map((m) => (
-                      <tr key={m.id} className="hover:bg-[#FAF8F5]">
-                        <td className="py-3 px-3 font-bold text-sm text-[#221C17]">{m.nama}</td>
-                        <td className="py-3 px-3">
+                      <tr key={m.id} className="transition-colors hover:bg-[#F8FAFC]">
+                        <td className="px-3 py-3 text-[13px] font-semibold text-[#0F172A]">
+                          {m.nama}
+                        </td>
+                        <td className="px-3 py-3">
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <Badge tone={m.divisi === 'barista' ? 'primary' : 'info'}>
+                            <Badge tone={m.divisi === 'barista' ? 'primary' : 'success'}>
                               {m.divisi}
                             </Badge>
                             <Badge tone="neutral">{m.kategori.replace('_', ' ')}</Badge>
                           </div>
                         </td>
-                        <td className="py-3 px-3 text-right font-bold tabular-mono text-[#221C17]">
+                        <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#0F172A]">
                           {formatRp(m.harga)}
                         </td>
-                        <td className="py-3 px-3">
+                        <td className="px-3 py-3">
                           <div className="flex flex-wrap gap-1.5">
                             {m.resep.length === 0 && (
-                              <span className="text-[#70675E] italic">Belum ada resep</span>
+                              <span className="italic text-[#64748B]">Belum ada resep</span>
                             )}
                             {m.resep.map((r) => {
                               const b = bahan.find((x) => x.id === r.bahanId);
                               return (
                                 <span
                                   key={r.bahanId}
-                                  className="inline-flex items-center gap-1 rounded-md border border-[#E6DFD5] bg-[#FAF8F5] px-2 py-0.5 text-[11px] text-[#221C17]"
+                                  className="inline-flex items-center gap-1 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] px-2 py-0.5 text-[11px] text-[#0F172A]"
                                 >
                                   <span>{b?.nama || r.bahanId}</span>
-                                  <strong className="tabular-mono text-[#9C5B2E]">
+                                  <strong className="tabular-mono text-[#2563EB]">
                                     {r.qty} {b?.satuan || ''}
                                   </strong>
                                 </span>
@@ -531,7 +549,7 @@ export default function MasterDataPage() {
                             })}
                           </div>
                         </td>
-                        <td className="py-3 px-3 text-right">
+                        <td className="px-3 py-3 text-right">
                           <div className="inline-flex items-center gap-1">
                             <Button
                               variant="ghost"
@@ -539,7 +557,7 @@ export default function MasterDataPage() {
                               onClick={() => openEditMenu(m)}
                               aria-label={`Edit ${m.nama}`}
                             >
-                              <Pencil className="h-3.5 w-3.5" />
+                              <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
                             </Button>
                             <Button
                               variant="ghost"
@@ -550,7 +568,7 @@ export default function MasterDataPage() {
                               }}
                               aria-label={`Hapus ${m.nama}`}
                             >
-                              <Trash2 className="h-3.5 w-3.5 text-[#B83227]" />
+                              <Trash2 className="h-3.5 w-3.5 text-[#DC2626]" aria-hidden="true" />
                             </Button>
                           </div>
                         </td>
@@ -578,30 +596,32 @@ export default function MasterDataPage() {
               />
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-xs">
+                <table className="w-full border-collapse text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#E6DFD5] text-[11px] font-bold uppercase tracking-wider text-[#70675E]">
-                      <th className="py-2.5 px-3">Nama Supplier</th>
-                      <th className="py-2.5 px-3">Kategori Pasokan</th>
-                      <th className="py-2.5 px-3">Kontak / Telepon</th>
-                      <th className="py-2.5 px-3 text-right">Total PO</th>
-                      <th className="py-2.5 px-3 text-right">Aksi</th>
+                    <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                      <th className="rounded-l-lg px-3 py-2.5">Nama Supplier</th>
+                      <th className="px-3 py-2.5">Kategori Pasokan</th>
+                      <th className="px-3 py-2.5">Kontak / Telepon</th>
+                      <th className="px-3 py-2.5 text-right">Total PO</th>
+                      <th className="rounded-r-lg px-3 py-2.5 text-right">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E6DFD5]">
+                  <tbody className="divide-y divide-[#E2E8F0]">
                     {filteredSuppliers.map((s) => {
                       const poCount = purchaseOrders.filter((p) => p.supplierId === s.id).length;
                       return (
-                        <tr key={s.id} className="hover:bg-[#FAF8F5]">
-                          <td className="py-3 px-3 font-bold text-sm text-[#221C17]">{s.nama}</td>
-                          <td className="py-3 px-3">
+                        <tr key={s.id} className="transition-colors hover:bg-[#F8FAFC]">
+                          <td className="px-3 py-3 text-[13px] font-semibold text-[#0F172A]">
+                            {s.nama}
+                          </td>
+                          <td className="px-3 py-3">
                             <Badge tone="neutral">{s.kategori}</Badge>
                           </td>
-                          <td className="py-3 px-3 tabular-mono text-[#70675E]">{s.kontak}</td>
-                          <td className="py-3 px-3 text-right tabular-mono font-bold text-[#221C17]">
+                          <td className="tabular-mono px-3 py-3 text-[#64748B]">{s.kontak}</td>
+                          <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#0F172A]">
                             {poCount} PO
                           </td>
-                          <td className="py-3 px-3 text-right">
+                          <td className="px-3 py-3 text-right">
                             <div className="inline-flex items-center gap-1">
                               <Button
                                 variant="ghost"
@@ -609,7 +629,7 @@ export default function MasterDataPage() {
                                 onClick={() => openEditSup(s)}
                                 aria-label={`Edit ${s.nama}`}
                               >
-                                <Pencil className="h-3.5 w-3.5" />
+                                <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
                               </Button>
                               <Button
                                 variant="ghost"
@@ -620,7 +640,7 @@ export default function MasterDataPage() {
                                 }}
                                 aria-label={`Hapus ${s.nama}`}
                               >
-                                <Trash2 className="h-3.5 w-3.5 text-[#B83227]" />
+                                <Trash2 className="h-3.5 w-3.5 text-[#DC2626]" aria-hidden="true" />
                               </Button>
                             </div>
                           </td>
@@ -643,48 +663,60 @@ export default function MasterDataPage() {
       >
         <form onSubmit={handleSaveBahan} className="space-y-4 text-sm">
           <div>
-            <label className="block text-xs font-bold text-[#70675E] mb-1">Nama Bahan</label>
+            <label htmlFor="b-nama" className="mb-1 block text-xs font-medium text-[#475569]">
+              Nama Bahan
+            </label>
             <input
+              id="b-nama"
               type="text"
               required
               value={bNama}
               onChange={(e) => setBNama(e.target.value)}
               placeholder="Contoh: Susu Full Cream UHT"
-              className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+              className={inputCls}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-[#70675E] mb-1">Kategori</label>
+              <label htmlFor="b-kat" className="mb-1 block text-xs font-medium text-[#475569]">
+                Kategori
+              </label>
               <input
+                id="b-kat"
                 type="text"
                 value={bKategori}
                 onChange={(e) => setBKategori(e.target.value)}
                 placeholder="Dairy / Kopi / Dapur"
-                className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+                className={inputCls}
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#70675E] mb-1">Satuan</label>
+              <label htmlFor="b-sat" className="mb-1 block text-xs font-medium text-[#475569]">
+                Satuan
+              </label>
               <input
+                id="b-sat"
                 type="text"
                 required
                 value={bSatuan}
                 onChange={(e) => setBSatuan(e.target.value)}
                 placeholder="liter / kg / pack / pcs"
-                className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+                className={inputCls}
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-[#70675E] mb-1">Divisi Pemakai</label>
+              <label htmlFor="b-div" className="mb-1 block text-xs font-medium text-[#475569]">
+                Divisi Pemakai
+              </label>
               <select
+                id="b-div"
                 value={bDivisi}
                 onChange={(e) => setBDivisi(e.target.value as DivisiBahan)}
-                className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+                className={inputCls}
               >
                 <option value="barista">Barista</option>
                 <option value="kitchen">Kitchen</option>
@@ -692,11 +724,14 @@ export default function MasterDataPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#70675E] mb-1">Sumber Pengadaan</label>
+              <label htmlFor="b-sum" className="mb-1 block text-xs font-medium text-[#475569]">
+                Sumber Pengadaan
+              </label>
               <select
+                id="b-sum"
                 value={bSumber}
                 onChange={(e) => setBSumber(e.target.value as SumberBahan)}
-                className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+                className={inputCls}
               >
                 <option value="eksternal">Eksternal (Beli PO)</option>
                 <option value="internal">Internal (Produksi Outlet)</option>
@@ -706,37 +741,43 @@ export default function MasterDataPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-[#70675E] mb-1">Stok Minimum</label>
+              <label htmlFor="b-min" className="mb-1 block text-xs font-medium text-[#475569]">
+                Stok Minimum
+              </label>
               <input
+                id="b-min"
                 type="number"
                 min={0}
                 step="0.5"
                 value={bStokMin}
                 onChange={(e) => setBStokMin(Math.max(0, Number(e.target.value) || 0))}
-                className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm font-bold tabular-mono"
+                className={`${inputCls} tabular-mono`}
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#70675E] mb-1">Harga Satuan (Rp)</label>
+              <label htmlFor="b-hrg" className="mb-1 block text-xs font-medium text-[#475569]">
+                Harga Satuan (Rp)
+              </label>
               <input
+                id="b-hrg"
                 type="number"
                 min={0}
                 step={500}
                 value={bHarga}
                 onChange={(e) => setBHarga(Math.max(0, Number(e.target.value) || 0))}
-                className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm font-bold tabular-mono"
+                className={`${inputCls} tabular-mono`}
               />
             </div>
           </div>
 
-          <label className="flex items-center gap-2 text-xs font-semibold text-[#221C17] cursor-pointer">
+          <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-[#334155]">
             <input
               type="checkbox"
               checked={bPerishable}
               onChange={(e) => setBPerishable(e.target.checked)}
-              className="h-4 w-4 accent-[#9C5B2E]"
+              className="h-4 w-4 rounded accent-[#2563EB]"
             />
-            Bahan mudah basi / perishable (dipantau ketat saat Closing & Retur BOP)
+            Bahan mudah basi / perishable (dipantau ketat saat Closing &amp; Retur BOP)
           </label>
 
           <div className="flex justify-end gap-2 pt-2">
@@ -758,35 +799,44 @@ export default function MasterDataPage() {
       >
         <form onSubmit={handleSaveMenu} className="space-y-4 text-sm">
           <div>
-            <label className="block text-xs font-bold text-[#70675E] mb-1">Nama Menu</label>
+            <label htmlFor="m-nama" className="mb-1 block text-xs font-medium text-[#475569]">
+              Nama Menu
+            </label>
             <input
+              id="m-nama"
               type="text"
               required
               value={mNama}
               onChange={(e) => setMNama(e.target.value)}
               placeholder="Contoh: Es Kopi Susu Breakfree"
-              className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+              className={inputCls}
             />
           </div>
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="block text-xs font-bold text-[#70675E] mb-1">Divisi</label>
+              <label htmlFor="m-div" className="mb-1 block text-xs font-medium text-[#475569]">
+                Divisi
+              </label>
               <select
+                id="m-div"
                 value={mDivisi}
                 onChange={(e) => setMDivisi(e.target.value as Divisi)}
-                className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+                className={inputCls}
               >
                 <option value="barista">Barista</option>
                 <option value="kitchen">Kitchen</option>
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#70675E] mb-1">Kategori</label>
+              <label htmlFor="m-kat" className="mb-1 block text-xs font-medium text-[#475569]">
+                Kategori
+              </label>
               <select
+                id="m-kat"
                 value={mKategori}
                 onChange={(e) => setMKategori(e.target.value as Menu['kategori'])}
-                className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+                className={inputCls}
               >
                 <option value="minuman_dingin">Minuman Dingin</option>
                 <option value="minuman_panas">Minuman Panas</option>
@@ -795,26 +845,30 @@ export default function MasterDataPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#70675E] mb-1">Harga Jual</label>
+              <label htmlFor="m-hrg" className="mb-1 block text-xs font-medium text-[#475569]">
+                Harga Jual
+              </label>
               <input
+                id="m-hrg"
                 type="number"
                 min={0}
                 step={500}
                 value={mHarga}
                 onChange={(e) => setMHarga(Math.max(0, Number(e.target.value) || 0))}
-                className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm font-bold tabular-mono"
+                className={`${inputCls} tabular-mono`}
               />
             </div>
           </div>
 
           {/* Builder Resep */}
-          <div className="rounded-xl border border-[#E6DFD5] bg-[#FAF8F5] p-3.5 space-y-3">
-            <p className="text-xs font-bold text-[#221C17]">Komposisi Bahan Baku Resep</p>
+          <div className="space-y-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5">
+            <p className="text-xs font-semibold text-[#0F172A]">Komposisi Bahan Baku Resep</p>
             <div className="flex flex-wrap items-center gap-2">
               <select
                 value={pickBahanId}
                 onChange={(e) => setPickBahanId(e.target.value)}
-                className="flex-1 min-w-[160px] rounded-lg border border-[#E6DFD5] bg-white px-2.5 py-1.5 text-xs"
+                aria-label="Pilih bahan untuk resep"
+                className="min-w-[160px] flex-1 rounded-lg border border-[#E2E8F0] bg-white px-2.5 py-1.5 text-xs text-[#0F172A] focus:border-[#2563EB] focus:outline-none"
               >
                 {bahan.map((b) => (
                   <option key={b.id} value={b.id}>
@@ -828,7 +882,8 @@ export default function MasterDataPage() {
                 step="0.01"
                 value={pickQty}
                 onChange={(e) => setPickQty(Number(e.target.value) || 0)}
-                className="w-20 rounded-lg border border-[#E6DFD5] bg-white px-2.5 py-1.5 text-xs font-bold tabular-mono"
+                aria-label="Takaran bahan resep"
+                className="tabular-mono w-20 rounded-lg border border-[#E2E8F0] bg-white px-2.5 py-1.5 text-xs font-semibold text-[#0F172A] focus:border-[#2563EB] focus:outline-none"
               />
               <Button type="button" variant="secondary" size="sm" onClick={handleAddResepRow}>
                 + Pasang
@@ -836,7 +891,7 @@ export default function MasterDataPage() {
             </div>
 
             {mResep.length === 0 ? (
-              <p className="text-[11px] text-[#70675E]">
+              <p className="text-[11px] text-[#64748B]">
                 Belum ada bahan ditambahkan ke resep menu ini.
               </p>
             ) : (
@@ -846,9 +901,9 @@ export default function MasterDataPage() {
                   return (
                     <div
                       key={r.bahanId}
-                      className="flex items-center justify-between rounded-lg bg-white border border-[#E6DFD5] px-2.5 py-1.5 text-xs"
+                      className="flex items-center justify-between rounded-lg border border-[#E2E8F0] bg-white px-2.5 py-1.5 text-xs"
                     >
-                      <span className="font-semibold text-[#221C17]">
+                      <span className="font-medium text-[#0F172A]">
                         {b?.nama || r.bahanId} ({r.qty} {b?.satuan || ''})
                       </span>
                       <button
@@ -856,7 +911,7 @@ export default function MasterDataPage() {
                         onClick={() =>
                           setMResep((prev) => prev.filter((x) => x.bahanId !== r.bahanId))
                         }
-                        className="text-[#B83227] font-semibold hover:underline"
+                        className="font-semibold text-[#DC2626] hover:underline"
                       >
                         Hapus
                       </button>
@@ -886,34 +941,43 @@ export default function MasterDataPage() {
       >
         <form onSubmit={handleSaveSupplier} className="space-y-4 text-sm">
           <div>
-            <label className="block text-xs font-bold text-[#70675E] mb-1">Nama Supplier</label>
+            <label htmlFor="s-nama" className="mb-1 block text-xs font-medium text-[#475569]">
+              Nama Supplier
+            </label>
             <input
+              id="s-nama"
               type="text"
               required
               value={sNama}
               onChange={(e) => setSNama(e.target.value)}
               placeholder="Contoh: Roastery Malang Sejahtera"
-              className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+              className={inputCls}
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-[#70675E] mb-1">Kategori Pasokan</label>
+            <label htmlFor="s-kat" className="mb-1 block text-xs font-medium text-[#475569]">
+              Kategori Pasokan
+            </label>
             <input
+              id="s-kat"
               type="text"
               value={sKategori}
               onChange={(e) => setSKategori(e.target.value)}
               placeholder="Kopi & Sirup / Dairy / Fresh Market"
-              className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+              className={inputCls}
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-[#70675E] mb-1">Nomor Kontak / WA</label>
+            <label htmlFor="s-kontak" className="mb-1 block text-xs font-medium text-[#475569]">
+              Nomor Kontak / WA
+            </label>
             <input
+              id="s-kontak"
               type="text"
               value={sKontak}
               onChange={(e) => setSKontak(e.target.value)}
               placeholder="0812-xxxx-xxxx"
-              className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm"
+              className={inputCls}
             />
           </div>
           <div className="flex justify-end gap-2 pt-2">

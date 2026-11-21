@@ -6,13 +6,12 @@ export const SEED_SHIFTS: Shift[] = [
   { id: 'sh-malam', nama: 'Shift Malam', jamMulai: '18:00', jamSelesai: '02:00' },
 ];
 
-// 12 karyawan Breakfree Coffee sesuai profil usaha & wawancara HRD di laporan
+// 11 karyawan Breakfree Coffee fokus operasional & logistik bahan
 export const SEED_PEGAWAI: Pegawai[] = [
   { id: 'peg-owner1', nama: 'Abdullah Faisol', posisi: 'manajemen', aktif: true },
   { id: 'peg-owner2', nama: 'Rahmah Sholeh', posisi: 'manajemen', aktif: true },
   { id: 'peg-hrd', nama: 'Ahmad Masbuhin Faqih', posisi: 'manajemen', aktif: true },
   { id: 'peg-log', nama: 'Hendra Kusuma', posisi: 'logistik', aktif: true },
-  { id: 'peg-kap', nama: 'Bima Wijaya', posisi: 'kapten', aktif: true },
   { id: 'peg-kas1', nama: 'Raka Pratama', posisi: 'kasir', aktif: true },
   { id: 'peg-kas2', nama: 'Fajar Nugroho', posisi: 'kasir', aktif: true },
   { id: 'peg-bar1', nama: 'Nadia Putri', posisi: 'barista', aktif: true },

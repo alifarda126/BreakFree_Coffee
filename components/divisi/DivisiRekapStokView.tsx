@@ -91,7 +91,6 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
   const [confirmAktual, setConfirmAktual] = useState(false);
   const [kosongModalOpen, setKosongModalOpen] = useState(false);
 
-  // Sync defaults for bahan physical stock from ledger (or editTarget)
   useEffect(() => {
     const nextFisik: Record<string, number> = {};
     const nextNote: Record<string, string> = {};
@@ -189,6 +188,9 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
     }
   };
 
+  const fieldCls =
+    'h-9 rounded-lg border border-[#E2E8F0] bg-white px-2.5 text-sm text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20';
+
   return (
     <AppShell pageTitle={`Rekap Stok & Spoil/Waste Divisi ${divTitle}`}>
       {/* Stepper + Session Controls */}
@@ -197,11 +199,11 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
           <Badge tone={validateModalOpen ? 'success' : 'primary'}>
             1. Isi Stok &amp; Waste
           </Badge>
-          <ChevronRight className="h-4 w-4 text-[#8A7F73]" />
+          <ChevronRight className="h-4 w-4 text-[#64748B]" aria-hidden="true" />
           <Badge tone={validateModalOpen ? 'primary' : 'neutral'} dot={false}>
             2. Review &amp; Validasi
           </Badge>
-          <ChevronRight className="h-4 w-4 text-[#8A7F73]" />
+          <ChevronRight className="h-4 w-4 text-[#64748B]" aria-hidden="true" />
           <Badge tone="neutral" dot={false}>
             3. Terkirim ke Logistik
           </Badge>
@@ -209,16 +211,16 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
 
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Opening / Closing Toggle */}
-          <div className="inline-flex rounded-[10px] bg-[#F3EFE9] p-1">
+          <div className="inline-flex rounded-lg border border-[#E2E8F0] bg-[#F1F5F9] p-1">
             {(['opening', 'closing'] as const).map((s) => (
               <button
                 key={s}
                 type="button"
                 onClick={() => setSesi(s)}
-                className={`rounded-[6px] px-3 py-1.5 text-xs font-bold capitalize transition ${
+                className={`rounded-md px-3 py-1 text-xs capitalize transition-all ${
                   sesi === s
-                    ? 'bg-[#9C5B2E] text-white'
-                    : 'text-[#8A7F73] hover:text-[#221C17]'
+                    ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
+                    : 'font-medium text-[#64748B] hover:text-[#0F172A]'
                 }`}
               >
                 {s}
@@ -226,43 +228,48 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
             ))}
           </div>
           <Button variant="danger" size="sm" onClick={() => setKosongModalOpen(true)}>
-            <AlertTriangle className="h-3.5 w-3.5" />
+            <AlertTriangle className="h-3.5 w-3.5" aria-hidden="true" />
             Lapor Bahan Kosong ke Kasir
           </Button>
         </div>
       </Card>
 
       {/* Meta Selectors (Tanggal, Shift, Petugas) */}
-      <Card className="grid grid-cols-1 gap-3 py-3.5 sm:grid-cols-3">
+      <Card className="grid grid-cols-1 gap-3 py-4 sm:grid-cols-3">
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-[#8A7F73]">Tanggal Shift</label>
+          <label htmlFor="rek-tgl" className="text-xs font-medium text-[#475569]">Tanggal Shift</label>
           <input
+            id="rek-tgl"
             type="date"
             value={tanggal}
             onChange={(e) => setTanggal(e.target.value)}
-            className="tabular-mono h-9 rounded-[8px] border border-[#E6E0D8] bg-white px-2.5 text-sm text-[#221C17]"
+            className={`${fieldCls} tabular-mono`}
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-[#8A7F73]">Shift</label>
+          <label htmlFor="rek-shift" className="text-xs font-medium text-[#475569]">Shift</label>
           <select
+            id="rek-shift"
             value={shiftId || shifts[0]?.id || ''}
             onChange={(e) => setShiftId(e.target.value)}
-            className="h-9 rounded-[8px] border border-[#E6E0D8] bg-white px-2.5 text-sm text-[#221C17]"
+            className={fieldCls}
           >
             {shifts.map((sh) => (
               <option key={sh.id} value={sh.id}>
-                {sh.nama} ({sh.jamMulai}–{sh.jamSelesai})
+                {sh.nama} ({sh.jamMulai}-{sh.jamSelesai})
               </option>
             ))}
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-[#8A7F73]">Petugas {divTitle}</label>
+          <label htmlFor="rek-petugas" className="text-xs font-medium text-[#475569]">
+            Petugas {divTitle}
+          </label>
           <select
+            id="rek-petugas"
             value={petugasId || divPetugas[0]?.id || ''}
             onChange={(e) => setPetugasId(e.target.value)}
-            className="h-9 rounded-[8px] border border-[#E6E0D8] bg-white px-2.5 text-sm text-[#221C17]"
+            className={fieldCls}
           >
             {(divPetugas.length > 0 ? divPetugas : pegawai).map((p) => (
               <option key={p.id} value={p.id}>
@@ -274,12 +281,12 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
       </Card>
 
       {/* Stock Opname Table (Desktop >= md) + List Cards (Mobile < md) */}
-      <Card className="flex flex-col gap-3 p-4">
+      <Card className="flex flex-col gap-3 p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-[15px] font-bold text-[#221C17]">
+          <h2 className="text-[16px] font-semibold text-[#0F172A]">
             Stock List Fisik Divisi {divTitle} ({sesi === 'opening' ? 'Opening' : 'Closing'})
           </h2>
-          <span className="text-xs text-[#8A7F73]">
+          <span className="text-xs text-[#64748B]">
             Stok sistem dihitung otomatis dari ledger keluar-masuk barang
           </span>
         </div>
@@ -293,45 +300,45 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
           <>
             {/* Desktop Table */}
             <div className="hidden overflow-x-auto md:block">
-              <table className="w-full text-left text-sm">
+              <table className="w-full text-left text-[13px]">
                 <thead>
-                  <tr className="border-b border-[#E6E0D8] bg-[#F3EFE9] text-[11px] font-bold uppercase tracking-wider text-[#8A7F73]">
-                    <th className="px-3 py-2.5">Bahan Baku</th>
+                  <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                    <th className="rounded-l-lg px-3 py-2.5">Bahan Baku</th>
                     <th className="px-3 py-2.5 text-right">Stok Sistem</th>
                     <th className="px-3 py-2.5 text-center">Input Stok Fisik</th>
                     <th className="px-3 py-2.5 text-right">Selisih</th>
                     <th className="px-3 py-2.5">Status Stok</th>
-                    <th className="px-3 py-2.5">Catatan</th>
+                    <th className="rounded-r-lg px-3 py-2.5">Catatan</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-[#E2E8F0]">
                   {opnameRows.map((r) => {
                     const stColor =
                       r.status === 'kritis' || r.status === 'habis'
-                        ? 'text-[#B23A2E]'
+                        ? 'text-[#DC2626]'
                         : r.status === 'menipis'
-                          ? 'text-[#A86A12]'
-                          : 'text-[#3F7A4F]';
+                          ? 'text-[#B45309]'
+                          : 'text-[#15803D]';
                     const stripBg =
                       r.status === 'kritis' || r.status === 'habis'
-                        ? 'bg-[#B23A2E]'
+                        ? 'bg-[#DC2626]'
                         : r.status === 'menipis'
-                          ? 'bg-[#A86A12]'
+                          ? 'bg-[#F59E0B]'
                           : 'bg-transparent';
                     return (
-                      <tr key={r.b.id} className="border-b border-[#E6E0D8] hover:bg-[#FBF9F6]">
+                      <tr key={r.b.id} className="transition-colors hover:bg-[#F8FAFC]">
                         <td className="px-2 py-2.5">
                           <div className="flex items-center gap-2.5">
-                            <span className={`h-9 w-[3px] shrink-0 rounded-full ${stripBg}`} />
+                            <span className={`h-9 w-[3px] shrink-0 rounded-full ${stripBg}`} aria-hidden="true" />
                             <div>
-                              <div className="text-[13px] font-bold text-[#221C17]">{r.b.nama}</div>
-                              <div className="text-[11px] text-[#8A7F73]">
+                              <div className="text-[13px] font-semibold text-[#0F172A]">{r.b.nama}</div>
+                              <div className="text-[11px] text-[#64748B]">
                                 {r.b.kategori} · {r.b.sumber}
                               </div>
                             </div>
                           </div>
                         </td>
-                        <td className="tabular-mono px-3 py-2.5 text-right text-[#8A7F73]">
+                        <td className="tabular-mono px-3 py-2.5 text-right text-[#64748B]">
                           {formatQty(r.sys, r.b.satuan)}
                         </td>
                         <td className="px-3 py-2.5 text-center">
@@ -346,8 +353,8 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                           />
                         </td>
                         <td
-                          className={`tabular-mono px-3 py-2.5 text-right font-bold ${
-                            r.diff === 0 ? 'text-[#221C17]' : stColor
+                          className={`tabular-mono px-3 py-2.5 text-right font-semibold ${
+                            r.diff === 0 ? 'text-[#0F172A]' : stColor
                           }`}
                         >
                           {r.diff > 0 ? '+' : ''}
@@ -355,7 +362,7 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                         </td>
                         <td className="px-3 py-2.5">
                           <div className="flex flex-col gap-1">
-                            <span className={`text-xs font-bold capitalize ${stColor}`}>
+                            <span className={`text-xs font-semibold capitalize ${stColor}`}>
                               {r.status}
                             </span>
                             <StockBar current={r.phys} min={r.b.stokMinimum} status={r.status} />
@@ -368,8 +375,9 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                             onChange={(e) =>
                               setNoteMap((prev) => ({ ...prev, [r.b.id]: e.target.value }))
                             }
+                            aria-label={`Catatan ${r.b.nama}`}
                             placeholder="Kondisi / catatan..."
-                            className="h-8 w-40 rounded-[6px] border border-[#E6E0D8] bg-white px-2 text-xs text-[#221C17] focus:border-[#9C5B2E] focus:outline-none"
+                            className="h-8 w-40 rounded-lg border border-[#E2E8F0] bg-white px-2.5 text-xs text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
                           />
                         </td>
                       </tr>
@@ -379,21 +387,21 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
               </table>
             </div>
 
-            {/* Mobile List-Cards (< 768px per DESIGN.md §5) */}
+            {/* Mobile List-Cards */}
             <div className="flex flex-col gap-3 md:hidden">
               {opnameRows.map((r) => (
                 <div
                   key={r.b.id}
-                  className={`flex flex-col gap-2.5 rounded-[12px] border bg-white p-3.5 ${
+                  className={`flex flex-col gap-2.5 rounded-xl border bg-white p-3.5 ${
                     r.status === 'kritis' || r.status === 'habis'
-                      ? 'border-[#B23A2E]'
-                      : 'border-[#E6E0D8]'
+                      ? 'border-[#FECACA]'
+                      : 'border-[#E2E8F0]'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <div className="text-sm font-bold text-[#221C17]">{r.b.nama}</div>
-                      <div className="tabular-mono text-xs text-[#8A7F73]">
+                      <div className="text-sm font-semibold text-[#0F172A]">{r.b.nama}</div>
+                      <div className="tabular-mono text-xs text-[#64748B]">
                         Sistem: {formatQty(r.sys, r.b.satuan)}
                       </div>
                     </div>
@@ -410,7 +418,7 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-semibold text-[#3D342C]">Stok Fisik:</span>
+                    <span className="text-xs font-medium text-[#334155]">Stok Fisik:</span>
                     <StepperQty
                       large
                       value={r.phys}
@@ -428,20 +436,20 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
       </Card>
 
       {/* Spoil / Waste Panel + Summary CTA */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-        <Card className="flex flex-col gap-3 p-4 lg:col-span-8">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
+        <Card className="flex flex-col gap-3 p-5 lg:col-span-8">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-sm font-bold text-[#221C17]">
+            <h2 className="text-[15px] font-semibold text-[#0F172A]">
               Pencatatan Bahan Tidak Layak (Spoil / Waste)
             </h2>
             <Button variant="secondary" size="sm" onClick={addWasteRow}>
-              <Plus className="h-3.5 w-3.5" />
+              <Plus className="h-3.5 w-3.5" aria-hidden="true" />
               Tambah Baris Waste
             </Button>
           </div>
 
           {wasteRows.length === 0 ? (
-            <p className="rounded-[10px] bg-[#FBF9F6] px-4 py-3 text-xs text-[#8A7F73]">
+            <p className="rounded-xl border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-4 py-3.5 text-xs text-[#64748B]">
               Tidak ada bahan rusak/basi di shift ini. Klik &ldquo;Tambah Baris Waste&rdquo; bila
               ada bahan yang harus diretur atau dibuang.
             </p>
@@ -453,7 +461,7 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                 return (
                   <div
                     key={w.tempId}
-                    className="grid grid-cols-1 items-center gap-2 rounded-[10px] bg-[#F3EFE9] p-2.5 sm:grid-cols-12"
+                    className="grid grid-cols-1 items-center gap-2 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-2.5 sm:grid-cols-12"
                   >
                     <select
                       value={w.bahanId}
@@ -464,7 +472,8 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                           )
                         )
                       }
-                      className="h-9 rounded-[6px] border border-[#E6E0D8] bg-white px-2 text-xs font-semibold text-[#221C17] sm:col-span-4"
+                      aria-label="Pilih bahan waste"
+                      className="h-9 rounded-lg border border-[#E2E8F0] bg-white px-2 text-xs font-medium text-[#0F172A] sm:col-span-4"
                     >
                       {divBahan.map((b) => (
                         <option key={b.id} value={b.id}>
@@ -489,9 +498,10 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                             )
                           );
                         }}
-                        className="tabular-mono h-9 w-full rounded-[6px] border border-[#E6E0D8] bg-white px-2 text-right text-xs font-bold text-[#221C17]"
+                        aria-label="Jumlah waste"
+                        className="tabular-mono h-9 w-full rounded-lg border border-[#E2E8F0] bg-white px-2 text-right text-xs font-normal text-[#0F172A]"
                       />
-                      <span className="tabular-mono text-[11px] text-[#8A7F73]">
+                      <span className="tabular-mono text-[11px] text-[#64748B]">
                         {mat?.satuan}
                       </span>
                     </div>
@@ -507,7 +517,8 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                           )
                         )
                       }
-                      className="h-9 rounded-[6px] border border-[#E6E0D8] bg-white px-2 text-xs text-[#221C17] sm:col-span-3"
+                      aria-label="Alasan waste"
+                      className="h-9 rounded-lg border border-[#E2E8F0] bg-white px-2 text-xs text-[#0F172A] sm:col-span-3"
                     >
                       {ALASAN_WASTE_OPTIONS.map((a) => (
                         <option key={a} value={a}>
@@ -517,7 +528,7 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                     </select>
 
                     <div className="flex items-center justify-between gap-2 sm:col-span-3 sm:justify-end">
-                      <span className="tabular-mono text-xs font-bold text-[#B23A2E]">
+                      <span className="tabular-mono text-xs font-semibold text-[#DC2626]">
                         {formatRp(nilai)}
                       </span>
                       <button
@@ -526,9 +537,9 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                           setWasteRows((prev) => prev.filter((r) => r.tempId !== w.tempId))
                         }
                         aria-label="Hapus baris waste"
-                        className="rounded p-1.5 text-[#8A7F73] hover:bg-white hover:text-[#B23A2E]"
+                        className="rounded-lg p-1.5 text-[#64748B] hover:bg-white hover:text-[#DC2626]"
                       >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                       </button>
                     </div>
                   </div>
@@ -538,12 +549,12 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
           )}
         </Card>
 
-        <Card className="flex flex-col justify-between gap-3 border-[#9C5B2E] p-4 lg:col-span-4">
+        <Card className="flex flex-col justify-between gap-3 border-[#BFDBFE] p-5 lg:col-span-4">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-[#8A7F73]">
+            <span className="text-[#64748B]">
               {opnameRows.length} bahan diisi · Total Waste
             </span>
-            <span className="tabular-mono text-[15px] font-bold text-[#B23A2E]">
+            <span className="tabular-mono text-[15px] font-bold text-[#DC2626]">
               {formatRp(totalWasteNilai)}
             </span>
           </div>
@@ -557,7 +568,7 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
               onClick={() => setValidateModalOpen(true)}
             >
               Lanjut ke Review &amp; Validasi
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-4 w-4" aria-hidden="true" />
             </Button>
           </div>
         </Card>
@@ -571,21 +582,21 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
         badgeEl={<Badge tone="primary">Langkah 2 / 3</Badge>}
       >
         <div className="flex flex-col gap-4">
-          <p className="text-[13px] text-[#8A7F73]">
+          <p className="text-[13px] text-[#64748B]">
             Periksa ringkasan perubahan stok fisik &amp; catatan spoil/waste sebelum laporan
             diteruskan ke Manajemen Logistik:
           </p>
 
-          <div className="flex flex-col gap-2.5 rounded-[10px] bg-[#F3EFE9] p-4 text-[13px]">
+          <div className="flex flex-col gap-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 text-[13px]">
             <div className="flex items-center justify-between">
-              <span className="text-[#3D342C]">Total Bahan Diperiksa</span>
-              <span className="tabular-mono font-bold text-[#221C17]">
+              <span className="text-[#475569]">Total Bahan Diperiksa</span>
+              <span className="tabular-mono font-semibold text-[#0F172A]">
                 {opnameRows.length} bahan ({sesi.toUpperCase()} {divTitle})
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[#3D342C]">Selisih Terbesar</span>
-              <span className="tabular-mono font-bold text-[#A86A12]">
+              <span className="text-[#475569]">Selisih Terbesar</span>
+              <span className="tabular-mono font-semibold text-[#B45309]">
                 {selisihTerbesar
                   ? `${selisihTerbesar.b.nama} (${selisihTerbesar.diff > 0 ? '+' : ''}${formatQty(
                       selisihTerbesar.diff,
@@ -595,19 +606,19 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[#3D342C]">Total Kerugian Spoil / Waste</span>
-              <span className="tabular-mono font-bold text-[#B23A2E]">
+              <span className="text-[#475569]">Total Kerugian Spoil / Waste</span>
+              <span className="tabular-mono font-semibold text-[#DC2626]">
                 {formatRp(totalWasteNilai)} ({wasteRows.filter((w) => w.qty > 0).length} item)
               </span>
             </div>
           </div>
 
-          <label className="flex cursor-pointer items-start gap-2.5 text-xs font-semibold text-[#221C17]">
+          <label className="flex cursor-pointer items-start gap-2.5 text-xs font-medium text-[#334155]">
             <input
               type="checkbox"
               checked={confirmAktual}
               onChange={(e) => setConfirmAktual(e.target.checked)}
-              className="mt-0.5 h-4 w-4 accent-[#9C5B2E]"
+              className="mt-0.5 h-4 w-4 rounded accent-[#2563EB]"
             />
             <span>Data stok fisik &amp; bahan tidak layak sudah sesuai kondisi aktual di outlet.</span>
           </label>
@@ -621,7 +632,7 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
               disabled={!confirmAktual}
               onClick={() => handleSave(false)}
             >
-              <Check className="h-4 w-4" />
+              <Check className="h-4 w-4" aria-hidden="true" />
               Kirim Laporan ke Logistik
             </Button>
           </div>

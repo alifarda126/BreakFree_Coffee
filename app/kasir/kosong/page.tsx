@@ -39,10 +39,10 @@ export default function KasirKosongRiwayatPage() {
       <Card className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 className="text-base font-bold text-[#221C17]">
+            <h2 className="text-[16px] font-semibold text-[#0F172A]">
               Daftar Laporan Bahan / Menu Tidak Tersedia (Real-time)
             </h2>
-            <p className="text-xs text-[#8A7F73]">
+            <p className="text-xs text-[#64748B]">
               Alur BPMN: Terima laporan Barista/Kitchen → Konfirmasi → Sampaikan ke pelanggan jika
               dipesan
             </p>
@@ -66,15 +66,15 @@ export default function KasirKosongRiwayatPage() {
               return (
                 <div
                   key={lk.id}
-                  className={`flex flex-wrap items-center justify-between gap-4 rounded-[10px] border p-3.5 ${
+                  className={`flex flex-wrap items-center justify-between gap-4 rounded-xl border p-3.5 ${
                     isAlert
-                      ? 'border-[#E5B8B3] bg-[#F8E3E0]'
-                      : 'border-[#E6E0D8] bg-[#FBF9F6]'
+                      ? 'border-[#FECACA] bg-[#FEF2F2]'
+                      : 'border-[#E2E8F0] bg-[#F8FAFC]'
                   }`}
                 >
                   <div className="flex flex-col gap-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-sm font-bold text-[#221C17]">
+                      <span className="text-sm font-semibold text-[#0F172A]">
                         {b?.nama ?? 'Bahan'}
                       </span>
                       <Badge
@@ -95,14 +95,14 @@ export default function KasirKosongRiwayatPage() {
                               : 'Tersedia Kembali'}
                       </Badge>
                     </div>
-                    <p className="text-xs text-[#3D342C]">
+                    <p className="text-xs text-[#334155]">
                       Menu terdampak:{' '}
                       {lk.menuTerdampak.length > 0 ? lk.menuTerdampak.join(', ') : '-'} · Pelapor:{' '}
                       {lk.divisi} ({pelapor?.nama ?? '-'}) · {formatWaktu(lk.createdAt)}
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     {lk.status === 'aktif' && (
                       <Button
                         variant="secondary"
@@ -121,7 +121,7 @@ export default function KasirKosongRiwayatPage() {
                           pushToast('Sudah disampaikan ke pelanggan', 'success');
                         }}
                       >
-                        <Check className="h-3.5 w-3.5" />
+                        <Check className="h-3.5 w-3.5" aria-hidden="true" />
                         Sudah Disampaikan
                       </Button>
                     )}
@@ -134,7 +134,7 @@ export default function KasirKosongRiwayatPage() {
                           pushToast('Ditandai tersedia kembali', 'success');
                         }}
                       >
-                        <RotateCcw className="h-3.5 w-3.5" />
+                        <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
                         Tersedia Kembali
                       </Button>
                     )}
@@ -149,7 +149,7 @@ export default function KasirKosongRiwayatPage() {
       {/* Card 2: Riwayat Omzet Table */}
       <Card className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-base font-bold text-[#221C17]">
+          <h2 className="text-[16px] font-semibold text-[#0F172A]">
             Riwayat Rekap Omzet Per Shift (Tersimpan Lokal)
           </h2>
           <div className="flex flex-wrap items-center gap-2">
@@ -158,13 +158,13 @@ export default function KasirKosongRiwayatPage() {
               value={filterTanggal}
               onChange={(e) => setFilterTanggal(e.target.value)}
               aria-label="Filter tanggal"
-              className="tabular-mono h-8 rounded-[6px] border border-[#E6E0D8] bg-white px-2.5 text-xs text-[#221C17]"
+              className="tabular-mono h-8 rounded-lg border border-[#E2E8F0] bg-white px-2.5 text-xs text-[#0F172A] focus:border-[#2563EB] focus:outline-none"
             />
             <select
               value={filterShift}
               onChange={(e) => setFilterShift(e.target.value)}
               aria-label="Filter shift"
-              className="h-8 rounded-[6px] border border-[#E6E0D8] bg-white px-2.5 text-xs text-[#221C17]"
+              className="h-8 rounded-lg border border-[#E2E8F0] bg-white px-2.5 text-xs text-[#0F172A] focus:border-[#2563EB] focus:outline-none"
             >
               <option value="all">Semua Shift</option>
               {shifts.map((s) => (
@@ -175,7 +175,7 @@ export default function KasirKosongRiwayatPage() {
             </select>
             <Link href="/kasir/omzet">
               <Button size="sm">
-                <Plus className="h-3.5 w-3.5" />
+                <Plus className="h-3.5 w-3.5" aria-hidden="true" />
                 Buat Rekap Shift Baru
               </Button>
             </Link>
@@ -194,41 +194,41 @@ export default function KasirKosongRiwayatPage() {
           />
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
+            <table className="w-full text-left text-[13px]">
               <thead>
-                <tr className="border-b border-[#E6E0D8] bg-[#F3EFE9] text-[11px] font-bold uppercase tracking-wider text-[#8A7F73]">
-                  <th className="px-3 py-2.5">Tanggal &amp; Shift</th>
+                <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                  <th className="rounded-l-lg px-3 py-2.5">Tanggal &amp; Shift</th>
                   <th className="px-3 py-2.5">Petugas</th>
                   <th className="px-3 py-2.5 text-right">Cash</th>
                   <th className="px-3 py-2.5 text-right">QRIS</th>
                   <th className="px-3 py-2.5 text-right">POS Pawoon</th>
                   <th className="px-3 py-2.5 text-right">Selisih</th>
-                  <th className="px-3 py-2.5">Status</th>
+                  <th className="rounded-r-lg px-3 py-2.5">Status</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-[#E2E8F0]">
                 {filteredOmzet.map((r) => {
                   const sh = shifts.find((s) => s.id === r.shiftId);
                   const peg = pegawai.find((p) => p.id === r.petugasId);
                   return (
-                    <tr key={r.id} className="border-b border-[#E6E0D8] hover:bg-[#FBF9F6]">
-                      <td className="px-3 py-3 font-semibold text-[#221C17]">
+                    <tr key={r.id} className="transition-colors hover:bg-[#F8FAFC]">
+                      <td className="px-3 py-3 font-semibold text-[#0F172A]">
                         {formatTanggal(r.tanggal)} · {sh?.nama ?? r.shiftId}
                         {r.versi > 1 && (
-                          <span className="ml-1.5 text-xs text-[#9C5B2E]">(v{r.versi})</span>
+                          <span className="ml-1.5 text-xs text-[#2563EB]">(v{r.versi})</span>
                         )}
                       </td>
-                      <td className="px-3 py-3 text-[#3D342C]">{peg?.nama ?? '-'}</td>
+                      <td className="px-3 py-3 text-[#334155]">{peg?.nama ?? '-'}</td>
                       <td className="tabular-mono px-3 py-3 text-right">{formatRp(r.cash)}</td>
-                      <td className="tabular-mono px-3 py-3 text-right text-[#3B6C8F]">
+                      <td className="tabular-mono px-3 py-3 text-right text-[#2563EB]">
                         {formatRp(r.qris)}
                       </td>
-                      <td className="tabular-mono px-3 py-3 text-right font-bold text-[#221C17]">
+                      <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#0F172A]">
                         {formatRp(r.totalPOS)}
                       </td>
                       <td
-                        className={`tabular-mono px-3 py-3 text-right font-bold ${
-                          r.selisih === 0 ? 'text-[#3F7A4F]' : 'text-[#A86A12]'
+                        className={`tabular-mono px-3 py-3 text-right font-semibold ${
+                          r.selisih === 0 ? 'text-[#15803D]' : 'text-[#B45309]'
                         }`}
                       >
                         {formatRp(r.selisih)}

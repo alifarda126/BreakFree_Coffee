@@ -73,13 +73,14 @@ export function LaporKosongModal({
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label className="text-[13px] font-semibold text-[#221C17]">
+          <label htmlFor="kosong-bahan" className="text-[13px] font-medium text-[#0F172A]">
             Pilih Bahan Baku yang Habis ({divisi === 'barista' ? 'Barista' : 'Kitchen'})
           </label>
           <select
+            id="kosong-bahan"
             value={activeBahanId}
             onChange={(e) => setSelectedBahanId(e.target.value)}
-            className="h-10 rounded-[10px] border border-[#E6E0D8] bg-white px-3 text-sm font-semibold text-[#221C17] focus:border-[#9C5B2E] focus:outline-none"
+            className="h-10 rounded-lg border border-[#E2E8F0] bg-white px-3 text-sm font-normal text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
           >
             {divBahan.map((b) => {
               const cur = hitungStokSaatIni(b.id, stockMovements);
@@ -93,11 +94,14 @@ export function LaporKosongModal({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-[13px] font-semibold text-[#221C17]">Pelapor ({divisi})</label>
+          <label htmlFor="kosong-pelapor" className="text-[13px] font-medium text-[#0F172A]">
+            Pelapor ({divisi})
+          </label>
           <select
+            id="kosong-pelapor"
             value={pelaporId || divPetugas[0]?.id || ''}
             onChange={(e) => setPelaporId(e.target.value)}
-            className="h-10 rounded-[10px] border border-[#E6E0D8] bg-white px-3 text-sm text-[#221C17] focus:border-[#9C5B2E] focus:outline-none"
+            className="h-10 rounded-lg border border-[#E2E8F0] bg-white px-3 text-sm text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
           >
             {(divPetugas.length > 0 ? divPetugas : pegawai).map((p) => (
               <option key={p.id} value={p.id}>
@@ -107,36 +111,39 @@ export function LaporKosongModal({
           </select>
         </div>
 
-        <div className="flex flex-col gap-2 rounded-[10px] border border-[#E5B8B3] bg-[#F8E3E0] p-3.5">
-          <span className="text-xs font-bold text-[#B23A2E]">
+        <div className="flex flex-col gap-2 rounded-xl border border-[#FECACA] bg-[#FEF2F2] p-3.5">
+          <span className="text-xs font-semibold text-[#B91C1C]">
             Menu Terdampak Otomatis (berdasarkan Master Resep):
           </span>
           {affectedMenus.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {affectedMenus.map((m) => (
                 <span
                   key={m.id}
-                  className="inline-flex items-center rounded-full border border-[#E5B8B3] bg-white px-2.5 py-0.5 text-xs font-semibold text-[#B23A2E]"
+                  className="inline-flex items-center rounded-md border border-[#FECACA] bg-white px-2.5 py-0.5 text-xs font-medium text-[#B91C1C]"
                 >
                   {m.nama}
                 </span>
               ))}
             </div>
           ) : (
-            <span className="text-xs text-[#3D342C]">
+            <span className="text-xs text-[#475569]">
               Tidak ada menu resep terkait, catatan tetap dikirim ke Kasir.
             </span>
           )}
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-[13px] font-semibold text-[#221C17]">Catatan untuk Kasir (Opsional)</label>
+          <label htmlFor="kosong-catatan" className="text-[13px] font-medium text-[#0F172A]">
+            Catatan untuk Kasir (Opsional)
+          </label>
           <input
+            id="kosong-catatan"
             type="text"
             value={catatan}
             onChange={(e) => setCatatan(e.target.value)}
             placeholder="Misal: Ayam baru masuk pengiriman H+1 besok pagi"
-            className="h-10 rounded-[10px] border border-[#E6E0D8] bg-white px-3 text-sm text-[#221C17] focus:border-[#9C5B2E] focus:outline-none"
+            className="h-10 rounded-lg border border-[#E2E8F0] bg-white px-3 text-sm text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
           />
         </div>
 
@@ -145,7 +152,7 @@ export function LaporKosongModal({
             Batal
           </Button>
           <Button type="submit" variant="dangerSolid" className="flex-1" disabled={!activeBahanId}>
-            <AlertTriangle className="h-4 w-4" strokeWidth={1.75} />
+            <AlertTriangle className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
             Kirim Peringatan ke Kasir
           </Button>
         </div>

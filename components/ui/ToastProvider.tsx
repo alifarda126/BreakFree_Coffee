@@ -39,33 +39,33 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {children}
       <div
         aria-live="polite"
-        className="fixed bottom-20 right-4 z-50 flex flex-col gap-2 md:bottom-5 md:right-5 no-print"
+        className="no-print fixed bottom-20 right-4 z-50 flex flex-col gap-2 md:bottom-5 md:right-5"
       >
         {toasts.map((t) => {
           const Icon =
             t.tone === 'success' ? CheckCircle2 : t.tone === 'info' ? Info : AlertTriangle;
-          const border =
+          const toneStyle =
             t.tone === 'danger'
-              ? 'border-[#E5B8B3] bg-[#F8E3E0] text-[#B23A2E]'
+              ? 'border-[#FECACA] bg-[#FEF2F2] text-[#B91C1C]'
               : t.tone === 'warning'
-                ? 'border-[#E6E0D8] bg-[#FBF0DC] text-[#A86A12]'
+                ? 'border-[#FDE68A] bg-[#FFFBEB] text-[#B45309]'
                 : t.tone === 'info'
-                  ? 'border-[#E6E0D8] bg-[#E3EEF5] text-[#3B6C8F]'
-                  : 'border-[#E6E0D8] bg-[#E6F1E8] text-[#3F7A4F]';
+                  ? 'border-[#BFDBFE] bg-[#EFF6FF] text-[#1E40AF]'
+                  : 'border-[#BBF7D0] bg-[#F0FDF4] text-[#15803D]';
           return (
             <div
               key={t.id}
-              className={`flex items-center gap-2.5 rounded-[10px] border px-3.5 py-2.5 text-sm font-semibold shadow-[0_8px_24px_-8px_rgba(61,52,44,0.18)] transition-all duration-150 ${border}`}
+              className={`flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-[13px] font-medium shadow-[0_10px_28px_-8px_rgba(15,23,42,0.14)] transition-all duration-150 ${toneStyle}`}
             >
-              <Icon className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+              <Icon className="h-4 w-4 shrink-0" strokeWidth={1.75} aria-hidden="true" />
               <span>{t.message}</span>
               <button
                 type="button"
                 onClick={() => dismiss(t.id)}
-                className="ml-1 rounded p-0.5 opacity-70 hover:opacity-100"
+                className="ml-1 rounded-md p-0.5 opacity-70 transition hover:opacity-100 focus-visible:outline-2 focus-visible:outline-[#2563EB]"
                 aria-label="Tutup notifikasi"
               >
-                <X className="h-3.5 w-3.5" />
+                <X className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
             </div>
           );

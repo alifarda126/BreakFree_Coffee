@@ -4,13 +4,13 @@ import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
+  CalendarClock,
   CheckCircle2,
   ClipboardCheck,
   ExternalLink,
   PackagePlus,
   RotateCcw,
   ShoppingCart,
-  Sparkles,
   Truck,
   XCircle,
 } from 'lucide-react';
@@ -65,16 +65,13 @@ export default function LogistikPage() {
     buatPurchaseOrder,
   } = useBreakfreeStore();
 
-  // --- Verifikasi Laporan State ---
   const [filterLap, setFilterLap] = useState<'perlu' | 'semua'>('perlu');
   const [inspectLaporan, setInspectLaporan] = useState<LaporanStok | null>(null);
   const [returnModalLap, setReturnModalLap] = useState<LaporanStok | null>(null);
   const [returnReason, setReturnReason] = useState('');
 
-  // --- Retur BOP H+1 State ---
   const [selectedWasteIds, setSelectedWasteIds] = useState<Record<string, boolean>>({});
 
-  // --- Rekomendasi PO State ---
   const [pakemWeekend, setPakemWeekend] = useState<boolean>(() => isWeekendISO(todayISO()));
   const [showAllBahan, setShowAllBahan] = useState(false);
   const [selectedSupplierId, setSelectedSupplierId] = useState<string>(() => suppliers[0]?.id ?? '');
@@ -90,7 +87,6 @@ export default function LogistikPage() {
   const activeVerifier =
     pegawai.find((p) => p.id === activePetugasId && p.aktif)?.nama || 'Staf Logistik';
 
-  // Antrean laporan
   const antreanLaporan = useMemo(() => {
     const sorted = [...laporanStok].sort((a, b) =>
       (b.submittedAt || b.createdAt).localeCompare(a.submittedAt || a.createdAt)
@@ -106,7 +102,6 @@ export default function LogistikPage() {
     [laporanStok]
   );
 
-  // Waste candidates verified & not yet in a retur
   const verifiedWasteCandidates = useMemo<VerifiedWasteCandidate[]>(() => {
     const out: VerifiedWasteCandidate[] = [];
     for (const lap of laporanStok) {
@@ -134,7 +129,6 @@ export default function LogistikPage() {
     return out;
   }, [laporanStok, bahan]);
 
-  // Rekomendasi per bahan
   const rekomendasiRows = useMemo(() => {
     return bahan
       .map((b) =>
@@ -183,7 +177,6 @@ export default function LogistikPage() {
     [selectedPOItems]
   );
 
-  // Handlers
   const handleVerifikasi = (lap: LaporanStok) => {
     verifikasiLaporanStok(lap.id, 'diverifikasi', activeVerifier, 'Terverifikasi oleh Logistik');
     setInspectLaporan(null);
@@ -287,7 +280,7 @@ export default function LogistikPage() {
       catatan:
         poCatatan.trim() ||
         (pakemWeekend
-          ? `Restock berdasarkan Pakem Akhir Pekan (×${settings.faktorAkhirPekan})`
+          ? `Restock berdasarkan Pakem Akhir Pekan (x${settings.faktorAkhirPekan})`
           : 'Restock reguler berdasarkan stok minimum & rata-rata waste'),
       ajukanLangsung,
     });
@@ -327,87 +320,88 @@ export default function LogistikPage() {
     <AppShell pageTitle="Verifikasi, Retur BOP & Rekomendasi PO">
       <div className="space-y-6">
         {/* Ringkasan Operasional Logistik */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="p-4 flex items-center justify-between">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Card className="flex items-center justify-between p-4">
             <div>
-              <p className="text-xs font-medium text-[#70675E]">Antrean Verifikasi</p>
-              <p className="mt-1 text-2xl font-extrabold text-[#221C17] tabular-mono">
+              <p className="text-xs font-medium text-[#64748B]">Antrean Verifikasi</p>
+              <p className="tabular-mono mt-1 text-2xl font-bold text-[#0F172A]">
                 {countPerluVerifikasi}
               </p>
-              <p className="text-[11px] text-[#70675E]">Laporan status terkirim</p>
+              <p className="text-[11px] text-[#64748B]">Laporan status terkirim</p>
             </div>
-            <div className="h-10 w-10 rounded-lg bg-[#FDF3E3] text-[#9A5D12] flex items-center justify-center">
-              <ClipboardCheck className="h-5 w-5" strokeWidth={1.75} />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#FFFBEB] text-[#D97706]">
+              <ClipboardCheck className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
             </div>
           </Card>
 
-          <Card className="p-4 flex items-center justify-between">
+          <Card className="flex items-center justify-between p-4">
             <div>
-              <p className="text-xs font-medium text-[#70675E]">Waste Siap Retur BOP</p>
-              <p className="mt-1 text-2xl font-extrabold text-[#221C17] tabular-mono">
+              <p className="text-xs font-medium text-[#64748B]">Waste Siap Retur BOP</p>
+              <p className="tabular-mono mt-1 text-2xl font-bold text-[#0F172A]">
                 {verifiedWasteCandidates.length}
               </p>
-              <p className="text-[11px] text-[#70675E]">Item waste belum diproses</p>
+              <p className="text-[11px] text-[#64748B]">Item waste belum diproses</p>
             </div>
-            <div className="h-10 w-10 rounded-lg bg-[#FCEBEA] text-[#B83227] flex items-center justify-center">
-              <RotateCcw className="h-5 w-5" strokeWidth={1.75} />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#FEF2F2] text-[#DC2626]">
+              <RotateCcw className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
             </div>
           </Card>
 
-          <Card className="p-4 flex items-center justify-between">
+          <Card className="flex items-center justify-between p-4">
             <div>
-              <p className="text-xs font-medium text-[#70675E]">Retur Aktif (H+1)</p>
-              <p className="mt-1 text-2xl font-extrabold text-[#221C17] tabular-mono">
+              <p className="text-xs font-medium text-[#64748B]">Retur Aktif (H+1)</p>
+              <p className="tabular-mono mt-1 text-2xl font-bold text-[#0F172A]">
                 {returs.filter((r) => r.status !== 'pengganti_diterima').length}
               </p>
-              <p className="text-[11px] text-[#70675E]">Menunggu tarik / pengganti</p>
+              <p className="text-[11px] text-[#64748B]">Menunggu tarik / pengganti</p>
             </div>
-            <div className="h-10 w-10 rounded-lg bg-[#F5EDE6] text-[#9C5B2E] flex items-center justify-center">
-              <Truck className="h-5 w-5" strokeWidth={1.75} />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#EFF6FF] text-[#2563EB]">
+              <Truck className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
             </div>
           </Card>
 
-          <Card className="p-4 flex items-center justify-between">
+          <Card className="flex items-center justify-between p-4">
             <div>
-              <p className="text-xs font-medium text-[#70675E]">Perlu Restock</p>
-              <p className="mt-1 text-2xl font-extrabold text-[#221C17] tabular-mono">
+              <p className="text-xs font-medium text-[#64748B]">Perlu Restock</p>
+              <p className="tabular-mono mt-1 text-2xl font-bold text-[#0F172A]">
                 {rekomendasiRows.filter((r) => r.rekomendasiQty > 0).length}
               </p>
-              <p className="text-[11px] text-[#70675E]">
-                {pakemWeekend ? `Mode Pakem ×${settings.faktorAkhirPekan}` : 'Mode Hari Biasa'}
+              <p className="text-[11px] text-[#64748B]">
+                {pakemWeekend ? `Mode Pakem x${settings.faktorAkhirPekan}` : 'Mode Hari Biasa'}
               </p>
             </div>
             <Link
               href="/logistik/po"
-              className="h-10 w-10 rounded-lg bg-[#E9ECEF] text-[#221C17] hover:bg-[#9C5B2E] hover:text-white transition-colors flex items-center justify-center"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] text-[#0F172A] transition-colors hover:border-[#2563EB] hover:bg-[#2563EB] hover:text-white"
               title="Buka Daftar & Detail PO"
+              aria-label="Buka Daftar dan Detail PO"
             >
-              <ExternalLink className="h-5 w-5" strokeWidth={1.75} />
+              <ExternalLink className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
             </Link>
           </Card>
         </div>
 
         {/* Grid 2 Kolom: Verifikasi Laporan + Retur BOP H+1 */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Kolom Kiri (7 col): Antrean Verifikasi Laporan Stok */}
-          <Card className="lg:col-span-7 p-5">
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <Card className="p-5 lg:col-span-7">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 className="text-base font-bold text-[#221C17]">
+                <h2 className="text-[16px] font-semibold text-[#0F172A]">
                   Antrean Verifikasi Laporan Stok Divisi
                 </h2>
-                <p className="text-xs text-[#70675E]">
-                  Verifikasi laporan Barista & Kitchen sebelum stok sistem disesuaikan.
+                <p className="text-xs text-[#64748B]">
+                  Verifikasi laporan Barista &amp; Kitchen sebelum stok sistem disesuaikan.
                 </p>
               </div>
-              <div className="inline-flex rounded-lg border border-[#E6DFD5] bg-[#FAF8F5] p-0.5 text-xs font-semibold">
+              <div className="inline-flex rounded-lg border border-[#E2E8F0] bg-[#F1F5F9] p-1 text-xs font-semibold">
                 <button
                   type="button"
                   onClick={() => setFilterLap('perlu')}
-                  className={`px-3 py-1.5 rounded-md transition-colors ${
+                  className={`rounded-md px-3 py-1 transition-all ${
                     filterLap === 'perlu'
-                      ? 'bg-[#221C17] text-white'
-                      : 'text-[#70675E] hover:text-[#221C17]'
+                      ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
+                      : 'font-medium text-[#64748B] hover:text-[#0F172A]'
                   }`}
                 >
                   Perlu Verifikasi ({countPerluVerifikasi})
@@ -415,10 +409,10 @@ export default function LogistikPage() {
                 <button
                   type="button"
                   onClick={() => setFilterLap('semua')}
-                  className={`px-3 py-1.5 rounded-md transition-colors ${
+                  className={`rounded-md px-3 py-1 transition-all ${
                     filterLap === 'semua'
-                      ? 'bg-[#221C17] text-white'
-                      : 'text-[#70675E] hover:text-[#221C17]'
+                      ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
+                      : 'font-medium text-[#64748B] hover:text-[#0F172A]'
                   }`}
                 >
                   Semua ({laporanStok.length})
@@ -447,48 +441,48 @@ export default function LogistikPage() {
                   return (
                     <div
                       key={lap.id}
-                      className="rounded-xl border border-[#E6DFD5] bg-[#FAF8F5]/60 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                      className="flex flex-col justify-between gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 sm:flex-row sm:items-center"
                     >
                       <div className="space-y-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <Badge tone={lap.divisi === 'barista' ? 'primary' : 'info'}>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <Badge tone={lap.divisi === 'barista' ? 'primary' : 'success'}>
                             {lap.divisi === 'barista' ? 'Barista' : 'Kitchen'}
                           </Badge>
-                          <Badge tone="neutral">
+                          <Badge tone="neutral" dot={false}>
                             {shiftNama(lap.shiftId)} · {lap.sesi === 'opening' ? 'Opening' : 'Closing'}
                           </Badge>
                           <Badge tone={lapStatusTone(lap.status)}>
                             {lap.status === 'terkirim'
                               ? 'Menunggu Verifikasi'
                               : lap.status === 'diverifikasi'
-                              ? 'Diverifikasi'
-                              : lap.status === 'dikembalikan'
-                              ? 'Dikembalikan'
-                              : 'Draft'}
+                                ? 'Diverifikasi'
+                                : lap.status === 'dikembalikan'
+                                  ? 'Dikembalikan'
+                                  : 'Draft'}
                           </Badge>
                         </div>
-                        <p className="text-sm font-bold text-[#221C17]">
-                          {formatTanggal(lap.tanggal)} — {petugasNama(lap.petugasId)}
+                        <p className="text-sm font-semibold text-[#0F172A]">
+                          {formatTanggal(lap.tanggal)} · {petugasNama(lap.petugasId)}
                         </p>
-                        <div className="flex flex-wrap items-center gap-3 text-xs text-[#70675E]">
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-[#64748B]">
                           <span>{lap.items.length} item diopname</span>
-                          <span>•</span>
-                          <span className={selisihCount > 0 ? 'font-semibold text-[#9A5D12]' : ''}>
+                          <span>·</span>
+                          <span className={selisihCount > 0 ? 'font-semibold text-[#B45309]' : ''}>
                             {selisihCount} selisih stok
                           </span>
-                          <span>•</span>
-                          <span className={lap.waste.length > 0 ? 'font-semibold text-[#B83227]' : ''}>
+                          <span>·</span>
+                          <span className={lap.waste.length > 0 ? 'font-semibold text-[#DC2626]' : ''}>
                             {lap.waste.length} waste ({formatRp(totalWaste)})
                           </span>
                         </div>
                         {lap.catatanVerifikasi && lap.status !== 'terkirim' && (
-                          <p className="text-xs italic text-[#70675E]">
+                          <p className="text-xs italic text-[#64748B]">
                             Catatan: {lap.catatanVerifikasi}
                           </p>
                         )}
                       </div>
 
-                      <div className="flex flex-wrap items-center gap-2 shrink-0">
+                      <div className="flex shrink-0 flex-wrap items-center gap-2">
                         <Button
                           variant="secondary"
                           size="sm"
@@ -526,20 +520,19 @@ export default function LogistikPage() {
           </Card>
 
           {/* Kolom Kanan (5 col): Retur BOP & Pengganti H+1 */}
-          <Card className="lg:col-span-5 p-5 flex flex-col gap-4">
+          <Card className="flex flex-col gap-4 p-5 lg:col-span-5">
             <div>
-              <h2 className="text-base font-bold text-[#221C17]">
-                Pelacak Retur BOP & Pengganti H+1
+              <h2 className="text-[16px] font-semibold text-[#0F172A]">
+                Pelacak Retur BOP &amp; Pengganti H+1
               </h2>
-              <p className="text-xs text-[#70675E]">
+              <p className="text-xs text-[#64748B]">
                 Waste terverifikasi ditarik oleh BOP dan diganti keesokan hari (H+1).
               </p>
             </div>
 
-            {/* Kandidat Waste Siap Retur */}
-            <div className="rounded-xl border border-[#E6DFD5] bg-[#FAF8F5] p-3.5 space-y-2.5">
-              <div className="flex items-center justify-between">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#70675E]">
+            <div className="space-y-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
                   Waste Terverifikasi Siap Retur ({verifiedWasteCandidates.length})
                 </p>
                 {verifiedWasteCandidates.length > 0 && (
@@ -550,20 +543,20 @@ export default function LogistikPage() {
               </div>
 
               {verifiedWasteCandidates.length === 0 ? (
-                <p className="text-xs text-[#70675E] py-2">
+                <p className="py-2 text-xs text-[#64748B]">
                   Belum ada item waste terverifikasi yang menunggu pengajuan retur.
                 </p>
               ) : (
-                <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+                <div className="max-h-52 space-y-2 overflow-y-auto pr-1">
                   {verifiedWasteCandidates.map((w) => {
                     const checked = Boolean(selectedWasteIds[w.wasteId]);
                     return (
                       <label
                         key={w.wasteId}
-                        className={`flex items-start gap-2.5 rounded-lg border p-2.5 cursor-pointer transition-colors ${
+                        className={`flex cursor-pointer items-start gap-2.5 rounded-lg border p-2.5 transition-colors ${
                           checked
-                            ? 'border-[#9C5B2E] bg-white'
-                            : 'border-[#E6DFD5] bg-white/70 hover:bg-white'
+                            ? 'border-[#2563EB] bg-[#EFF6FF]/40'
+                            : 'border-[#E2E8F0] bg-white hover:bg-[#F8FAFC]'
                         }`}
                       >
                         <input
@@ -575,18 +568,18 @@ export default function LogistikPage() {
                               [w.wasteId]: e.target.checked,
                             }))
                           }
-                          className="mt-0.5 h-4 w-4 accent-[#9C5B2E]"
+                          className="mt-0.5 h-4 w-4 rounded accent-[#2563EB]"
                         />
-                        <div className="flex-1 min-w-0 text-xs">
+                        <div className="min-w-0 flex-1 text-xs">
                           <div className="flex items-center justify-between gap-2">
-                            <span className="font-bold text-[#221C17] truncate">
+                            <span className="truncate font-semibold text-[#0F172A]">
                               {w.bahanNama}
                             </span>
-                            <span className="font-bold tabular-mono text-[#B83227]">
+                            <span className="tabular-mono font-semibold text-[#DC2626]">
                               {formatQty(w.qty, w.satuan)}
                             </span>
                           </div>
-                          <p className="text-[11px] text-[#70675E]">
+                          <p className="text-[11px] text-[#64748B]">
                             {w.alasan} · {formatTanggal(w.tanggal)} ({w.divisi})
                           </p>
                         </div>
@@ -597,9 +590,8 @@ export default function LogistikPage() {
               )}
             </div>
 
-            {/* Daftar Retur Aktif / Riwayat */}
             <div className="space-y-2.5">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#70675E]">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
                 Dokumen Retur ({returs.length})
               </p>
               {returs.length === 0 ? (
@@ -608,36 +600,36 @@ export default function LogistikPage() {
                   description="Centang item waste terverifikasi di atas untuk membuat dokumen Retur H+1."
                 />
               ) : (
-                <div className="space-y-2.5 max-h-80 overflow-y-auto pr-1">
+                <div className="max-h-80 space-y-2.5 overflow-y-auto pr-1">
                   {returs.map((ret) => (
                     <div
                       key={ret.id}
-                      className="rounded-xl border border-[#E6DFD5] bg-white p-3.5 space-y-2"
+                      className="space-y-2 rounded-xl border border-[#E2E8F0] bg-white p-3.5"
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-bold tabular-mono text-[#221C17]">
+                        <span className="tabular-mono text-xs font-semibold text-[#0F172A]">
                           {ret.nomor}
                         </span>
                         {returStatusBadge(ret.status)}
                       </div>
-                      <div className="text-xs text-[#221C17] space-y-0.5">
+                      <div className="space-y-0.5 text-xs text-[#334155]">
                         {ret.ringkasanItem.map((ri, idx) => {
                           const b = bahan.find((x) => x.id === ri.bahanId);
                           return (
                             <p key={idx}>
-                              • {b?.nama || ri.bahanId}:{' '}
-                              <span className="font-semibold tabular-mono">
+                              · {b?.nama || ri.bahanId}:{' '}
+                              <span className="tabular-mono font-semibold text-[#0F172A]">
                                 {formatQty(ri.qty, b?.satuan || '')}
                               </span>{' '}
-                              <span className="text-[#70675E]">({ri.alasan})</span>
+                              <span className="text-[#64748B]">({ri.alasan})</span>
                             </p>
                           );
                         })}
                       </div>
-                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-[#E6DFD5]">
-                        <span className="text-[11px] text-[#70675E]">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#E2E8F0] pt-2">
+                        <span className="text-[11px] text-[#64748B]">
                           Target Pengganti:{' '}
-                          <strong className="text-[#221C17]">
+                          <strong className="font-semibold text-[#0F172A]">
                             {formatTanggal(ret.tanggalPengganti)}
                           </strong>
                         </span>
@@ -666,9 +658,9 @@ export default function LogistikPage() {
                           {ret.poId && (
                             <Link
                               href={`/logistik/po?id=${ret.poId}`}
-                              className="inline-flex items-center gap-1 rounded-lg border border-[#E6DFD5] bg-[#FAF8F5] px-2.5 py-1 text-xs font-semibold text-[#9C5B2E] hover:bg-[#F5EDE6]"
+                              className="inline-flex items-center gap-1 rounded-lg border border-[#BFDBFE] bg-[#EFF6FF] px-2.5 py-1 text-xs font-semibold text-[#2563EB] hover:bg-[#DBEAFE]"
                             >
-                              Lihat PO <ExternalLink className="h-3 w-3" />
+                              Lihat PO <ExternalLink className="h-3 w-3" aria-hidden="true" />
                             </Link>
                           )}
                         </div>
@@ -682,42 +674,42 @@ export default function LogistikPage() {
         </div>
 
         {/* Section 3: Rekomendasi Pembelian (Auto-Order & Pakem Akhir Pekan) */}
-        <Card className="p-5 space-y-4">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#E6DFD5] pb-4">
+        <Card className="space-y-4 p-5">
+          <div className="flex flex-col justify-between gap-4 border-b border-[#E2E8F0] pb-4 lg:flex-row lg:items-center">
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h2 className="text-base font-bold text-[#221C17]">
+                <h2 className="text-[16px] font-semibold text-[#0F172A]">
                   Rekomendasi Pembelian Bahan (Auto-Order)
                 </h2>
-                <Badge tone={pakemWeekend ? 'primary' : 'neutral'}>
-                  <Sparkles className="h-3 w-3" />
+                <Badge tone={pakemWeekend ? 'primary' : 'neutral'} dot={false}>
+                  <CalendarClock className="h-3 w-3" aria-hidden="true" />
                   {pakemWeekend
-                    ? `Pakem Akhir Pekan Aktif (×${settings.faktorAkhirPekan})`
-                    : 'Standar Hari Kerja (×1.0)'}
+                    ? `Pakem Akhir Pekan Aktif (x${settings.faktorAkhirPekan})`
+                    : 'Standar Hari Kerja (x1.0)'}
                 </Badge>
               </div>
-              <p className="text-xs text-[#70675E] mt-1">
+              <p className="mt-1 text-xs text-[#64748B]">
                 Dihitung otomatis dari stok saat ini, batas stok minimum, rata-rata waste 7 hari, dan PO yang sedang berjalan.
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <label className="inline-flex items-center gap-2 rounded-lg border border-[#E6DFD5] bg-[#FAF8F5] px-3 py-1.5 text-xs font-semibold text-[#221C17] cursor-pointer">
+              <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-1.5 text-xs font-medium text-[#0F172A]">
                 <input
                   type="checkbox"
                   checked={pakemWeekend}
                   onChange={(e) => setPakemWeekend(e.target.checked)}
-                  className="h-4 w-4 accent-[#9C5B2E]"
+                  className="h-4 w-4 rounded accent-[#2563EB]"
                 />
-                Pakem Sabtu–Minggu (×{settings.faktorAkhirPekan})
+                Pakem Sabtu-Minggu (x{settings.faktorAkhirPekan})
               </label>
 
-              <label className="inline-flex items-center gap-2 rounded-lg border border-[#E6DFD5] bg-[#FAF8F5] px-3 py-1.5 text-xs font-semibold text-[#221C17] cursor-pointer">
+              <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-1.5 text-xs font-medium text-[#0F172A]">
                 <input
                   type="checkbox"
                   checked={showAllBahan}
                   onChange={(e) => setShowAllBahan(e.target.checked)}
-                  className="h-4 w-4 accent-[#9C5B2E]"
+                  className="h-4 w-4 rounded accent-[#2563EB]"
                 />
                 Tampilkan Semua Bahan ({bahan.length})
               </label>
@@ -743,21 +735,21 @@ export default function LogistikPage() {
           ) : (
             <>
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full border-collapse text-left">
                   <thead>
-                    <tr className="border-b border-[#E6DFD5] text-[11px] font-bold uppercase tracking-wider text-[#70675E]">
-                      <th className="py-2.5 px-2 w-10">Pilih</th>
-                      <th className="py-2.5 px-3">Bahan & Sumber</th>
-                      <th className="py-2.5 px-3">Status Stok</th>
-                      <th className="py-2.5 px-3 text-right">Target</th>
-                      <th className="py-2.5 px-3 text-right">Waste 7H</th>
-                      <th className="py-2.5 px-3 text-right">PO Aktif</th>
-                      <th className="py-2.5 px-3 text-right">Saran Beli</th>
-                      <th className="py-2.5 px-3 text-right">Qty PO</th>
-                      <th className="py-2.5 px-3 text-right">Harga Satuan</th>
+                    <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                      <th className="w-10 rounded-l-lg px-2 py-2.5">Pilih</th>
+                      <th className="px-3 py-2.5">Bahan &amp; Sumber</th>
+                      <th className="px-3 py-2.5">Status Stok</th>
+                      <th className="px-3 py-2.5 text-right">Target</th>
+                      <th className="px-3 py-2.5 text-right">Waste 7H</th>
+                      <th className="px-3 py-2.5 text-right">PO Aktif</th>
+                      <th className="px-3 py-2.5 text-right">Saran Beli</th>
+                      <th className="px-3 py-2.5 text-right">Qty PO</th>
+                      <th className="rounded-r-lg px-3 py-2.5 text-right">Harga Satuan</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E6DFD5] text-sm">
+                  <tbody className="divide-y divide-[#E2E8F0] text-[13px]">
                     {visibleRekomendasi.map((row) => {
                       const isChecked = Boolean(checkedBahan[row.bahan.id]);
                       const qtyVal =
@@ -768,9 +760,9 @@ export default function LogistikPage() {
                       return (
                         <tr
                           key={row.bahan.id}
-                          className={isChecked ? 'bg-[#F5EDE6]/50' : 'hover:bg-[#FAF8F5]'}
+                          className={isChecked ? 'bg-[#EFF6FF]/40' : 'hover:bg-[#F8FAFC]'}
                         >
-                          <td className="py-3 px-2">
+                          <td className="px-2 py-3">
                             <input
                               type="checkbox"
                               checked={isChecked}
@@ -780,23 +772,23 @@ export default function LogistikPage() {
                                   [row.bahan.id]: e.target.checked,
                                 }))
                               }
-                              className="h-4 w-4 accent-[#9C5B2E]"
+                              className="h-4 w-4 rounded accent-[#2563EB]"
                               aria-label={`Pilih ${row.bahan.nama}`}
                             />
                           </td>
-                          <td className="py-3 px-3">
-                            <p className="font-bold text-[#221C17]">{row.bahan.nama}</p>
-                            <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="text-[11px] text-[#70675E]">{row.bahan.kategori}</span>
-                              <span className="text-[11px] text-[#70675E]">•</span>
-                              <span className="text-[11px] font-semibold text-[#9C5B2E]">
+                          <td className="px-3 py-3">
+                            <p className="font-semibold text-[#0F172A]">{row.bahan.nama}</p>
+                            <div className="mt-0.5 flex items-center gap-1.5">
+                              <span className="text-[11px] text-[#64748B]">{row.bahan.kategori}</span>
+                              <span className="text-[11px] text-[#CBD5E1]">·</span>
+                              <span className="text-[11px] font-medium text-[#2563EB]">
                                 {row.bahan.sumber === 'internal' ? 'Internal' : 'Eksternal'}
                               </span>
                             </div>
                           </td>
-                          <td className="py-3 px-3 min-w-[160px]">
-                            <div className="flex items-center justify-between text-xs mb-1">
-                              <span className="font-bold tabular-mono text-[#221C17]">
+                          <td className="min-w-[160px] px-3 py-3">
+                            <div className="mb-1 flex items-center justify-between text-xs">
+                              <span className="tabular-mono font-semibold text-[#0F172A]">
                                 {formatQty(row.stokSaatIni, row.bahan.satuan)}
                               </span>
                               <Badge
@@ -804,8 +796,8 @@ export default function LogistikPage() {
                                   row.status === 'aman'
                                     ? 'success'
                                     : row.status === 'menipis'
-                                    ? 'warning'
-                                    : 'danger'
+                                      ? 'warning'
+                                      : 'danger'
                                 }
                               >
                                 {row.status.toUpperCase()}
@@ -817,23 +809,23 @@ export default function LogistikPage() {
                               status={row.status}
                             />
                           </td>
-                          <td className="py-3 px-3 text-right tabular-mono text-xs text-[#70675E]">
+                          <td className="tabular-mono px-3 py-3 text-right text-xs text-[#64748B]">
                             {formatQty(row.targetStok, row.bahan.satuan)}
                           </td>
-                          <td className="py-3 px-3 text-right tabular-mono text-xs text-[#70675E]">
+                          <td className="tabular-mono px-3 py-3 text-right text-xs text-[#64748B]">
                             {formatQty(row.totalWaste7H, row.bahan.satuan)}
                           </td>
-                          <td className="py-3 px-3 text-right tabular-mono text-xs text-[#70675E]">
+                          <td className="tabular-mono px-3 py-3 text-right text-xs text-[#64748B]">
                             {row.qtyPOBerjalan > 0
                               ? formatQty(row.qtyPOBerjalan, row.bahan.satuan)
-                              : '—'}
+                              : '-'}
                           </td>
-                          <td className="py-3 px-3 text-right tabular-mono font-bold text-[#9C5B2E]">
+                          <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#2563EB]">
                             {row.rekomendasiQty > 0
                               ? formatQty(row.rekomendasiQty, row.bahan.satuan)
                               : 'Cukup'}
                           </td>
-                          <td className="py-3 px-3 text-right">
+                          <td className="px-3 py-3 text-right">
                             <input
                               type="number"
                               min={1}
@@ -845,10 +837,11 @@ export default function LogistikPage() {
                                   setCheckedBahan((prev) => ({ ...prev, [row.bahan.id]: true }));
                                 }
                               }}
-                              className="w-20 rounded-lg border border-[#E6DFD5] bg-white px-2 py-1 text-right text-xs font-bold tabular-mono text-[#221C17] focus:border-[#9C5B2E] focus:outline-none"
+                              aria-label={`Qty PO ${row.bahan.nama}`}
+                              className="tabular-mono w-20 rounded-lg border border-[#E2E8F0] bg-white px-2 py-1 text-right text-xs font-normal text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
                             />
                           </td>
-                          <td className="py-3 px-3 text-right">
+                          <td className="px-3 py-3 text-right">
                             <input
                               type="number"
                               min={0}
@@ -858,7 +851,8 @@ export default function LogistikPage() {
                                 const v = Math.max(0, Number(e.target.value) || 0);
                                 setCustomHargaMap((prev) => ({ ...prev, [row.bahan.id]: v }));
                               }}
-                              className="w-28 rounded-lg border border-[#E6DFD5] bg-white px-2 py-1 text-right text-xs font-bold tabular-mono text-[#221C17] focus:border-[#9C5B2E] focus:outline-none"
+                              aria-label={`Harga satuan ${row.bahan.nama}`}
+                              className="tabular-mono w-28 rounded-lg border border-[#E2E8F0] bg-white px-2 py-1 text-right text-xs font-normal text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
                             />
                           </td>
                         </tr>
@@ -869,16 +863,20 @@ export default function LogistikPage() {
               </div>
 
               {/* Action Bar Buat PO */}
-              <div className="rounded-xl border border-[#E6DFD5] bg-[#FAF8F5] p-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                <div className="flex flex-wrap items-center gap-3 flex-1">
+              <div className="flex flex-col justify-between gap-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 lg:flex-row lg:items-center">
+                <div className="flex flex-1 flex-wrap items-center gap-3">
                   <div className="min-w-[200px]">
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-[#70675E] mb-1">
+                    <label
+                      htmlFor="log-sup-select"
+                      className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-[#64748B]"
+                    >
                       Supplier Tujuan
                     </label>
                     <select
+                      id="log-sup-select"
                       value={effectiveSupplierId}
                       onChange={(e) => setSelectedSupplierId(e.target.value)}
-                      className="w-full rounded-lg border border-[#E6DFD5] bg-white px-3 py-2 text-xs font-semibold text-[#221C17] focus:border-[#9C5B2E] focus:outline-none"
+                      className="w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-xs font-medium text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
                     >
                       {suppliers.length === 0 && <option value="">Belum ada supplier</option>}
                       {suppliers.map((s) => (
@@ -889,26 +887,30 @@ export default function LogistikPage() {
                     </select>
                   </div>
 
-                  <div className="flex-1 min-w-[220px]">
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-[#70675E] mb-1">
+                  <div className="min-w-[220px] flex-1">
+                    <label
+                      htmlFor="log-po-note"
+                      className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-[#64748B]"
+                    >
                       Catatan Purchase Order (Opsional)
                     </label>
                     <input
+                      id="log-po-note"
                       type="text"
                       value={poCatatan}
                       onChange={(e) => setPoCatatan(e.target.value)}
                       placeholder="Misal: Kirim besok pagi sebelum shift 1 buka..."
-                      className="w-full rounded-lg border border-[#E6DFD5] bg-white px-3 py-2 text-xs text-[#221C17] placeholder:text-[#70675E]/70 focus:border-[#9C5B2E] focus:outline-none"
+                      className="w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-xs text-[#0F172A] placeholder:text-[#64748B] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
                     />
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between lg:justify-end gap-4">
+                <div className="flex flex-wrap items-center justify-between gap-4 lg:justify-end">
                   <div className="text-right">
-                    <p className="text-[11px] font-medium text-[#70675E]">
+                    <p className="text-[11px] font-medium text-[#64748B]">
                       {selectedPOItems.length} item dipilih · Estimasi Total
                     </p>
-                    <p className="text-lg font-extrabold tabular-mono text-[#221C17]">
+                    <p className="tabular-mono text-lg font-bold text-[#0F172A]">
                       {formatRp(totalPOEstimate)}
                     </p>
                   </div>
@@ -918,7 +920,7 @@ export default function LogistikPage() {
                       onClick={() => handleCreatePO(false)}
                       disabled={selectedPOItems.length === 0}
                     >
-                      <PackagePlus className="h-4 w-4" />
+                      <PackagePlus className="h-4 w-4" aria-hidden="true" />
                       Simpan Draft
                     </Button>
                     <Button
@@ -926,8 +928,8 @@ export default function LogistikPage() {
                       onClick={() => handleCreatePO(true)}
                       disabled={selectedPOItems.length === 0}
                     >
-                      <ShoppingCart className="h-4 w-4" />
-                      Buat & Ajukan PO
+                      <ShoppingCart className="h-4 w-4" aria-hidden="true" />
+                      Buat &amp; Ajukan PO
                     </Button>
                   </div>
                 </div>
@@ -952,65 +954,65 @@ export default function LogistikPage() {
       >
         {inspectLaporan && (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 rounded-xl bg-[#FAF8F5] p-3 border border-[#E6DFD5] text-xs">
+            <div className="grid grid-cols-2 gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3 text-xs sm:grid-cols-3">
               <div>
-                <p className="text-[#70675E]">Tanggal & Shift</p>
-                <p className="font-bold text-[#221C17]">
+                <p className="text-[#64748B]">Tanggal &amp; Shift</p>
+                <p className="font-semibold text-[#0F172A]">
                   {formatTanggal(inspectLaporan.tanggal)} · {shiftNama(inspectLaporan.shiftId)}
                 </p>
               </div>
               <div>
-                <p className="text-[#70675E]">Divisi & Sesi</p>
-                <p className="font-bold text-[#221C17] capitalize">
+                <p className="text-[#64748B]">Divisi &amp; Sesi</p>
+                <p className="font-semibold capitalize text-[#0F172A]">
                   {inspectLaporan.divisi} · {inspectLaporan.sesi}
                 </p>
               </div>
               <div>
-                <p className="text-[#70675E]">Petugas Input</p>
-                <p className="font-bold text-[#221C17]">{petugasNama(inspectLaporan.petugasId)}</p>
+                <p className="text-[#64748B]">Petugas Input</p>
+                <p className="font-semibold text-[#0F172A]">{petugasNama(inspectLaporan.petugasId)}</p>
               </div>
             </div>
 
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#70675E] mb-2">
+              <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#64748B]">
                 Item Stok Opname ({inspectLaporan.items.length})
               </h4>
-              <div className="max-h-60 overflow-y-auto border border-[#E6DFD5] rounded-xl">
-                <table className="w-full text-xs text-left border-collapse">
-                  <thead className="bg-[#FAF8F5] text-[#70675E]">
+              <div className="max-h-60 overflow-y-auto rounded-xl border border-[#E2E8F0]">
+                <table className="w-full border-collapse text-left text-xs">
+                  <thead className="bg-[#F8FAFC] text-[#64748B]">
                     <tr>
-                      <th className="py-2 px-3">Bahan</th>
-                      <th className="py-2 px-3 text-right">Sistem</th>
-                      <th className="py-2 px-3 text-right">Fisik</th>
-                      <th className="py-2 px-3 text-right">Selisih</th>
+                      <th className="px-3 py-2">Bahan</th>
+                      <th className="px-3 py-2 text-right">Sistem</th>
+                      <th className="px-3 py-2 text-right">Fisik</th>
+                      <th className="px-3 py-2 text-right">Selisih</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E6DFD5]">
+                  <tbody className="divide-y divide-[#E2E8F0]">
                     {inspectLaporan.items.map((item) => {
                       const b = bahan.find((x) => x.id === item.bahanId);
                       return (
                         <tr key={item.bahanId}>
-                          <td className="py-2 px-3 font-semibold text-[#221C17]">
+                          <td className="px-3 py-2 font-semibold text-[#0F172A]">
                             {b?.nama || item.bahanId}
                             {item.catatan && (
-                              <span className="block text-[11px] font-normal text-[#70675E]">
+                              <span className="block text-[11px] font-normal text-[#64748B]">
                                 {item.catatan}
                               </span>
                             )}
                           </td>
-                          <td className="py-2 px-3 text-right tabular-mono">
+                          <td className="tabular-mono px-3 py-2 text-right">
                             {formatQty(item.stokSistem, b?.satuan || '')}
                           </td>
-                          <td className="py-2 px-3 text-right tabular-mono font-bold">
+                          <td className="tabular-mono px-3 py-2 text-right font-semibold">
                             {formatQty(item.stokFisik, b?.satuan || '')}
                           </td>
                           <td
-                            className={`py-2 px-3 text-right tabular-mono font-bold ${
+                            className={`tabular-mono px-3 py-2 text-right font-semibold ${
                               item.selisih === 0
-                                ? 'text-[#236B42]'
+                                ? 'text-[#15803D]'
                                 : item.selisih < 0
-                                ? 'text-[#B83227]'
-                                : 'text-[#9A5D12]'
+                                  ? 'text-[#DC2626]'
+                                  : 'text-[#B45309]'
                             }`}
                           >
                             {item.selisih > 0 ? `+${item.selisih}` : item.selisih}
@@ -1025,7 +1027,7 @@ export default function LogistikPage() {
 
             {inspectLaporan.waste.length > 0 && (
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#B83227] mb-2">
+                <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#B91C1C]">
                   Catatan Waste ({inspectLaporan.waste.length})
                 </h4>
                 <div className="space-y-1.5">
@@ -1034,17 +1036,17 @@ export default function LogistikPage() {
                     return (
                       <div
                         key={w.id}
-                        className="flex items-center justify-between rounded-lg border border-[#E8BEBA] bg-[#FCEBEA]/60 px-3 py-2 text-xs"
+                        className="flex items-center justify-between rounded-lg border border-[#FECACA] bg-[#FEF2F2] px-3 py-2 text-xs"
                       >
                         <div>
-                          <span className="font-bold text-[#221C17]">{b?.nama || w.bahanId}</span>
-                          <span className="text-[#70675E]">
+                          <span className="font-semibold text-[#0F172A]">{b?.nama || w.bahanId}</span>
+                          <span className="text-[#64748B]">
                             {' '}
-                            — {w.alasan}
+                            · {w.alasan}
                             {w.catatan ? ` (${w.catatan})` : ''}
                           </span>
                         </div>
-                        <span className="font-bold tabular-mono text-[#B83227]">
+                        <span className="tabular-mono font-semibold text-[#DC2626]">
                           {formatQty(w.qty, b?.satuan || '')} · {formatRp(w.nilai)}
                         </span>
                       </div>
@@ -1054,7 +1056,7 @@ export default function LogistikPage() {
               </div>
             )}
 
-            <div className="text-[11px] text-[#70675E] flex items-center justify-between pt-2 border-t border-[#E6DFD5]">
+            <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-3 text-[11px] text-[#64748B]">
               <span>Dikirim: {formatWaktu(inspectLaporan.submittedAt || inspectLaporan.createdAt)}</span>
               {inspectLaporan.status === 'terkirim' && (
                 <div className="flex items-center gap-2">
@@ -1066,7 +1068,7 @@ export default function LogistikPage() {
                       setReturnModalLap(inspectLaporan);
                     }}
                   >
-                    <XCircle className="h-4 w-4" />
+                    <XCircle className="h-3.5 w-3.5" aria-hidden="true" />
                     Kembalikan
                   </Button>
                   <Button
@@ -1074,8 +1076,8 @@ export default function LogistikPage() {
                     size="sm"
                     onClick={() => handleVerifikasi(inspectLaporan)}
                   >
-                    <CheckCircle2 className="h-4 w-4" />
-                    Verifikasi & Perbarui Stok
+                    <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+                    Verifikasi &amp; Perbarui Stok
                   </Button>
                 </div>
               )}
@@ -1091,9 +1093,9 @@ export default function LogistikPage() {
         title="Kembalikan Laporan ke Divisi"
       >
         <div className="space-y-4">
-          <p className="text-xs text-[#70675E]">
+          <p className="text-xs text-[#64748B]">
             Tuliskan alasan pengembalian agar petugas{' '}
-            <strong className="text-[#221C17] capitalize">{returnModalLap?.divisi}</strong> dapat
+            <strong className="font-semibold capitalize text-[#0F172A]">{returnModalLap?.divisi}</strong> dapat
             memperbaiki input stok fisiknya.
           </p>
           <textarea
@@ -1101,7 +1103,7 @@ export default function LogistikPage() {
             value={returnReason}
             onChange={(e) => setReturnReason(e.target.value)}
             placeholder="Contoh: Selisih susu UHT belum disertai keterangan waste atau foto botol rusak."
-            className="w-full rounded-xl border border-[#E6DFD5] bg-white px-3 py-2 text-sm text-[#221C17] focus:border-[#9C5B2E] focus:outline-none"
+            className="w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
           />
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => setReturnModalLap(null)}>
