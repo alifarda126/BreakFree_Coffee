@@ -7,27 +7,18 @@ import type { StatusStokLevel } from '@/lib/domain/calculations';
 export type BadgeTone = 'success' | 'warning' | 'danger' | 'info' | 'primary' | 'neutral';
 
 const BADGE_CLASSES: Record<BadgeTone, string> = {
-  success: 'bg-[#F0FDF4] text-[#15803D] ring-1 ring-inset ring-[#BBF7D0]',
-  warning: 'bg-[#FFFBEB] text-[#B45309] ring-1 ring-inset ring-[#FDE68A]',
-  danger: 'bg-[#FEF2F2] text-[#B91C1C] ring-1 ring-inset ring-[#FECACA]',
-  info: 'bg-[#EFF6FF] text-[#1E40AF] ring-1 ring-inset ring-[#BFDBFE]',
-  primary: 'bg-[#EFF6FF] text-[#2563EB] ring-1 ring-inset ring-[#BFDBFE]',
-  neutral: 'bg-[#F1F5F9] text-[#475569] ring-1 ring-inset ring-[#E2E8F0]',
-};
-
-const DOT_CLASSES: Record<BadgeTone, string> = {
-  success: 'bg-[#16A34A]',
-  warning: 'bg-[#F59E0B]',
-  danger: 'bg-[#DC2626]',
-  info: 'bg-[#2563EB]',
-  primary: 'bg-[#2563EB]',
-  neutral: 'bg-[#64748B]',
+  success: 'text-[#15803D]',
+  warning: 'text-[#B45309]',
+  danger: 'text-[#DC2626]',
+  info: 'text-[#2563EB]',
+  primary: 'text-[#2563EB]',
+  neutral: 'text-[#64748B]',
 };
 
 export function Badge({
   children,
   tone = 'info',
-  dot = true,
+  dot: _dot,
   className = '',
 }: {
   children: React.ReactNode;
@@ -35,11 +26,11 @@ export function Badge({
   dot?: boolean;
   className?: string;
 }) {
+  void _dot;
   return (
     <span
-      className={`inline-flex h-6 shrink-0 items-center gap-1.5 rounded-md px-2 text-xs font-medium whitespace-nowrap ${BADGE_CLASSES[tone]} ${className}`}
+      className={`inline-flex shrink-0 items-center gap-1 text-[12.5px] font-medium leading-[1.4] whitespace-nowrap ${BADGE_CLASSES[tone]} ${className}`}
     >
-      {dot && <span className={`h-1.5 w-1.5 rounded-full ${DOT_CLASSES[tone]}`} aria-hidden="true" />}
       {children}
     </span>
   );

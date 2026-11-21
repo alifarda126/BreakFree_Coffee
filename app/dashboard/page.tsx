@@ -340,9 +340,9 @@ export default function ManajemenDashboardPage() {
                   Akumulasi kerugian bahan tidak layak dari shift Barista &amp; Kitchen
                 </p>
               </div>
-              <Link href="/logistik">
+              <Link href="/manajemen/persediaan">
                 <Button variant="secondary" size="sm">
-                  Lihat di Logistik
+                  Laporan Lengkap
                   <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </Button>
               </Link>
@@ -474,7 +474,7 @@ export default function ManajemenDashboardPage() {
                           <Check className="h-3.5 w-3.5" aria-hidden="true" />
                           Setujui PO
                         </Button>
-                        <Link href={`/logistik/po?id=${po.id}`}>
+                        <Link href={`/manajemen/po?id=${po.id}`}>
                           <Button variant="secondary" size="sm">
                             Detail
                           </Button>

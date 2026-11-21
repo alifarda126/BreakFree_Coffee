@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { AlertTriangle, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { useBreakfreeStore } from '@/lib/store/useBreakfreeStore';
 import {
   detectActiveShiftId,
   formatRp,
   formatTanggal,
-  formatWaktu,
   hitungSelisihOmzet,
   todayISO,
 } from '@/lib/domain/calculations';
@@ -21,10 +20,7 @@ export default function KasirOmzetPage() {
   const activePetugasId = useBreakfreeStore((s) => s.activePetugasId);
   const settings = useBreakfreeStore((s) => s.settings);
   const rekapOmzet = useBreakfreeStore((s) => s.rekapOmzet);
-  const laporanKosong = useBreakfreeStore((s) => s.laporanKosong);
-  const bahan = useBreakfreeStore((s) => s.bahan);
   const simpanRekapOmzet = useBreakfreeStore((s) => s.simpanRekapOmzet);
-  const updateStatusKosong = useBreakfreeStore((s) => s.updateStatusKosong);
   const { pushToast } = useToast();
 
   const kasirList = useMemo(
@@ -68,10 +64,6 @@ export default function KasirOmzetPage() {
     totalPOS > 0 &&
     (valid || alasanSelisih.trim().length >= 5);
 
-  const activeKosong = laporanKosong.filter(
-    (l) => l.status === 'aktif' || l.status === 'dikonfirmasi'
-  );
-
   const handleSave = (submit: boolean) => {
     const rec = simpanRekapOmzet({
       tanggal,
@@ -94,7 +86,7 @@ export default function KasirOmzetPage() {
       );
     } else if (submit) {
       pushToast(
-        existingSubmitted ? 'Revisi rekap omzet berhasil dikirim' : 'Rekap omzet shift terkirim ke Manajemen',
+        existingSubmitted ? 'Revisi rekap omzet berhasil dikirim' : 'Rekap omzet shift terkirim ke sistem',
         'success'
       );
     } else {
@@ -103,76 +95,20 @@ export default function KasirOmzetPage() {
   };
 
   const inputCls =
-    'h-10 rounded-lg border border-[#E2E8F0] bg-white px-3 text-sm text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20';
+    'h-10 rounded-lg border border-[#E2E8F0] bg-white px-3 text-[14px] font-normal text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20';
 
   return (
-    <AppShell pageTitle="Rekap Omzet Shift & Validasi POS Pawoon">
-      {/* Real-time Menu Kosong Danger Alert Banner */}
-      {activeKosong.map((lk) => {
-        const b = bahan.find((x) => x.id === lk.bahanId);
-        const pelapor = pegawai.find((p) => p.id === lk.pelaporId);
-        return (
-          <div
-            key={lk.id}
-            className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-[#FECACA] bg-[#FEF2F2] px-4 py-3.5"
-          >
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-[#DC2626]" strokeWidth={1.75} aria-hidden="true" />
-              <div className="flex flex-col gap-1">
-                <span className="text-sm font-semibold text-[#B91C1C]">
-                  Pemberitahuan Menu Kosong dari {lk.divisi}: {b?.nama ?? 'Bahan'} Habis (Dilaporkan{' '}
-                  {pelapor?.nama ?? lk.divisi} · {formatWaktu(lk.createdAt)})
-                </span>
-                <div className="flex flex-wrap items-center gap-1.5 text-xs text-[#334155]">
-                  <span>Menu terdampak:</span>
-                  {lk.menuTerdampak.map((m) => (
-                    <Badge key={m} tone="danger" dot={false}>
-                      {m}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              {lk.status === 'aktif' && (
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => {
-                    updateStatusKosong(lk.id, 'dikonfirmasi');
-                    pushToast('Status menu kosong dikonfirmasi', 'info');
-                  }}
-                >
-                  Konfirmasi
-                </Button>
-              )}
-              <Button
-                variant="dangerSolid"
-                size="sm"
-                onClick={() => {
-                  updateStatusKosong(lk.id, 'disampaikan');
-                  pushToast('Menu kosong ditandai sudah disampaikan ke pelanggan', 'success');
-                }}
-              >
-                <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                Sudah Disampaikan ke Pelanggan
-              </Button>
-            </div>
-          </div>
-        );
-      })}
-
-      {/* Main 2-Column Split (7/5) */}
+    <AppShell pageTitle="Input Rekap Omzet">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Left: Form */}
         <Card className="flex flex-col gap-4 lg:col-span-7">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h2 className="text-[16px] font-semibold text-[#0F172A]">
-                Input Rekap Closing Shift Kasir
+              <h2 className="text-[17px] font-semibold text-[#0F172A]">
+                Rekap Closing Shift Kasir
               </h2>
-              <p className="text-xs text-[#64748B]">
-                Masukkan angka rekapitulasi dari aplikasi POS Pawoon pada akhir shift
+              <p className="mt-0.5 text-[13px] font-normal text-[#64748B]">
+                Masukkan nominal rekapitulasi dari aplikasi POS Pawoon pada akhir shift.
               </p>
             </div>
             {existingSubmitted ? (
@@ -230,14 +166,14 @@ export default function KasirOmzetPage() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <CurrencyInput
               id="cash-input"
-              label="Omzet Tunai (Cash)"
+              label="Total Transaksi Cash"
               value={cash}
               onChange={setCash}
               helper="Total uang fisik laci kasir"
             />
             <CurrencyInput
               id="qris-input"
-              label="Omzet Non-Tunai (QRIS)"
+              label="Total Transaksi QRIS"
               value={qris}
               onChange={setQris}
               helper="Rekap settlement QRIS shift"
@@ -255,10 +191,10 @@ export default function KasirOmzetPage() {
             />
             <CurrencyInput
               id="pos-input"
-              label="Total Omzet Menurut POS Pawoon"
+              label="Total Omzet POS Pawoon"
               value={totalPOS}
               onChange={setTotalPOS}
-              helper="Harus cocok dengan penjumlahan Cash + QRIS"
+              helper="Harus sesuai dengan Cash + QRIS"
               error={
                 hasMismatch
                   ? `Selisih ${formatRp(selisih)} terdeteksi, cek ulang input atau beri alasan`
@@ -270,7 +206,7 @@ export default function KasirOmzetPage() {
           {hasMismatch && (
             <div className="flex flex-col gap-1.5">
               <label htmlFor="omz-alasan" className="text-[13px] font-medium text-[#B45309]">
-                Alasan Selisih (Wajib diisi min. 5 karakter bila tetap kirim dengan selisih)
+                Alasan Selisih (min. 5 karakter bila tetap kirim)
               </label>
               <input
                 id="omz-alasan"
@@ -278,21 +214,21 @@ export default function KasirOmzetPage() {
                 value={alasanSelisih}
                 onChange={(e) => setAlasanSelisih(e.target.value)}
                 placeholder="Misal: Refund tunai order #114 belum tercatat di settlement QRIS"
-                className="h-10 rounded-lg border border-[#F59E0B] bg-[#FFFBEB] px-3 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#F59E0B]/25"
+                className="h-10 rounded-lg border border-[#F59E0B] bg-[#FFFBEB] px-3 text-[14px] font-normal text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#F59E0B]/25"
               />
             </div>
           )}
 
           <div className="flex flex-col gap-1.5">
             <label htmlFor="omz-note" className="text-[13px] font-medium text-[#0F172A]">
-              Catatan Operasional Shift (Opsional)
+              Catatan Shift (Opsional)
             </label>
             <input
               id="omz-note"
               type="text"
               value={catatan}
               onChange={(e) => setCatatan(e.target.value)}
-              placeholder="Catatan keramaian, kendala kasir, atau info pergantian shift"
+              placeholder="Catatan singkat pergantian shift"
               className={inputCls}
             />
           </div>
@@ -302,8 +238,8 @@ export default function KasirOmzetPage() {
         <div className="flex flex-col gap-6 lg:col-span-5">
           <Card className="flex flex-col gap-4 border-[#BFDBFE]">
             <div className="flex items-center justify-between">
-              <h2 className="text-[16px] font-semibold text-[#0F172A]">
-                Kalkulasi &amp; Validasi Otomatis
+              <h2 className="text-[15px] font-semibold text-[#0F172A]">
+                Validasi POS Pawoon
               </h2>
               {totalPOS === 0 ? (
                 <Badge tone="neutral">Menunggu Input</Badge>
@@ -316,21 +252,21 @@ export default function KasirOmzetPage() {
 
             <div className="flex flex-col gap-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4">
               <div className="flex items-center justify-between text-[13px]">
-                <span className="text-[#475569]">Total Hitungan (Cash + QRIS)</span>
+                <span className="font-normal text-[#475569]">Total Hitungan (Cash + QRIS)</span>
                 <span className="tabular-mono text-[15px] font-semibold text-[#0F172A]">
                   {formatRp(totalInput)}
                 </span>
               </div>
               <div className="flex items-center justify-between text-[13px]">
-                <span className="text-[#475569]">Total Laporan POS Pawoon</span>
+                <span className="font-normal text-[#475569]">Total Laporan POS Pawoon</span>
                 <span className="tabular-mono text-[15px] font-semibold text-[#0F172A]">
                   {formatRp(totalPOS)}
                 </span>
               </div>
               <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-2.5">
-                <span className="text-sm font-semibold text-[#0F172A]">Selisih Perhitungan</span>
+                <span className="text-[14px] font-semibold text-[#0F172A]">Selisih</span>
                 <span
-                  className={`tabular-mono text-[22px] font-bold ${
+                  className={`tabular-mono text-[24px] font-bold ${
                     totalPOS === 0
                       ? 'text-[#64748B]'
                       : valid
@@ -343,7 +279,7 @@ export default function KasirOmzetPage() {
               </div>
             </div>
 
-            <label className="flex cursor-pointer items-start gap-2.5 text-xs font-medium text-[#334155]">
+            <label className="flex cursor-pointer items-start gap-2.5 text-[12.5px] font-normal text-[#334155]">
               <input
                 type="checkbox"
                 checked={confirmed}
@@ -351,8 +287,7 @@ export default function KasirOmzetPage() {
                 className="mt-0.5 h-4 w-4 rounded accent-[#2563EB]"
               />
               <span>
-                Data uang fisik Cash &amp; settlement QRIS sudah divalidasi dengan laporan POS
-                Pawoon.
+                Data Cash &amp; QRIS sudah dicocokkan dengan laporan shift POS Pawoon.
               </span>
             </label>
 
@@ -366,32 +301,29 @@ export default function KasirOmzetPage() {
                 onClick={() => handleSave(true)}
               >
                 <Check className="h-4 w-4" aria-hidden="true" />
-                {existingSubmitted ? 'Kirim Revisi Baru' : 'Validasi & Kirim ke Sistem'}
+                {existingSubmitted ? 'Kirim Revisi' : 'Validasi & Kirim'}
               </Button>
             </div>
           </Card>
 
           <Card className="flex flex-col gap-3">
-            <h2 className="text-[15px] font-semibold text-[#0F172A]">Riwayat Rekap Omzet Terakhir</h2>
+            <h2 className="text-[15px] font-semibold text-[#0F172A]">Riwayat Rekap Terakhir</h2>
             {rekapOmzet.length === 0 ? (
-              <p className="py-4 text-center text-xs text-[#64748B]">
+              <p className="py-4 text-center text-[12px] font-normal text-[#64748B]">
                 Belum ada rekap tersimpan.
               </p>
             ) : (
-              <div className="flex flex-col">
+              <div className="flex flex-col divide-y divide-[#E2E8F0]">
                 {rekapOmzet.slice(0, 5).map((r) => {
                   const sh = shifts.find((s) => s.id === r.shiftId);
                   return (
-                    <div
-                      key={r.id}
-                      className="flex items-center justify-between gap-2 border-b border-[#E2E8F0] py-2.5 last:border-b-0"
-                    >
+                    <div key={r.id} className="flex items-center justify-between gap-2 py-2.5">
                       <div>
-                        <div className="text-xs font-semibold text-[#0F172A]">
+                        <div className="text-[13px] font-medium text-[#0F172A]">
                           {formatTanggal(r.tanggal)} · {sh?.nama ?? r.shiftId}
                           {r.versi > 1 ? ` (v${r.versi})` : ''}
                         </div>
-                        <div className="text-[11px] text-[#64748B]">
+                        <div className="text-[12px] font-normal text-[#64748B]">
                           {r.jumlahTransaksi} transaksi
                         </div>
                       </div>

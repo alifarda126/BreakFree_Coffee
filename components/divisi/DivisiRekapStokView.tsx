@@ -58,7 +58,7 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
 
   const divTitle = divisi === 'barista' ? 'Barista' : 'Kitchen';
   const divBahan = useMemo(
-    () => bahan.filter((b) => b.divisi === divisi || b.divisi === 'bersama'),
+    () => bahan.filter((b) => b.divisi === divisi),
     [bahan, divisi]
   );
   const divPetugas = useMemo(
@@ -217,20 +217,16 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                 key={s}
                 type="button"
                 onClick={() => setSesi(s)}
-                className={`rounded-md px-3 py-1 text-xs capitalize transition-all ${
+                className={`rounded-md px-3 py-1 text-[13px] capitalize transition-all ${
                   sesi === s
                     ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
                     : 'font-medium text-[#64748B] hover:text-[#0F172A]'
                 }`}
               >
-                {s}
+                {s === 'opening' ? 'Opname Awal Shift' : 'Opname Akhir Shift'}
               </button>
             ))}
           </div>
-          <Button variant="danger" size="sm" onClick={() => setKosongModalOpen(true)}>
-            <AlertTriangle className="h-3.5 w-3.5" aria-hidden="true" />
-            Lapor Bahan Kosong ke Kasir
-          </Button>
         </div>
       </Card>
 
@@ -319,22 +315,13 @@ export function DivisiRekapStokView({ divisi }: { divisi: Divisi }) {
                         : r.status === 'menipis'
                           ? 'text-[#B45309]'
                           : 'text-[#15803D]';
-                    const stripBg =
-                      r.status === 'kritis' || r.status === 'habis'
-                        ? 'bg-[#DC2626]'
-                        : r.status === 'menipis'
-                          ? 'bg-[#F59E0B]'
-                          : 'bg-transparent';
                     return (
                       <tr key={r.b.id} className="transition-colors hover:bg-[#F8FAFC]">
-                        <td className="px-2 py-2.5">
-                          <div className="flex items-center gap-2.5">
-                            <span className={`h-9 w-[3px] shrink-0 rounded-full ${stripBg}`} aria-hidden="true" />
-                            <div>
-                              <div className="text-[13px] font-semibold text-[#0F172A]">{r.b.nama}</div>
-                              <div className="text-[11px] text-[#64748B]">
-                                {r.b.kategori} · {r.b.sumber}
-                              </div>
+                        <td className="px-3 py-2.5">
+                          <div>
+                            <div className="text-[13.5px] font-normal text-[#0F172A]">{r.b.nama}</div>
+                            <div className="text-[12px] text-[#64748B]">
+                              {r.b.kategori} · {r.b.sumber}
                             </div>
                           </div>
                         </td>

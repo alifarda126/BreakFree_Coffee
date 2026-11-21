@@ -4,14 +4,15 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  AlertTriangle,
   BarChart3,
   Bell,
+  Boxes,
   CalendarDays,
   ChevronDown,
   ClipboardCheck,
   Coffee,
   CookingPot,
+  FileCheck2,
   FileText,
   History,
   LayoutDashboard,
@@ -19,9 +20,11 @@ import {
   Package,
   PanelLeftClose,
   PanelLeftOpen,
+  ReceiptText,
   Settings,
+  ShoppingCart,
+  Trash2,
   Truck,
-  Users,
   Wallet,
   X,
 } from 'lucide-react';
@@ -35,13 +38,11 @@ import {
   formatTanggal,
 } from '@/lib/domain/calculations';
 import { Badge } from '@/components/ui/primitives';
-import { LaporKosongModal } from '@/components/modals/LaporKosongModal';
 import type { RoleId } from '@/lib/types';
 
 interface NavEntry {
   label: string;
-  href?: string;
-  onClick?: () => void;
+  href: string;
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   count?: number;
   tone?: 'danger' | 'warning';
@@ -72,7 +73,6 @@ export function AppShell({
   const setActiveRole = useBreakfreeStore((s) => s.setActiveRole);
   const setActivePetugasId = useBreakfreeStore((s) => s.setActivePetugasId);
 
-  const laporanKosong = useBreakfreeStore((s) => s.laporanKosong);
   const laporanStok = useBreakfreeStore((s) => s.laporanStok);
   const purchaseOrders = useBreakfreeStore((s) => s.purchaseOrders);
   const bahan = useBreakfreeStore((s) => s.bahan);
@@ -82,19 +82,16 @@ export function AppShell({
   const [notifOpen, setNotifOpen] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [kosongModalDivisi, setKosongModalDivisi] = useState<'barista' | 'kitchen' | null>(null);
 
   const roleMenuRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
 
-  // Redirect uninitialized app to /setup
   useEffect(() => {
     if (!isInitialized && pathname !== '/setup') {
       router.replace('/setup');
     }
   }, [isInitialized, pathname, router]);
 
-  // Close popovers on outside click or Escape
   useEffect(() => {
     const onMouseDown = (e: MouseEvent) => {
       if (roleMenuRef.current && !roleMenuRef.current.contains(e.target as Node)) {
@@ -124,10 +121,7 @@ export function AppShell({
   const activeShift = shifts.find((s) => s.id === activeShiftId);
   const activePetugas = pegawai.find((p) => p.id === activePetugasId);
 
-  // Real-time counts from localStorage store
-  const activeKosongCount = laporanKosong.filter(
-    (l) => l.status === 'aktif' || l.status === 'dikonfirmasi'
-  ).length;
+  // Core operational counts
   const pendingVerifCount = laporanStok.filter((l) => l.status === 'terkirim').length;
   const pendingPOCount = purchaseOrders.filter((p) => p.status === 'diajukan').length;
   const kritisCount = useMemo(() => {
@@ -137,56 +131,48 @@ export function AppShell({
     }).length;
   }, [bahan, stockMovements]);
 
-  const totalNotifCount = activeKosongCount + pendingVerifCount + pendingPOCount + kritisCount;
+  const totalNotifCount = pendingVerifCount + pendingPOCount + kritisCount;
 
+  // Strictly role-scoped sidebar navigation
   const navItems: NavEntry[] = useMemo(() => {
     switch (activeRole) {
       case 'kasir':
         return [
           { label: 'Dashboard Kasir', href: '/kasir', icon: LayoutDashboard },
-          { label: 'Rekap Omzet Shift', href: '/kasir/omzet', icon: Wallet },
-          {
-            label: 'Menu Kosong & Riwayat',
-            href: '/kasir/kosong',
-            icon: AlertTriangle,
-            count: activeKosongCount || undefined,
-            tone: 'danger',
-          },
+          { label: 'Input Rekap Omzet', href: '/kasir/omzet', icon: Wallet },
+          { label: 'Riwayat Rekap Omzet', href: '/kasir/riwayat', icon: History },
         ];
       case 'barista':
         return [
-          { label: 'Dashboard & Stok Barista', href: '/barista', icon: Coffee },
+          { label: 'Dashboard Barista', href: '/barista', icon: Coffee },
           { label: 'Rekap Stok & Waste', href: '/barista/rekap', icon: ClipboardCheck },
-          {
-            label: 'Lapor Bahan Kosong',
-            onClick: () => setKosongModalDivisi('barista'),
-            icon: AlertTriangle,
-          },
           { label: 'Riwayat Laporan', href: '/barista/riwayat', icon: History },
         ];
       case 'kitchen':
         return [
-          { label: 'Dashboard & Stok Kitchen', href: '/kitchen', icon: CookingPot },
+          { label: 'Dashboard Kitchen', href: '/kitchen', icon: CookingPot },
           { label: 'Rekap Stok & Waste', href: '/kitchen/rekap', icon: ClipboardCheck },
-          {
-            label: 'Lapor Bahan Kosong',
-            onClick: () => setKosongModalDivisi('kitchen'),
-            icon: AlertTriangle,
-          },
           { label: 'Riwayat Laporan', href: '/kitchen/riwayat', icon: History },
         ];
       case 'logistik':
         return [
           {
-            label: 'Verifikasi & Retur H+1',
+            label: 'Dashboard Logistik',
             href: '/logistik',
             icon: Truck,
             count: pendingVerifCount || undefined,
             tone: 'warning',
           },
-          { label: 'Purchase Order & Kartu Stok', href: '/logistik/po', icon: FileText },
-          { label: 'Master Bahan & Menu', href: '/master', icon: Package },
-          { label: 'Laporan Terintegrasi', href: '/dashboard', icon: BarChart3 },
+          {
+            label: 'Monitoring Persediaan',
+            href: '/logistik/persediaan',
+            icon: Boxes,
+            count: kritisCount || undefined,
+            tone: 'danger',
+          },
+          { label: 'Monitoring Spoil/Waste', href: '/logistik/waste', icon: Trash2 },
+          { label: 'Pengajuan Purchase Order', href: '/logistik/po', icon: ShoppingCart },
+          { label: 'Riwayat Pengadaan', href: '/logistik/riwayat', icon: FileText },
         ];
       case 'manajemen':
       default:
@@ -194,16 +180,18 @@ export function AppShell({
           { label: 'Dashboard & Laporan', href: '/dashboard', icon: BarChart3 },
           {
             label: 'Persetujuan PO',
-            href: '/logistik/po',
-            icon: FileText,
+            href: '/manajemen/po',
+            icon: FileCheck2,
             count: pendingPOCount || undefined,
             tone: 'warning',
           },
-          { label: 'Master Bahan & Menu', href: '/master', icon: Package },
-          { label: 'Master Pegawai & Shift', href: '/pengaturan', icon: Users },
+          { label: 'Laporan Penjualan', href: '/manajemen/penjualan', icon: ReceiptText },
+          { label: 'Laporan Persediaan & Waste', href: '/manajemen/persediaan', icon: Package },
         ];
     }
-  }, [activeRole, activeKosongCount, pendingVerifCount, pendingPOCount]);
+  }, [activeRole, pendingVerifCount, pendingPOCount, kritisCount]);
+
+  const showAdminLinks = activeRole === 'manajemen' || activeRole === 'logistik';
 
   const handleSelectRole = (nextRole: RoleId, homeHref: string) => {
     setActiveRole(nextRole);
@@ -213,7 +201,7 @@ export function AppShell({
   };
 
   const renderNavLink = (item: NavEntry, collapsed = false) => {
-    const isActive = item.href ? pathname === item.href : false;
+    const isActive = pathname === item.href;
     const Icon = item.icon;
     const cls = `group relative flex h-10 w-full items-center rounded-lg text-left text-[13.5px] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[#2563EB] ${
       collapsed ? 'justify-center px-0' : 'gap-2.5 px-3'
@@ -223,8 +211,14 @@ export function AppShell({
         : 'font-medium text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]'
     }`;
 
-    const inner = (
-      <>
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        title={collapsed ? item.label : undefined}
+        onClick={() => setMobileDrawerOpen(false)}
+        className={cls}
+      >
         {isActive && !collapsed && (
           <span
             className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full bg-[#2563EB]"
@@ -235,16 +229,14 @@ export function AppShell({
           className={`h-[18px] w-[18px] shrink-0 transition-colors ${
             isActive ? 'text-[#2563EB]' : 'text-[#64748B] group-hover:text-[#0F172A]'
           }`}
-          strokeWidth={1.85}
+          strokeWidth={1.75}
           aria-hidden="true"
         />
         {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
         {!collapsed && item.count != null && item.count > 0 && (
           <span
-            className={`tabular-mono inline-flex h-5 min-w-[20px] items-center justify-center rounded-md px-1.5 text-[11px] font-bold ${
-              item.tone === 'danger'
-                ? 'bg-[#FEF2F2] text-[#B91C1C]'
-                : 'bg-[#FFFBEB] text-[#B45309]'
+            className={`tabular-mono text-[12px] font-semibold ${
+              item.tone === 'danger' ? 'text-[#DC2626]' : 'text-[#B45309]'
             }`}
           >
             {item.count}
@@ -258,35 +250,6 @@ export function AppShell({
             aria-hidden="true"
           />
         )}
-      </>
-    );
-
-    if (item.onClick) {
-      return (
-        <button
-          key={item.label}
-          type="button"
-          title={collapsed ? item.label : undefined}
-          onClick={() => {
-            item.onClick?.();
-            setMobileDrawerOpen(false);
-          }}
-          className={cls}
-        >
-          {inner}
-        </button>
-      );
-    }
-
-    return (
-      <Link
-        key={item.label}
-        href={item.href!}
-        title={collapsed ? item.label : undefined}
-        onClick={() => setMobileDrawerOpen(false)}
-        className={cls}
-      >
-        {inner}
       </Link>
     );
   };
@@ -334,17 +297,17 @@ export function AppShell({
               title={sidebarCollapsed ? 'Perluas sidebar' : 'Ciutkan sidebar'}
             >
               {sidebarCollapsed ? (
-                <PanelLeftOpen className="h-4 w-4" strokeWidth={1.85} aria-hidden="true" />
+                <PanelLeftOpen className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
               ) : (
-                <PanelLeftClose className="h-4 w-4" strokeWidth={1.85} aria-hidden="true" />
+                <PanelLeftClose className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
               )}
             </button>
           </div>
 
-          {/* Navigation Group */}
+          {/* Role-Scoped Navigation Group */}
           <div className="flex flex-col gap-1">
             {!sidebarCollapsed && (
-              <span className="px-3 pb-1 text-[11px] font-semibold text-[#64748B]">
+              <span className="px-3 pb-1 text-[11px] font-medium text-[#64748B]">
                 Menu {roleMeta.label}
               </span>
             )}
@@ -354,7 +317,7 @@ export function AppShell({
           </div>
         </div>
 
-        {/* Sidebar Bottom: User Profile + Settings */}
+        {/* Sidebar Bottom: User Profile + Admin Settings (Manajemen / Logistik) */}
         <div className="flex flex-col gap-2 border-t border-[#E2E8F0] pt-3">
           {!sidebarCollapsed ? (
             <div className="flex flex-col gap-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3">
@@ -367,7 +330,7 @@ export function AppShell({
                     {activePetugas?.nama ?? settings.outletNama}
                   </div>
                   <div className="truncate text-[12px] font-normal text-[#64748B]">
-                    {roleMeta.label} · {settings.outletNama}
+                    {roleMeta.label}
                   </div>
                 </div>
               </div>
@@ -394,33 +357,57 @@ export function AppShell({
             </div>
           ) : (
             <div
-              className="mx-auto flex h-9 w-9 items-center justify-center rounded-lg bg-[#EFF6FF] text-xs font-bold text-[#2563EB]"
+              className="mx-auto flex h-9 w-9 items-center justify-center rounded-lg bg-[#EFF6FF] text-xs font-semibold text-[#2563EB]"
               title={`${activePetugas?.nama ?? roleMeta.label} (${roleMeta.label})`}
             >
               {getInitials(activePetugas?.nama ?? roleMeta.label)}
             </div>
           )}
 
-          <Link
-            href="/pengaturan"
-            title={sidebarCollapsed ? 'Pengaturan Data' : undefined}
-            className={`flex h-9 items-center rounded-lg text-[13px] transition-colors ${
-              sidebarCollapsed ? 'justify-center px-0' : 'gap-2.5 px-3'
-            } ${
-              pathname === '/pengaturan'
-                ? 'bg-[#EFF6FF] font-bold text-[#2563EB]'
-                : 'font-semibold text-[#334155] hover:bg-[#F1F5F9] hover:text-[#0F172A]'
-            }`}
-          >
-            <Settings
-              className={`h-[17px] w-[17px] shrink-0 ${
-                pathname === '/pengaturan' ? 'text-[#2563EB]' : 'text-[#64748B]'
-              }`}
-              strokeWidth={1.85}
-              aria-hidden="true"
-            />
-            {!sidebarCollapsed && <span className="truncate">Pengaturan Data</span>}
-          </Link>
+          {showAdminLinks && (
+            <div className="flex flex-col gap-1">
+              <Link
+                href="/master"
+                title={sidebarCollapsed ? 'Master Bahan & Supplier' : undefined}
+                className={`flex h-9 items-center rounded-lg text-[13px] transition-colors ${
+                  sidebarCollapsed ? 'justify-center px-0' : 'gap-2.5 px-3'
+                } ${
+                  pathname === '/master'
+                    ? 'bg-[#EFF6FF] font-semibold text-[#2563EB]'
+                    : 'font-medium text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]'
+                }`}
+              >
+                <Package
+                  className={`h-[17px] w-[17px] shrink-0 ${
+                    pathname === '/master' ? 'text-[#2563EB]' : 'text-[#64748B]'
+                  }`}
+                  strokeWidth={1.75}
+                  aria-hidden="true"
+                />
+                {!sidebarCollapsed && <span className="truncate">Master Bahan &amp; Supplier</span>}
+              </Link>
+              <Link
+                href="/pengaturan"
+                title={sidebarCollapsed ? 'Pengaturan & Pegawai' : undefined}
+                className={`flex h-9 items-center rounded-lg text-[13px] transition-colors ${
+                  sidebarCollapsed ? 'justify-center px-0' : 'gap-2.5 px-3'
+                } ${
+                  pathname === '/pengaturan'
+                    ? 'bg-[#EFF6FF] font-semibold text-[#2563EB]'
+                    : 'font-medium text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]'
+                }`}
+              >
+                <Settings
+                  className={`h-[17px] w-[17px] shrink-0 ${
+                    pathname === '/pengaturan' ? 'text-[#2563EB]' : 'text-[#64748B]'
+                  }`}
+                  strokeWidth={1.75}
+                  aria-hidden="true"
+                />
+                {!sidebarCollapsed && <span className="truncate">Pengaturan &amp; Pegawai</span>}
+              </Link>
+            </div>
+          )}
         </div>
       </aside>
 
@@ -461,16 +448,26 @@ export function AppShell({
                 {navItems.map((item) => renderNavLink(item, false))}
               </nav>
             </div>
-            <div className="flex flex-col gap-2 border-t border-[#E2E8F0] pt-3">
-              <Link
-                href="/pengaturan"
-                onClick={() => setMobileDrawerOpen(false)}
-                className="flex h-10 items-center gap-2.5 rounded-lg px-3 text-[13px] font-semibold text-[#334155] hover:bg-[#F1F5F9] hover:text-[#0F172A]"
-              >
-                <Settings className="h-[18px] w-[18px] text-[#64748B]" strokeWidth={1.85} aria-hidden="true" />
-                <span>Pengaturan Data</span>
-              </Link>
-            </div>
+            {showAdminLinks && (
+              <div className="flex flex-col gap-1 border-t border-[#E2E8F0] pt-3">
+                <Link
+                  href="/master"
+                  onClick={() => setMobileDrawerOpen(false)}
+                  className="flex h-10 items-center gap-2.5 rounded-lg px-3 text-[13px] font-medium text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]"
+                >
+                  <Package className="h-[18px] w-[18px] text-[#64748B]" strokeWidth={1.75} aria-hidden="true" />
+                  <span>Master Bahan &amp; Supplier</span>
+                </Link>
+                <Link
+                  href="/pengaturan"
+                  onClick={() => setMobileDrawerOpen(false)}
+                  className="flex h-10 items-center gap-2.5 rounded-lg px-3 text-[13px] font-medium text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]"
+                >
+                  <Settings className="h-[18px] w-[18px] text-[#64748B]" strokeWidth={1.75} aria-hidden="true" />
+                  <span>Pengaturan &amp; Pegawai</span>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -517,11 +514,11 @@ export function AppShell({
               >
                 <Bell
                   className={`h-[18px] w-[18px] ${totalNotifCount > 0 ? 'text-[#2563EB]' : 'text-[#475569]'}`}
-                  strokeWidth={1.85}
+                  strokeWidth={1.75}
                   aria-hidden="true"
                 />
                 {totalNotifCount > 0 && (
-                  <span className="tabular-mono absolute -right-1 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#DC2626] px-1 text-[10px] font-bold text-white">
+                  <span className="tabular-mono absolute -right-1 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#DC2626] px-1 text-[10px] font-semibold text-white">
                     {totalNotifCount}
                   </span>
                 )}
@@ -530,35 +527,18 @@ export function AppShell({
               {notifOpen && (
                 <div className="absolute right-0 mt-2 w-[340px] max-w-[calc(100vw-2rem)] rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-[0_10px_28px_-8px_rgba(15,23,42,0.14)]">
                   <div className="mb-3 flex items-center justify-between border-b border-[#E2E8F0] pb-2.5">
-                    <span className="text-sm font-bold text-[#0F172A]">Notifikasi Operasional</span>
+                    <span className="text-[14px] font-semibold text-[#0F172A]">Notifikasi Operasional</span>
                     <Badge tone={totalNotifCount > 0 ? 'danger' : 'success'}>
                       {totalNotifCount} Aktif
                     </Badge>
                   </div>
                   <div className="flex flex-col gap-2">
                     {totalNotifCount === 0 ? (
-                      <p className="py-4 text-center text-xs font-medium text-[#64748B]">
-                        Semua laporan, stok kritis, dan PO sudah terkendali.
+                      <p className="py-4 text-center text-[12px] font-normal text-[#64748B]">
+                        Semua laporan stok, persediaan, dan PO sudah terkendali.
                       </p>
                     ) : (
                       <>
-                        {activeKosongCount > 0 && (
-                          <Link
-                            href="/kasir/kosong"
-                            onClick={() => {
-                              setActiveRole('kasir');
-                              setNotifOpen(false);
-                            }}
-                            className="rounded-lg border border-[#FECACA] bg-[#FEF2F2] p-2.5 text-left transition hover:bg-[#FEE2E2]"
-                          >
-                            <div className="text-xs font-bold text-[#B91C1C]">
-                              {activeKosongCount} Bahan/Menu Kosong Aktif
-                            </div>
-                            <div className="mt-0.5 text-[11px] font-medium text-[#475569]">
-                              Buka layar Kasir untuk konfirmasi ke pelanggan
-                            </div>
-                          </Link>
-                        )}
                         {pendingVerifCount > 0 && (
                           <Link
                             href="/logistik"
@@ -568,45 +548,45 @@ export function AppShell({
                             }}
                             className="rounded-lg border border-[#FDE68A] bg-[#FFFBEB] p-2.5 text-left transition hover:bg-[#FEF3C7]"
                           >
-                            <div className="text-xs font-bold text-[#B45309]">
+                            <div className="text-[13px] font-semibold text-[#B45309]">
                               {pendingVerifCount} Laporan Stok Menunggu Verifikasi
                             </div>
-                            <div className="mt-0.5 text-[11px] font-medium text-[#475569]">
-                              Buka Inbox Logistik untuk verifikasi &amp; buat retur
+                            <div className="mt-0.5 text-[12px] font-normal text-[#475569]">
+                              Buka Dashboard Logistik untuk verifikasi laporan divisi
                             </div>
                           </Link>
                         )}
                         {pendingPOCount > 0 && (
                           <Link
-                            href="/logistik/po"
+                            href="/manajemen/po"
                             onClick={() => {
                               setActiveRole('manajemen');
                               setNotifOpen(false);
                             }}
                             className="rounded-lg border border-[#BFDBFE] bg-[#EFF6FF] p-2.5 text-left transition hover:bg-[#DBEAFE]"
                           >
-                            <div className="text-xs font-bold text-[#1E40AF]">
+                            <div className="text-[13px] font-semibold text-[#1E40AF]">
                               {pendingPOCount} Purchase Order Menunggu Persetujuan
                             </div>
-                            <div className="mt-0.5 text-[11px] font-medium text-[#475569]">
-                              Review &amp; setujui PO dari Manajemen
+                            <div className="mt-0.5 text-[12px] font-normal text-[#475569]">
+                              Review &amp; proses persetujuan PO oleh Manajemen
                             </div>
                           </Link>
                         )}
                         {kritisCount > 0 && (
                           <Link
-                            href="/logistik"
+                            href="/logistik/persediaan"
                             onClick={() => {
                               setActiveRole('logistik');
                               setNotifOpen(false);
                             }}
                             className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-2.5 text-left transition hover:bg-[#F1F5F9]"
                           >
-                            <div className="text-xs font-bold text-[#B91C1C]">
+                            <div className="text-[13px] font-semibold text-[#B91C1C]">
                               {kritisCount} Bahan Mencapai Batas Stok Kritis
                             </div>
-                            <div className="mt-0.5 text-[11px] font-medium text-[#475569]">
-                              Buka Logistik untuk pantau stok &amp; buat PO restock
+                            <div className="mt-0.5 text-[12px] font-normal text-[#475569]">
+                              Pantau persediaan &amp; ajukan PO restock di Logistik
                             </div>
                           </Link>
                         )}
@@ -649,7 +629,7 @@ export function AppShell({
                       {activePetugas?.nama ?? 'Pengguna Aktif'}
                     </div>
                     <div className="text-[12px] font-normal text-[#64748B]">
-                      Pindah Role Workspace (Tanpa Login)
+                      Pindah Role Workspace
                     </div>
                   </div>
                   <div className="mt-1.5 flex flex-col gap-0.5">
@@ -658,17 +638,12 @@ export function AppShell({
                         key={r.id}
                         type="button"
                         onClick={() => handleSelectRole(r.id, r.homeHref)}
-                        className={`flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition ${
+                        className={`flex items-center rounded-lg px-2.5 py-2 text-left transition ${
                           activeRole === r.id
                             ? 'bg-[#EFF6FF] text-[#2563EB]'
                             : 'text-[#0F172A] hover:bg-[#F8FAFC]'
                         }`}
                       >
-                        <span
-                          className="h-2 w-2 shrink-0 rounded-full"
-                          style={{ backgroundColor: r.dotColor }}
-                          aria-hidden="true"
-                        />
                         <div className="min-w-0 flex-1">
                           <div
                             className={`text-[13px] ${
@@ -686,7 +661,7 @@ export function AppShell({
                     <Link
                       href="/setup"
                       onClick={() => setRoleMenuOpen(false)}
-                      className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-xs font-semibold text-[#475569] transition hover:bg-[#F8FAFC] hover:text-[#0F172A]"
+                      className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-[12px] font-medium text-[#475569] transition hover:bg-[#F8FAFC] hover:text-[#0F172A]"
                     >
                       <Settings className="h-3.5 w-3.5" aria-hidden="true" />
                       <span>Buka Setup Wizard / Master Data</span>
@@ -711,43 +686,21 @@ export function AppShell({
       >
         {navItems.slice(0, 4).map((item) => {
           const Icon = item.icon;
-          const active = item.href ? pathname === item.href : false;
-          if (item.onClick) {
-            return (
-              <button
-                key={item.label}
-                type="button"
-                onClick={item.onClick}
-                className="flex min-h-[44px] min-w-[68px] flex-col items-center justify-center gap-0.5 rounded-lg px-2 py-1.5 text-[11px] font-semibold text-[#64748B]"
-              >
-                <Icon className="h-[18px] w-[18px]" strokeWidth={1.85} aria-hidden="true" />
-                <span className="max-w-[72px] truncate">{item.label.split(' ')[0]}</span>
-              </button>
-            );
-          }
+          const active = pathname === item.href;
           return (
             <Link
-              key={item.label}
-              href={item.href!}
+              key={item.href}
+              href={item.href}
               className={`flex min-h-[44px] min-w-[68px] flex-col items-center justify-center gap-0.5 rounded-lg px-2 py-1.5 text-[11px] transition-colors ${
-                active ? 'bg-[#EFF6FF] font-bold text-[#2563EB]' : 'font-semibold text-[#64748B]'
+                active ? 'bg-[#EFF6FF] font-semibold text-[#2563EB]' : 'font-medium text-[#64748B]'
               }`}
             >
-              <Icon className="h-[18px] w-[18px]" strokeWidth={1.85} aria-hidden="true" />
-              <span className="max-w-[72px] truncate">{item.label.split(' ')[0]}</span>
+              <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden="true" />
+              <span className="max-w-[76px] truncate">{item.label.split(' ')[0]}</span>
             </Link>
           );
         })}
       </nav>
-
-      {/* Lapor Bahan Kosong Modal triggered from Barista / Kitchen sidebar */}
-      {kosongModalDivisi && (
-        <LaporKosongModal
-          open={true}
-          onClose={() => setKosongModalDivisi(null)}
-          divisi={kosongModalDivisi}
-        />
-      )}
     </div>
   );
 }

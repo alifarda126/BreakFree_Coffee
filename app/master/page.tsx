@@ -533,17 +533,18 @@ export default function MasterDataPage() {
                             {m.resep.length === 0 && (
                               <span className="italic text-[#64748B]">Belum ada resep</span>
                             )}
-                            {m.resep.map((r) => {
+                            {m.resep.map((r, idx) => {
                               const b = bahan.find((x) => x.id === r.bahanId);
                               return (
                                 <span
                                   key={r.bahanId}
-                                  className="inline-flex items-center gap-1 rounded-md border border-[#E2E8F0] bg-[#F8FAFC] px-2 py-0.5 text-[11px] text-[#0F172A]"
+                                  className="inline-flex items-center gap-1 text-[12px] text-[#334155]"
                                 >
                                   <span>{b?.nama || r.bahanId}</span>
-                                  <strong className="tabular-mono text-[#2563EB]">
-                                    {r.qty} {b?.satuan || ''}
-                                  </strong>
+                                  <span className="tabular-mono font-medium text-[#2563EB]">
+                                    ({r.qty} {b?.satuan || ''})
+                                  </span>
+                                  {idx < m.resep.length - 1 && <span className="text-[#CBD5E1]">·</span>}
                                 </span>
                               );
                             })}
