@@ -102,7 +102,7 @@ function RiwayatPengadaanInner() {
   return (
     <AppShell pageTitle="Riwayat Pengadaan">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="inline-flex items-center gap-1 overflow-x-auto rounded-lg border border-[#E2E8F0] bg-[#F1F5F9] p-1">
+        <div className="inline-flex items-center gap-1 overflow-x-auto rounded-lg border border-[#E5E5E5] bg-[#F5F5F5] p-1">
           {(['semua', 'diajukan', 'disetujui', 'diterima', 'ditolak'] as const).map((st) => (
             <button
               key={st}
@@ -110,8 +110,8 @@ function RiwayatPengadaanInner() {
               onClick={() => setFilterStatus(st)}
               className={`rounded-md px-3 py-1 text-[12.5px] whitespace-nowrap transition-all ${
                 filterStatus === st
-                  ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
-                  : 'font-medium text-[#64748B] hover:text-[#0F172A]'
+                  ? 'bg-white font-semibold text-[#111111] shadow-[0_1px_2px_rgba(17,17,17,0.06)]'
+                  : 'font-medium text-[#737373] hover:text-[#111111]'
               }`}
             >
               {st === 'semua' ? 'Semua PO' : poStatusLabel(st)}
@@ -143,7 +143,7 @@ function RiwayatPengadaanInner() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Left PO List */}
           <Card className="space-y-3 p-4 lg:col-span-4">
-            <h2 className="text-[15px] font-semibold text-[#0F172A]">
+            <h2 className="text-[15px] font-semibold text-[#111111]">
               Daftar Purchase Order ({filteredPOs.length})
             </h2>
             <div className="max-h-[460px] space-y-2 overflow-y-auto pr-1">
@@ -157,24 +157,24 @@ function RiwayatPengadaanInner() {
                     onClick={() => setManualSelectedPoId(po.id)}
                     className={`w-full rounded-xl border p-3 text-left transition-colors ${
                       isSelected
-                        ? 'border-[#2563EB] bg-[#EFF6FF]/60'
-                        : 'border-[#E2E8F0] bg-white hover:bg-[#F8FAFC]'
+                        ? 'border-[#111111] bg-[#F5F5F5]'
+                        : 'border-[#E5E5E5] bg-white hover:bg-[#FAFAFA]'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="tabular-mono text-[13px] font-semibold text-[#0F172A]">
+                      <span className="tabular-mono text-[13px] font-semibold text-[#111111]">
                         {po.nomor}
                       </span>
                       <Badge tone={poStatusTone(po.status)} dot={false}>
                         {poStatusLabel(po.status)}
                       </Badge>
                     </div>
-                    <p className="mt-1 truncate text-[13px] font-normal text-[#334155]">
+                    <p className="mt-1 truncate text-[13px] font-normal text-[#262626]">
                       {sup?.nama || 'Supplier'}
                     </p>
-                    <div className="mt-1 flex items-center justify-between text-[12px] text-[#64748B]">
+                    <div className="mt-1 flex items-center justify-between text-[12px] text-[#737373]">
                       <span>{formatTanggal(po.tanggal)}</span>
-                      <span className="tabular-mono font-semibold text-[#0F172A]">
+                      <span className="tabular-mono font-semibold text-[#111111]">
                         {formatRp(po.total)}
                       </span>
                     </div>
@@ -188,26 +188,26 @@ function RiwayatPengadaanInner() {
           <Card className="space-y-4 p-5 lg:col-span-8">
             {activePO && (
               <>
-                <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#E2E8F0] pb-4">
+                <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#E5E5E5] pb-4">
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="tabular-mono text-[18px] font-bold text-[#0F172A]">
+                      <h2 className="tabular-mono text-[18px] font-bold text-[#111111]">
                         {activePO.nomor}
                       </h2>
                       <Badge tone={poStatusTone(activePO.status)}>
                         {poStatusLabel(activePO.status)}
                       </Badge>
                     </div>
-                    <p className="mt-1 text-[13px] font-normal text-[#64748B]">
-                      Supplier: <span className="font-medium text-[#0F172A]">{supplierObj?.nama || '-'}</span> · Tanggal: {formatTanggal(activePO.tanggal)}
+                    <p className="mt-1 text-[13px] font-normal text-[#737373]">
+                      Supplier: <span className="font-medium text-[#111111]">{supplierObj?.nama || '-'}</span> · Tanggal: {formatTanggal(activePO.tanggal)}
                     </p>
                     {activePO.catatan && (
-                      <p className="mt-1 text-[12px] text-[#64748B]">Catatan: {activePO.catatan}</p>
+                      <p className="mt-1 text-[12px] text-[#737373]">Catatan: {activePO.catatan}</p>
                     )}
                   </div>
                   <div className="text-right">
-                    <p className="text-[12px] text-[#64748B]">Total PO</p>
-                    <p className="tabular-mono text-[22px] font-bold text-[#2563EB]">
+                    <p className="text-[12px] text-[#737373]">Total PO</p>
+                    <p className="tabular-mono text-[22px] font-bold text-[#111111]">
                       {formatRp(activePO.total)}
                     </p>
                   </div>
@@ -216,7 +216,7 @@ function RiwayatPengadaanInner() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-[13.5px]">
                     <thead>
-                      <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[12px] font-semibold uppercase text-[#64748B]">
+                      <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[12px] font-semibold uppercase text-[#737373]">
                         <th className="rounded-l-lg px-3 py-2.5">Bahan</th>
                         <th className="px-3 py-2.5 text-right">Pesan</th>
                         <th className="px-3 py-2.5 text-right">Diterima</th>
@@ -226,7 +226,7 @@ function RiwayatPengadaanInner() {
                         <th className="rounded-r-lg px-3 py-2.5 text-right">Subtotal</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#E2E8F0]">
+                    <tbody className="divide-y divide-[#E5E5E5]">
                       {activePO.items.map((item) => {
                         const b = bahan.find((x) => x.id === item.bahanId);
                         const sisa = Math.max(0, item.qty - item.qtyDiterima);
@@ -234,12 +234,12 @@ function RiwayatPengadaanInner() {
                           activePO.status === 'disetujui' || activePO.status === 'diterima_sebagian';
                         return (
                           <tr key={item.bahanId}>
-                            <td className="px-3 py-2.5 text-[#0F172A]">
+                            <td className="px-3 py-2.5 text-[#111111]">
                               {b?.nama || item.bahanId}
-                              <span className="block text-[12px] text-[#64748B]">{b?.satuan || '-'}</span>
+                              <span className="block text-[12px] text-[#737373]">{b?.satuan || '-'}</span>
                             </td>
                             <td className="tabular-mono px-3 py-2.5 text-right">{item.qty}</td>
-                            <td className="tabular-mono px-3 py-2.5 text-right text-[#64748B]">
+                            <td className="tabular-mono px-3 py-2.5 text-right text-[#737373]">
                               {item.qtyDiterima} / {item.qty}
                             </td>
                             {canReceive && (
@@ -257,14 +257,14 @@ function RiwayatPengadaanInner() {
                                         [`${activePO.id}:${item.bahanId}`]: v,
                                       }));
                                     }}
-                                    className="tabular-mono w-16 rounded-lg border border-[#E2E8F0] bg-white px-2 py-1 text-right text-[13px]"
+                                    className="tabular-mono w-16 rounded-lg border border-[#E5E5E5] bg-white px-2 py-1 text-right text-[13px] focus:border-[#111111] focus:outline-none"
                                   />
                                 ) : (
                                   <span className="text-[12px] font-medium text-[#15803D]">Selesai</span>
                                 )}
                               </td>
                             )}
-                            <td className="tabular-mono px-3 py-2.5 text-right font-semibold text-[#0F172A]">
+                            <td className="tabular-mono px-3 py-2.5 text-right font-semibold text-[#111111]">
                               {formatRp(item.qty * item.harga)}
                             </td>
                           </tr>
@@ -274,8 +274,8 @@ function RiwayatPengadaanInner() {
                   </table>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#E2E8F0] pt-3">
-                  <span className="inline-flex items-center gap-1.5 text-[12px] text-[#64748B]">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#E5E5E5] pt-3">
+                  <span className="inline-flex items-center gap-1.5 text-[12px] text-[#737373]">
                     <ClipboardList className="h-3.5 w-3.5" aria-hidden="true" />
                     Diperbarui: {formatWaktu(activePO.updatedAt)}
                   </span>
@@ -314,7 +314,7 @@ export default function LogistikRiwayatPage() {
     <Suspense
       fallback={
         <AppShell pageTitle="Riwayat Pengadaan">
-          <Card className="p-8 text-[13px] text-[#64748B]">Memuat riwayat pengadaan...</Card>
+          <Card className="p-8 text-[13px] text-[#737373]">Memuat riwayat pengadaan...</Card>
         </AppShell>
       }
     >

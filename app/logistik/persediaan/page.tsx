@@ -77,7 +77,7 @@ export default function LogistikPersediaanPage() {
         <div className="flex flex-1 flex-wrap items-center gap-2.5">
           <div className="relative min-w-[220px] flex-1">
             <Search
-              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#64748B]"
+              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#737373]"
               aria-hidden="true"
             />
             <input
@@ -86,7 +86,7 @@ export default function LogistikPersediaanPage() {
               onChange={(e) => setSearch(e.target.value)}
               aria-label="Cari bahan baku"
               placeholder="Cari nama bahan atau kategori..."
-              className="h-9 w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] pl-9 pr-3 text-[13px] text-[#0F172A] focus:border-[#2563EB] focus:bg-white focus:outline-none"
+              className="h-9 w-full rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] pl-9 pr-3 text-[13px] text-[#111111] focus:border-[#111111] focus:bg-white focus:outline-none"
             />
           </div>
 
@@ -94,7 +94,7 @@ export default function LogistikPersediaanPage() {
             value={filterDivisi}
             onChange={(e) => setFilterDivisi(e.target.value as 'semua' | DivisiBahan)}
             aria-label="Filter divisi"
-            className="h-9 rounded-lg border border-[#E2E8F0] bg-white px-3 text-[13px] text-[#0F172A] focus:border-[#2563EB] focus:outline-none"
+            className="h-9 rounded-lg border border-[#E5E5E5] bg-white px-3 text-[13px] text-[#111111] focus:border-[#111111] focus:outline-none"
           >
             <option value="semua">Semua Divisi</option>
             <option value="barista">Barista</option>
@@ -105,7 +105,7 @@ export default function LogistikPersediaanPage() {
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value as 'semua' | 'kritis' | StatusStokLevel)}
             aria-label="Filter status stok"
-            className="h-9 rounded-lg border border-[#E2E8F0] bg-white px-3 text-[13px] text-[#0F172A] focus:border-[#2563EB] focus:outline-none"
+            className="h-9 rounded-lg border border-[#E5E5E5] bg-white px-3 text-[13px] text-[#111111] focus:border-[#111111] focus:outline-none"
           >
             <option value="semua">Semua Status</option>
             <option value="kritis">Kritis / Habis</option>
@@ -133,7 +133,7 @@ export default function LogistikPersediaanPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-[13.5px]">
               <thead>
-                <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[12px] font-semibold uppercase text-[#64748B]">
+                <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[12px] font-semibold uppercase text-[#737373]">
                   <th className="rounded-l-lg px-3 py-2.5">Bahan Baku</th>
                   <th className="px-3 py-2.5">Divisi</th>
                   <th className="px-3 py-2.5 text-right">Stok Saat Ini</th>
@@ -143,17 +143,17 @@ export default function LogistikPersediaanPage() {
                   <th className="rounded-r-lg px-3 py-2.5 text-right">Kartu Stok</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2E8F0]">
+              <tbody className="divide-y divide-[#E5E5E5]">
                 {rows.map(({ b, stok, status }) => {
                   const tone =
                     status === 'aman' ? 'success' : status === 'menipis' ? 'warning' : 'danger';
                   return (
-                    <tr key={b.id} className="transition-colors hover:bg-[#F8FAFC]">
+                    <tr key={b.id} className="transition-colors hover:bg-[#FAFAFA]">
                       <td className="px-3 py-3">
-                        <div className="font-normal text-[#0F172A]">{b.nama}</div>
-                        <div className="text-[12px] font-normal text-[#64748B]">{b.kategori}</div>
+                        <div className="font-normal text-[#111111]">{b.nama}</div>
+                        <div className="text-[12px] font-normal text-[#737373]">{b.kategori}</div>
                       </td>
-                      <td className="px-3 py-3 capitalize text-[#64748B]">{b.divisi}</td>
+                      <td className="px-3 py-3 capitalize text-[#737373]">{b.divisi}</td>
                       <td
                         className={`tabular-mono px-3 py-3 text-right font-semibold ${
                           status === 'aman'
@@ -165,7 +165,7 @@ export default function LogistikPersediaanPage() {
                       >
                         {formatQty(stok, b.satuan)}
                       </td>
-                      <td className="tabular-mono px-3 py-3 text-right text-[#64748B]">
+                      <td className="tabular-mono px-3 py-3 text-right text-[#737373]">
                         {formatQty(b.stokMinimum, b.satuan)}
                       </td>
                       <td className="px-3 py-3">
@@ -176,7 +176,7 @@ export default function LogistikPersediaanPage() {
                           </Badge>
                         </div>
                       </td>
-                      <td className="tabular-mono px-3 py-3 text-right text-[#334155]">
+                      <td className="tabular-mono px-3 py-3 text-right text-[#262626]">
                         {formatRp(b.hargaSatuan)}
                       </td>
                       <td className="px-3 py-3 text-right">
@@ -210,8 +210,8 @@ export default function LogistikPersediaanPage() {
       >
         {ledgerBahan && (
           <div className="space-y-4">
-            <div className="rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5">
-              <p className="mb-2 text-[13px] font-medium text-[#0F172A]">Penyesuaian Stok Manual</p>
+            <div className="rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-3.5">
+              <p className="mb-2 text-[13px] font-medium text-[#111111]">Penyesuaian Stok Manual</p>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 <input
                   type="number"
@@ -220,7 +220,7 @@ export default function LogistikPersediaanPage() {
                   onChange={(e) => setAdjustDelta(Number(e.target.value) || 0)}
                   placeholder="+/- qty"
                   aria-label="Selisih qty"
-                  className="tabular-mono h-9 rounded-lg border border-[#E2E8F0] bg-white px-2.5 text-[13px] text-[#0F172A]"
+                  className="tabular-mono h-9 rounded-lg border border-[#E5E5E5] bg-white px-2.5 text-[13px] text-[#111111] focus:border-[#111111] focus:outline-none"
                 />
                 <input
                   type="text"
@@ -228,7 +228,7 @@ export default function LogistikPersediaanPage() {
                   onChange={(e) => setAdjustNote(e.target.value)}
                   placeholder="Alasan penyesuaian..."
                   aria-label="Alasan penyesuaian"
-                  className="h-9 rounded-lg border border-[#E2E8F0] bg-white px-2.5 text-[13px] text-[#0F172A] sm:col-span-2"
+                  className="h-9 rounded-lg border border-[#E5E5E5] bg-white px-2.5 text-[13px] text-[#111111] focus:border-[#111111] focus:outline-none sm:col-span-2"
                 />
               </div>
               <div className="mt-2.5 flex justify-end">
@@ -238,12 +238,12 @@ export default function LogistikPersediaanPage() {
               </div>
             </div>
 
-            <div className="max-h-64 overflow-y-auto rounded-xl border border-[#E2E8F0]">
+            <div className="max-h-64 overflow-y-auto rounded-xl border border-[#E5E5E5]">
               {ledgerMovements.length === 0 ? (
-                <p className="p-4 text-center text-[12px] text-[#64748B]">Belum ada mutasi stok.</p>
+                <p className="p-4 text-center text-[12px] text-[#737373]">Belum ada mutasi stok.</p>
               ) : (
                 <table className="w-full text-left text-[12px]">
-                  <thead className="bg-[#F8FAFC] text-[#64748B]">
+                  <thead className="bg-[#FAFAFA] text-[#737373]">
                     <tr>
                       <th className="px-3 py-2">Waktu</th>
                       <th className="px-3 py-2">Tipe</th>
@@ -251,10 +251,10 @@ export default function LogistikPersediaanPage() {
                       <th className="px-3 py-2">Catatan</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E2E8F0]">
+                  <tbody className="divide-y divide-[#E5E5E5]">
                     {ledgerMovements.slice(0, 20).map((mv) => (
                       <tr key={mv.id}>
-                        <td className="tabular-mono px-3 py-2 text-[#64748B]">
+                        <td className="tabular-mono px-3 py-2 text-[#737373]">
                           {formatTanggal(mv.createdAt)} · {formatWaktu(mv.createdAt)}
                         </td>
                         <td className="px-3 py-2">
@@ -269,7 +269,7 @@ export default function LogistikPersediaanPage() {
                         >
                           {mv.qty > 0 ? `+${mv.qty}` : mv.qty} {ledgerBahan.satuan}
                         </td>
-                        <td className="px-3 py-2 text-[#334155]">{mv.catatan || '-'}</td>
+                        <td className="px-3 py-2 text-[#262626]">{mv.catatan || '-'}</td>
                       </tr>
                     ))}
                   </tbody>

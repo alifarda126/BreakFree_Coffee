@@ -46,23 +46,23 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             t.tone === 'success' ? CheckCircle2 : t.tone === 'info' ? Info : AlertTriangle;
           const toneStyle =
             t.tone === 'danger'
-              ? 'border-[#FECACA] bg-[#FEF2F2] text-[#B91C1C]'
+              ? 'border-[#FECACA] bg-white text-[#DC2626]'
               : t.tone === 'warning'
-                ? 'border-[#FDE68A] bg-[#FFFBEB] text-[#B45309]'
+                ? 'border-[#E5E5E5] bg-white text-[#B45309]'
                 : t.tone === 'info'
-                  ? 'border-[#BFDBFE] bg-[#EFF6FF] text-[#1E40AF]'
-                  : 'border-[#BBF7D0] bg-[#F0FDF4] text-[#15803D]';
+                  ? 'border-[#E5E5E5] bg-white text-[#111111]'
+                  : 'border-[#BBF7D0] bg-white text-[#15803D]';
           return (
             <div
               key={t.id}
-              className={`flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-[13px] font-medium shadow-[0_10px_28px_-8px_rgba(15,23,42,0.14)] transition-all duration-150 ${toneStyle}`}
+              className={`flex items-center gap-2.5 rounded-lg border px-3.5 py-2.5 text-[13px] font-medium shadow-[0_8px_24px_-8px_rgba(17,17,17,0.14)] transition-all duration-150 ${toneStyle}`}
             >
               <Icon className="h-4 w-4 shrink-0" strokeWidth={1.75} aria-hidden="true" />
               <span>{t.message}</span>
               <button
                 type="button"
                 onClick={() => dismiss(t.id)}
-                className="ml-1 rounded-md p-0.5 opacity-70 transition hover:opacity-100 focus-visible:outline-2 focus-visible:outline-[#2563EB]"
+                className="ml-1 rounded-md p-0.5 text-[#737373] transition hover:text-[#111111] focus-visible:outline-2 focus-visible:outline-[#111111]"
                 aria-label="Tutup notifikasi"
               >
                 <X className="h-3.5 w-3.5" aria-hidden="true" />

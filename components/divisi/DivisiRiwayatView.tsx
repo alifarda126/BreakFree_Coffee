@@ -21,7 +21,7 @@ export function DivisiRiwayatView({ divisi }: { divisi: Divisi }) {
     <AppShell pageTitle={`Riwayat Laporan Stok & Verifikasi (${divTitle})`}>
       <Card className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-[16px] font-semibold text-[#0F172A]">
+          <h2 className="text-[16px] font-semibold text-[#111111]">
             Daftar Pengiriman Stock List &amp; Waste Divisi {divTitle}
           </h2>
           <Link href={`/${divisi}/rekap`}>
@@ -68,18 +68,18 @@ export function DivisiRiwayatView({ divisi }: { divisi: Divisi }) {
               return (
                 <div
                   key={lap.id}
-                  className={`flex flex-col gap-2 rounded-xl border bg-[#F8FAFC] p-4 ${
-                    lap.status === 'dikembalikan' ? 'border-[#FDE68A]' : 'border-[#E2E8F0]'
+                  className={`flex flex-col gap-2 rounded-xl border bg-[#FAFAFA] p-4 ${
+                    lap.status === 'dikembalikan' ? 'border-[#FDE68A]' : 'border-[#E5E5E5]'
                   }`}
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-sm font-semibold text-[#0F172A]">
+                    <span className="text-sm font-semibold text-[#111111]">
                       {formatTanggal(lap.tanggal)} · {lap.sesi === 'opening' ? 'Opening' : 'Closing'}{' '}
                       {sh?.nama ?? ''} · Petugas: {peg?.nama ?? '-'}
                     </span>
                     <Badge tone={tone}>{label}</Badge>
                   </div>
-                  <p className="text-[13px] text-[#334155]">
+                  <p className="text-[13px] text-[#262626]">
                     {lap.items.length} bahan direkap · {lap.waste.length} item waste (Total rugi{' '}
                     <span className="tabular-mono font-semibold text-[#DC2626]">
                       {formatRp(totalWaste)}
@@ -89,7 +89,7 @@ export function DivisiRiwayatView({ divisi }: { divisi: Divisi }) {
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span
                       className={`text-xs ${
-                        lap.status === 'dikembalikan' ? 'font-semibold text-[#B45309]' : 'text-[#64748B]'
+                        lap.status === 'dikembalikan' ? 'font-semibold text-[#B45309]' : 'text-[#737373]'
                       }`}
                     >
                       {lap.catatanVerifikasi

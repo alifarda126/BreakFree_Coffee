@@ -78,11 +78,11 @@ export default function KasirDashboardPage() {
         <Card className="flex flex-col gap-4 lg:col-span-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-[17px] font-semibold text-[#0F172A]">
+              <h2 className="text-[17px] font-semibold text-[#111111]">
                 Alur Closing {activeShift?.nama ?? 'Shift Aktif'} ({activeShift?.jamMulai ?? ''}-
                 {activeShift?.jamSelesai ?? ''})
               </h2>
-              <p className="mt-0.5 text-[13px] font-normal text-[#64748B]">
+              <p className="mt-0.5 text-[13px] font-normal text-[#737373]">
                 Transaksi pelanggan dicatat di POS Pawoon, lalu rekapitulasi shift divalidasi di sini.
               </p>
             </div>
@@ -95,12 +95,12 @@ export default function KasirDashboardPage() {
           </div>
 
           <div className="flex flex-col gap-2.5">
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5">
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-3.5">
               <div>
-                <div className="text-[13.5px] font-medium text-[#0F172A]">
+                <div className="text-[13.5px] font-medium text-[#111111]">
                   1. Hitung total uang tunai (Cash) &amp; settlement QRIS
                 </div>
-                <div className="text-[12px] font-normal text-[#64748B]">
+                <div className="text-[12px] font-normal text-[#737373]">
                   Siapkan angka rekapitulasi akhir shift dari laci kasir dan mesin QRIS.
                 </div>
               </div>
@@ -109,12 +109,12 @@ export default function KasirDashboardPage() {
               </Badge>
             </div>
 
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5">
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-3.5">
               <div>
-                <div className="text-[13.5px] font-medium text-[#0F172A]">
+                <div className="text-[13.5px] font-medium text-[#111111]">
                   2. Validasi terhadap total omzet POS Pawoon
                 </div>
-                <div className="text-[12px] font-normal text-[#64748B]">
+                <div className="text-[12px] font-normal text-[#737373]">
                   Pastikan selisih Rp 0 (atau sertakan keterangan bila ada selisih).
                 </div>
               </div>
@@ -133,7 +133,7 @@ export default function KasirDashboardPage() {
 
         <Card className="flex flex-col gap-3 lg:col-span-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-[15px] font-semibold text-[#0F172A]">Rekap Omzet Terakhir</h2>
+            <h2 className="text-[15px] font-semibold text-[#111111]">Rekap Omzet Terakhir</h2>
             <Link href="/kasir/riwayat">
               <Button variant="ghost" size="sm">
                 <History className="h-3.5 w-3.5" aria-hidden="true" />
@@ -143,24 +143,24 @@ export default function KasirDashboardPage() {
           </div>
 
           {rekapOmzet.length === 0 ? (
-            <p className="rounded-xl border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-5 text-center text-[12px] font-normal text-[#64748B]">
+            <p className="rounded-xl border border-dashed border-[#E5E5E5] bg-[#FAFAFA] p-5 text-center text-[12px] font-normal text-[#737373]">
               Belum ada rekap omzet tersimpan.
             </p>
           ) : (
-            <div className="flex flex-col divide-y divide-[#E2E8F0]">
+            <div className="flex flex-col divide-y divide-[#E5E5E5]">
               {rekapOmzet.slice(0, 4).map((r) => {
                 const sh = shifts.find((s) => s.id === r.shiftId);
                 return (
                   <div key={r.id} className="flex items-center justify-between gap-2 py-2.5">
                     <div className="min-w-0">
-                      <div className="truncate text-[13px] font-medium text-[#0F172A]">
+                      <div className="truncate text-[13px] font-medium text-[#111111]">
                         {formatTanggal(r.tanggal)} · {sh?.nama ?? r.shiftId}
                       </div>
-                      <div className="text-[12px] font-normal text-[#64748B]">
+                      <div className="text-[12px] font-normal text-[#737373]">
                         {r.jumlahTransaksi} transaksi
                       </div>
                     </div>
-                    <span className="tabular-mono shrink-0 text-[13px] font-semibold text-[#0F172A]">
+                    <span className="tabular-mono shrink-0 text-[13px] font-semibold text-[#111111]">
                       {formatRp(r.cash + r.qris)}
                     </span>
                   </div>

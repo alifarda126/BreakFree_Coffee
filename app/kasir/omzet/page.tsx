@@ -95,7 +95,7 @@ export default function KasirOmzetPage() {
   };
 
   const inputCls =
-    'h-10 rounded-lg border border-[#E2E8F0] bg-white px-3 text-[14px] font-normal text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20';
+    'h-10 rounded-lg border border-[#E5E5E5] bg-white px-3 text-[14px] font-normal text-[#111111] transition focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/10';
 
   return (
     <AppShell pageTitle="Input Rekap Omzet">
@@ -104,10 +104,10 @@ export default function KasirOmzetPage() {
         <Card className="flex flex-col gap-4 lg:col-span-7">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h2 className="text-[17px] font-semibold text-[#0F172A]">
+              <h2 className="text-[17px] font-semibold text-[#111111]">
                 Rekap Closing Shift Kasir
               </h2>
-              <p className="mt-0.5 text-[13px] font-normal text-[#64748B]">
+              <p className="mt-0.5 text-[13px] font-normal text-[#737373]">
                 Masukkan nominal rekapitulasi dari aplikasi POS Pawoon pada akhir shift.
               </p>
             </div>
@@ -122,7 +122,7 @@ export default function KasirOmzetPage() {
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="omz-tgl" className="text-[13px] font-medium text-[#0F172A]">Tanggal</label>
+              <label htmlFor="omz-tgl" className="text-[13px] font-medium text-[#111111]">Tanggal</label>
               <input
                 id="omz-tgl"
                 type="date"
@@ -132,7 +132,7 @@ export default function KasirOmzetPage() {
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="omz-shift" className="text-[13px] font-medium text-[#0F172A]">Shift</label>
+              <label htmlFor="omz-shift" className="text-[13px] font-medium text-[#111111]">Shift</label>
               <select
                 id="omz-shift"
                 value={effectiveShiftId}
@@ -147,7 +147,7 @@ export default function KasirOmzetPage() {
               </select>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="omz-kasir" className="text-[13px] font-medium text-[#0F172A]">Petugas Kasir</label>
+              <label htmlFor="omz-kasir" className="text-[13px] font-medium text-[#111111]">Petugas Kasir</label>
               <select
                 id="omz-kasir"
                 value={effectivePetugasId}
@@ -214,13 +214,13 @@ export default function KasirOmzetPage() {
                 value={alasanSelisih}
                 onChange={(e) => setAlasanSelisih(e.target.value)}
                 placeholder="Misal: Refund tunai order #114 belum tercatat di settlement QRIS"
-                className="h-10 rounded-lg border border-[#F59E0B] bg-[#FFFBEB] px-3 text-[14px] font-normal text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#F59E0B]/25"
+                className="h-10 rounded-lg border border-[#F59E0B] bg-[#FFFBEB] px-3 text-[14px] font-normal text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#F59E0B]/25"
               />
             </div>
           )}
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="omz-note" className="text-[13px] font-medium text-[#0F172A]">
+            <label htmlFor="omz-note" className="text-[13px] font-medium text-[#111111]">
               Catatan Shift (Opsional)
             </label>
             <input
@@ -236,9 +236,9 @@ export default function KasirOmzetPage() {
 
         {/* Right: Live Validator + Recent History */}
         <div className="flex flex-col gap-6 lg:col-span-5">
-          <Card className="flex flex-col gap-4 border-[#BFDBFE]">
+          <Card className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-[15px] font-semibold text-[#0F172A]">
+              <h2 className="text-[15px] font-semibold text-[#111111]">
                 Validasi POS Pawoon
               </h2>
               {totalPOS === 0 ? (
@@ -250,25 +250,25 @@ export default function KasirOmzetPage() {
               )}
             </div>
 
-            <div className="flex flex-col gap-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4">
+            <div className="flex flex-col gap-2.5 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-4">
               <div className="flex items-center justify-between text-[13px]">
-                <span className="font-normal text-[#475569]">Total Hitungan (Cash + QRIS)</span>
-                <span className="tabular-mono text-[15px] font-semibold text-[#0F172A]">
+                <span className="font-normal text-[#737373]">Total Hitungan (Cash + QRIS)</span>
+                <span className="tabular-mono text-[15px] font-semibold text-[#111111]">
                   {formatRp(totalInput)}
                 </span>
               </div>
               <div className="flex items-center justify-between text-[13px]">
-                <span className="font-normal text-[#475569]">Total Laporan POS Pawoon</span>
-                <span className="tabular-mono text-[15px] font-semibold text-[#0F172A]">
+                <span className="font-normal text-[#737373]">Total Laporan POS Pawoon</span>
+                <span className="tabular-mono text-[15px] font-semibold text-[#111111]">
                   {formatRp(totalPOS)}
                 </span>
               </div>
-              <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-2.5">
-                <span className="text-[14px] font-semibold text-[#0F172A]">Selisih</span>
+              <div className="flex items-center justify-between border-t border-[#E5E5E5] pt-2.5">
+                <span className="text-[14px] font-semibold text-[#111111]">Selisih</span>
                 <span
                   className={`tabular-mono text-[24px] font-bold ${
                     totalPOS === 0
-                      ? 'text-[#64748B]'
+                      ? 'text-[#737373]'
                       : valid
                         ? 'text-[#15803D]'
                         : 'text-[#DC2626]'
@@ -279,12 +279,12 @@ export default function KasirOmzetPage() {
               </div>
             </div>
 
-            <label className="flex cursor-pointer items-start gap-2.5 text-[12.5px] font-normal text-[#334155]">
+            <label className="flex cursor-pointer items-start gap-2.5 text-[12.5px] font-normal text-[#262626]">
               <input
                 type="checkbox"
                 checked={confirmed}
                 onChange={(e) => setConfirmed(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded accent-[#2563EB]"
+                className="mt-0.5 h-4 w-4 rounded accent-[#111111]"
               />
               <span>
                 Data Cash &amp; QRIS sudah dicocokkan dengan laporan shift POS Pawoon.
@@ -307,28 +307,28 @@ export default function KasirOmzetPage() {
           </Card>
 
           <Card className="flex flex-col gap-3">
-            <h2 className="text-[15px] font-semibold text-[#0F172A]">Riwayat Rekap Terakhir</h2>
+            <h2 className="text-[15px] font-semibold text-[#111111]">Riwayat Rekap Terakhir</h2>
             {rekapOmzet.length === 0 ? (
-              <p className="py-4 text-center text-[12px] font-normal text-[#64748B]">
+              <p className="py-4 text-center text-[12px] font-normal text-[#737373]">
                 Belum ada rekap tersimpan.
               </p>
             ) : (
-              <div className="flex flex-col divide-y divide-[#E2E8F0]">
+              <div className="flex flex-col divide-y divide-[#E5E5E5]">
                 {rekapOmzet.slice(0, 5).map((r) => {
                   const sh = shifts.find((s) => s.id === r.shiftId);
                   return (
                     <div key={r.id} className="flex items-center justify-between gap-2 py-2.5">
                       <div>
-                        <div className="text-[13px] font-medium text-[#0F172A]">
+                        <div className="text-[13px] font-medium text-[#111111]">
                           {formatTanggal(r.tanggal)} · {sh?.nama ?? r.shiftId}
                           {r.versi > 1 ? ` (v${r.versi})` : ''}
                         </div>
-                        <div className="text-[12px] font-normal text-[#64748B]">
+                        <div className="text-[12px] font-normal text-[#737373]">
                           {r.jumlahTransaksi} transaksi
                         </div>
                       </div>
                       <div className="flex items-center gap-2.5">
-                        <span className="tabular-mono text-[13px] font-semibold text-[#0F172A]">
+                        <span className="tabular-mono text-[13px] font-semibold text-[#111111]">
                           {formatRp(r.cash + r.qris)}
                         </span>
                         <Badge

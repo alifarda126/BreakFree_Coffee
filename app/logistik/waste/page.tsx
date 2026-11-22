@@ -89,7 +89,7 @@ export default function LogistikWastePage() {
     <AppShell pageTitle="Monitoring Spoil / Waste">
       {/* Period & Filter Strip */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="inline-flex rounded-lg border border-[#E2E8F0] bg-[#F1F5F9] p-1">
+        <div className="inline-flex rounded-lg border border-[#E5E5E5] bg-[#F5F5F5] p-1">
           {([7, 30] as const).map((d) => (
             <button
               key={d}
@@ -97,8 +97,8 @@ export default function LogistikWastePage() {
               onClick={() => setDaysWindow(d)}
               className={`rounded-md px-3.5 py-1.5 text-[13px] transition-all ${
                 daysWindow === d
-                  ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
-                  : 'font-medium text-[#64748B] hover:text-[#0F172A]'
+                  ? 'bg-white font-semibold text-[#111111] shadow-[0_1px_2px_rgba(17,17,17,0.06)]'
+                  : 'font-medium text-[#737373] hover:text-[#111111]'
               }`}
             >
               {d} Hari Terakhir
@@ -110,7 +110,7 @@ export default function LogistikWastePage() {
           value={filterDivisi}
           onChange={(e) => setFilterDivisi(e.target.value as 'semua' | Divisi)}
           aria-label="Filter divisi waste"
-          className="h-9 rounded-lg border border-[#E2E8F0] bg-white px-3 text-[13px] text-[#0F172A] focus:border-[#2563EB] focus:outline-none"
+          className="h-9 rounded-lg border border-[#E5E5E5] bg-white px-3 text-[13px] text-[#111111] focus:border-[#111111] focus:outline-none"
         >
           <option value="semua">Semua Divisi (Barista &amp; Kitchen)</option>
           <option value="barista">Barista</option>
@@ -147,10 +147,10 @@ export default function LogistikWastePage() {
         <Card className="flex flex-col gap-4 lg:col-span-8">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h2 className="text-[17px] font-semibold text-[#0F172A]">
+              <h2 className="text-[17px] font-semibold text-[#111111]">
                 Daftar Laporan Spoil / Waste Divisi
               </h2>
-              <p className="mt-0.5 text-[13px] font-normal text-[#64748B]">
+              <p className="mt-0.5 text-[13px] font-normal text-[#737373]">
                 Centang item waste terverifikasi untuk memproses Retur BOP H+1.
               </p>
             </div>
@@ -171,7 +171,7 @@ export default function LogistikWastePage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-[13.5px]">
                 <thead>
-                  <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[12px] font-semibold uppercase text-[#64748B]">
+                  <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[12px] font-semibold uppercase text-[#737373]">
                     <th className="w-10 rounded-l-lg px-2 py-2.5">Pilih</th>
                     <th className="px-3 py-2.5">Tanggal</th>
                     <th className="px-3 py-2.5">Bahan</th>
@@ -181,11 +181,11 @@ export default function LogistikWastePage() {
                     <th className="rounded-r-lg px-3 py-2.5 text-right">Nilai</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E2E8F0]">
+                <tbody className="divide-y divide-[#E5E5E5]">
                   {wasteRecords.map((w) => {
                     const selectable = w.statusLap === 'diverifikasi' && !w.returId;
                     return (
-                      <tr key={w.id} className="hover:bg-[#F8FAFC]">
+                      <tr key={w.id} className="hover:bg-[#FAFAFA]">
                         <td className="px-2 py-3">
                           <input
                             type="checkbox"
@@ -198,15 +198,15 @@ export default function LogistikWastePage() {
                               }))
                             }
                             aria-label={`Pilih ${w.bahanNama}`}
-                            className="h-4 w-4 rounded accent-[#2563EB]"
+                            className="h-4 w-4 rounded accent-[#111111]"
                           />
                         </td>
-                        <td className="tabular-mono px-3 py-3 text-[#64748B]">
+                        <td className="tabular-mono px-3 py-3 text-[#737373]">
                           {formatTanggal(w.tanggal)}
                         </td>
-                        <td className="px-3 py-3 text-[#0F172A]">{w.bahanNama}</td>
-                        <td className="px-3 py-3 capitalize text-[#64748B]">{w.divisi}</td>
-                        <td className="px-3 py-3 text-[#334155]">{w.alasan}</td>
+                        <td className="px-3 py-3 text-[#111111]">{w.bahanNama}</td>
+                        <td className="px-3 py-3 capitalize text-[#737373]">{w.divisi}</td>
+                        <td className="px-3 py-3 text-[#262626]">{w.alasan}</td>
                         <td className="tabular-mono px-3 py-3 text-right">
                           {formatQty(w.qty, w.satuan)}
                         </td>
@@ -223,7 +223,7 @@ export default function LogistikWastePage() {
         </Card>
 
         <Card className="flex flex-col gap-3 lg:col-span-4">
-          <h2 className="text-[15px] font-semibold text-[#0F172A]">Dokumen Retur BOP H+1</h2>
+          <h2 className="text-[15px] font-semibold text-[#111111]">Dokumen Retur BOP H+1</h2>
           {returs.length === 0 ? (
             <EmptyState
               title="Belum ada dokumen retur"
@@ -234,10 +234,10 @@ export default function LogistikWastePage() {
               {returs.map((ret) => (
                 <div
                   key={ret.id}
-                  className="space-y-2 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5"
+                  className="space-y-2 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-3.5"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="tabular-mono text-[13px] font-semibold text-[#0F172A]">
+                    <span className="tabular-mono text-[13px] font-semibold text-[#111111]">
                       {ret.nomor}
                     </span>
                     <Badge
@@ -252,7 +252,7 @@ export default function LogistikWastePage() {
                       {ret.status.replace('_', ' ')}
                     </Badge>
                   </div>
-                  <p className="text-[12px] font-normal text-[#64748B]">
+                  <p className="text-[12px] font-normal text-[#737373]">
                     Target pengganti: {formatTanggal(ret.tanggalPengganti)} · {ret.ringkasanItem.length} item
                   </p>
                   {ret.status === 'diajukan' && (

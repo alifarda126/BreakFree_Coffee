@@ -76,7 +76,7 @@ export default function LaporanPenjualanPage() {
   return (
     <AppShell pageTitle="Laporan Penjualan">
       <div className="no-print flex flex-wrap items-center justify-between gap-3">
-        <div className="inline-flex rounded-lg border border-[#E2E8F0] bg-[#F1F5F9] p-1">
+        <div className="inline-flex rounded-lg border border-[#E5E5E5] bg-[#F5F5F5] p-1">
           {([7, 30] as const).map((d) => (
             <button
               key={d}
@@ -84,8 +84,8 @@ export default function LaporanPenjualanPage() {
               onClick={() => setDaysWindow(d)}
               className={`rounded-md px-3.5 py-1.5 text-[13px] transition-all ${
                 daysWindow === d
-                  ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
-                  : 'font-medium text-[#64748B] hover:text-[#0F172A]'
+                  ? 'bg-white font-semibold text-[#111111] shadow-[0_1px_2px_rgba(17,17,17,0.06)]'
+                  : 'font-medium text-[#737373] hover:text-[#111111]'
               }`}
             >
               {d} Hari Terakhir
@@ -141,16 +141,16 @@ export default function LaporanPenjualanPage() {
       {/* Daily Chart */}
       <Card className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-[17px] font-semibold text-[#0F172A]">
+          <h2 className="text-[17px] font-semibold text-[#111111]">
             Grafik Omzet Harian 7 Hari Terakhir (Cash vs QRIS)
           </h2>
-          <div className="flex items-center gap-4 text-[13px] font-medium text-[#475569]">
+          <div className="flex items-center gap-4 text-[13px] font-medium text-[#737373]">
             <span className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-[3px] bg-[#1E40AF]" aria-hidden="true" />
+              <span className="h-2.5 w-2.5 rounded-[3px] bg-[#111111]" aria-hidden="true" />
               Cash
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-[3px] bg-[#60A5FA]" aria-hidden="true" />
+              <span className="h-2.5 w-2.5 rounded-[3px] bg-[#A3A3A3]" aria-hidden="true" />
               QRIS
             </span>
           </div>
@@ -165,10 +165,10 @@ export default function LaporanPenjualanPage() {
           <div className="h-[240px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-                <CartesianGrid stroke="#E2E8F0" strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="label" tick={{ fill: '#64748B', fontSize: 12 }} axisLine={false} tickLine={false} />
+                <CartesianGrid stroke="#E5E5E5" strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="label" tick={{ fill: '#737373', fontSize: 12 }} axisLine={false} tickLine={false} />
                 <YAxis
-                  tick={{ fill: '#64748B', fontSize: 12 }}
+                  tick={{ fill: '#737373', fontSize: 12 }}
                   axisLine={false}
                   tickLine={false}
                   tickFormatter={(v) =>
@@ -176,17 +176,17 @@ export default function LaporanPenjualanPage() {
                   }
                 />
                 <Tooltip
-                  cursor={{ fill: '#F1F5F9' }}
+                  cursor={{ fill: '#F5F5F5' }}
                   formatter={(val, name) => [formatRp(Number(val ?? 0)), name === 'cash' ? 'Cash' : 'QRIS']}
                   contentStyle={{
                     backgroundColor: '#FFFFFF',
-                    borderColor: '#E2E8F0',
+                    borderColor: '#E5E5E5',
                     borderRadius: 10,
                     fontSize: 13,
                   }}
                 />
-                <Bar dataKey="cash" stackId="a" fill="#1E40AF" radius={[0, 0, 4, 4]} maxBarSize={42} />
-                <Bar dataKey="qris" stackId="a" fill="#60A5FA" radius={[4, 4, 0, 0]} maxBarSize={42} />
+                <Bar dataKey="cash" stackId="a" fill="#111111" radius={[0, 0, 4, 4]} maxBarSize={42} />
+                <Bar dataKey="qris" stackId="a" fill="#A3A3A3" radius={[4, 4, 0, 0]} maxBarSize={42} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -195,7 +195,7 @@ export default function LaporanPenjualanPage() {
 
       {/* Sales Table */}
       <Card className="flex flex-col gap-4">
-        <h2 className="text-[17px] font-semibold text-[#0F172A]">
+        <h2 className="text-[17px] font-semibold text-[#111111]">
           Rincian Rekap Omzet Shift ({daysWindow} Hari Terakhir)
         </h2>
 
@@ -208,7 +208,7 @@ export default function LaporanPenjualanPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-[13.5px]">
               <thead>
-                <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[12px] font-semibold uppercase text-[#64748B]">
+                <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[12px] font-semibold uppercase text-[#737373]">
                   <th className="rounded-l-lg px-3 py-2.5">Tanggal &amp; Shift</th>
                   <th className="px-3 py-2.5">Kasir</th>
                   <th className="px-3 py-2.5 text-right">Cash</th>
@@ -217,21 +217,21 @@ export default function LaporanPenjualanPage() {
                   <th className="rounded-r-lg px-3 py-2.5">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2E8F0]">
+              <tbody className="divide-y divide-[#E5E5E5]">
                 {omzetPeriod.map((r) => {
                   const sh = shifts.find((s) => s.id === r.shiftId);
                   const peg = pegawai.find((p) => p.id === r.petugasId);
                   return (
-                    <tr key={r.id} className="hover:bg-[#F8FAFC]">
-                      <td className="px-3 py-3 text-[#0F172A]">
+                    <tr key={r.id} className="hover:bg-[#FAFAFA]">
+                      <td className="px-3 py-3 text-[#111111]">
                         {formatTanggal(r.tanggal)} · {sh?.nama ?? r.shiftId}
                       </td>
-                      <td className="px-3 py-3 text-[#334155]">{peg?.nama ?? '-'}</td>
-                      <td className="tabular-mono px-3 py-3 text-right">{formatRp(r.cash)}</td>
-                      <td className="tabular-mono px-3 py-3 text-right text-[#2563EB]">
+                      <td className="px-3 py-3 text-[#262626]">{peg?.nama ?? '-'}</td>
+                      <td className="tabular-mono px-3 py-3 text-right text-[#262626]">{formatRp(r.cash)}</td>
+                      <td className="tabular-mono px-3 py-3 text-right text-[#737373]">
                         {formatRp(r.qris)}
                       </td>
-                      <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#0F172A]">
+                      <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#111111]">
                         {formatRp(r.totalPOS)}
                       </td>
                       <td className="px-3 py-3">

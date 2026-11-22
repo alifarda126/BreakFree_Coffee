@@ -29,10 +29,10 @@ export default function KasirRiwayatPage() {
       <Card className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-[17px] font-semibold text-[#0F172A]">
+            <h2 className="text-[17px] font-semibold text-[#111111]">
               Daftar Rekap Omzet Per Shift (POS Pawoon)
             </h2>
-            <p className="mt-0.5 text-[13px] font-normal text-[#64748B]">
+            <p className="mt-0.5 text-[13px] font-normal text-[#737373]">
               Seluruh laporan closing kasir yang tersimpan dan terkirim ke sistem.
             </p>
           </div>
@@ -42,13 +42,13 @@ export default function KasirRiwayatPage() {
               value={filterTanggal}
               onChange={(e) => setFilterTanggal(e.target.value)}
               aria-label="Filter tanggal"
-              className="tabular-mono h-9 rounded-lg border border-[#E2E8F0] bg-white px-2.5 text-[13px] font-normal text-[#0F172A] focus:border-[#2563EB] focus:outline-none"
+              className="tabular-mono h-9 rounded-lg border border-[#E5E5E5] bg-white px-2.5 text-[13px] font-normal text-[#111111] focus:border-[#111111] focus:outline-none"
             />
             <select
               value={filterShift}
               onChange={(e) => setFilterShift(e.target.value)}
               aria-label="Filter shift"
-              className="h-9 rounded-lg border border-[#E2E8F0] bg-white px-2.5 text-[13px] font-normal text-[#0F172A] focus:border-[#2563EB] focus:outline-none"
+              className="h-9 rounded-lg border border-[#E5E5E5] bg-white px-2.5 text-[13px] font-normal text-[#111111] focus:border-[#111111] focus:outline-none"
             >
               <option value="all">Semua Shift</option>
               {shifts.map((s) => (
@@ -80,7 +80,7 @@ export default function KasirRiwayatPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-[13.5px]">
               <thead>
-                <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[12px] font-semibold uppercase text-[#64748B]">
+                <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[12px] font-semibold uppercase text-[#737373]">
                   <th className="rounded-l-lg px-3 py-2.5">Tanggal &amp; Shift</th>
                   <th className="px-3 py-2.5">Kasir</th>
                   <th className="px-3 py-2.5 text-right">Cash</th>
@@ -90,24 +90,24 @@ export default function KasirRiwayatPage() {
                   <th className="rounded-r-lg px-3 py-2.5">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2E8F0]">
+              <tbody className="divide-y divide-[#E5E5E5]">
                 {filteredOmzet.map((r) => {
                   const sh = shifts.find((s) => s.id === r.shiftId);
                   const peg = pegawai.find((p) => p.id === r.petugasId);
                   return (
-                    <tr key={r.id} className="transition-colors hover:bg-[#F8FAFC]">
-                      <td className="px-3 py-3 font-normal text-[#0F172A]">
+                    <tr key={r.id} className="transition-colors hover:bg-[#FAFAFA]">
+                      <td className="px-3 py-3 font-normal text-[#111111]">
                         {formatTanggal(r.tanggal)} · {sh?.nama ?? r.shiftId}
                         {r.versi > 1 && (
-                          <span className="ml-1.5 text-[12px] font-medium text-[#2563EB]">(v{r.versi})</span>
+                          <span className="ml-1.5 text-[12px] font-medium text-[#737373]">(v{r.versi})</span>
                         )}
                       </td>
-                      <td className="px-3 py-3 font-normal text-[#334155]">{peg?.nama ?? '-'}</td>
-                      <td className="tabular-mono px-3 py-3 text-right font-normal">{formatRp(r.cash)}</td>
-                      <td className="tabular-mono px-3 py-3 text-right font-normal text-[#2563EB]">
+                      <td className="px-3 py-3 font-normal text-[#262626]">{peg?.nama ?? '-'}</td>
+                      <td className="tabular-mono px-3 py-3 text-right font-normal text-[#262626]">{formatRp(r.cash)}</td>
+                      <td className="tabular-mono px-3 py-3 text-right font-normal text-[#737373]">
                         {formatRp(r.qris)}
                       </td>
-                      <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#0F172A]">
+                      <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#111111]">
                         {formatRp(r.totalPOS)}
                       </td>
                       <td

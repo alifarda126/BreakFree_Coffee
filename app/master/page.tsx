@@ -256,7 +256,7 @@ export default function MasterDataPage() {
   };
 
   const inputCls =
-    'w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20';
+    'w-full rounded-lg border border-[#E5E5E5] bg-white px-3 py-2 text-sm text-[#111111] transition focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/10';
 
   return (
     <AppShell pageTitle="Master Bahan Baku, Menu & Supplier">
@@ -264,7 +264,7 @@ export default function MasterDataPage() {
         {/* Tabs + Primary Action */}
         <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
           <div
-            className="inline-flex rounded-lg border border-[#E2E8F0] bg-[#F1F5F9] p-1"
+            className="inline-flex rounded-lg border border-[#E5E5E5] bg-[#F5F5F5] p-1"
             role="tablist"
             aria-label="Kategori master data"
           >
@@ -275,8 +275,8 @@ export default function MasterDataPage() {
               onClick={() => setTab('bahan')}
               className={`inline-flex items-center gap-2 rounded-md px-3.5 py-1.5 text-xs transition-all ${
                 tab === 'bahan'
-                  ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
-                  : 'font-medium text-[#64748B] hover:text-[#0F172A]'
+                  ? 'bg-white font-semibold text-[#111111] shadow-[0_1px_2px_rgba(17,17,17,0.06)]'
+                  : 'font-medium text-[#737373] hover:text-[#111111]'
               }`}
             >
               <Package className="h-3.5 w-3.5" aria-hidden="true" />
@@ -289,8 +289,8 @@ export default function MasterDataPage() {
               onClick={() => setTab('menu')}
               className={`inline-flex items-center gap-2 rounded-md px-3.5 py-1.5 text-xs transition-all ${
                 tab === 'menu'
-                  ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
-                  : 'font-medium text-[#64748B] hover:text-[#0F172A]'
+                  ? 'bg-white font-semibold text-[#111111] shadow-[0_1px_2px_rgba(17,17,17,0.06)]'
+                  : 'font-medium text-[#737373] hover:text-[#111111]'
               }`}
             >
               <Coffee className="h-3.5 w-3.5" aria-hidden="true" />
@@ -303,8 +303,8 @@ export default function MasterDataPage() {
               onClick={() => setTab('supplier')}
               className={`inline-flex items-center gap-2 rounded-md px-3.5 py-1.5 text-xs transition-all ${
                 tab === 'supplier'
-                  ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
-                  : 'font-medium text-[#64748B] hover:text-[#0F172A]'
+                  ? 'bg-white font-semibold text-[#111111] shadow-[0_1px_2px_rgba(17,17,17,0.06)]'
+                  : 'font-medium text-[#737373] hover:text-[#111111]'
               }`}
             >
               <Truck className="h-3.5 w-3.5" aria-hidden="true" />
@@ -336,7 +336,7 @@ export default function MasterDataPage() {
         <Card className="flex flex-wrap items-center gap-3 p-4">
           <div className="relative min-w-[220px] flex-1">
             <Search
-              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#64748B]"
+              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#737373]"
               aria-hidden="true"
             />
             <input
@@ -351,7 +351,7 @@ export default function MasterDataPage() {
                     ? 'Cari nama menu...'
                     : 'Cari supplier atau kategori pasokan...'
               }
-              className="w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] py-2 pl-9 pr-3 text-xs text-[#0F172A] transition focus:border-[#2563EB] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
+              className="w-full rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] py-2 pl-9 pr-3 text-xs text-[#111111] transition focus:border-[#111111] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#111111]/10"
             />
           </div>
 
@@ -360,7 +360,7 @@ export default function MasterDataPage() {
               value={filterDivisi}
               onChange={(e) => setFilterDivisi(e.target.value as 'semua' | DivisiBahan)}
               aria-label="Filter divisi"
-              className="rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-xs font-medium text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
+              className="rounded-lg border border-[#E5E5E5] bg-white px-3 py-2 text-xs font-medium text-[#111111] focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/10"
             >
               <option value="semua">Semua Divisi</option>
               <option value="barista">Barista</option>
@@ -374,7 +374,7 @@ export default function MasterDataPage() {
               value={filterSumber}
               onChange={(e) => setFilterSumber(e.target.value as 'semua' | SumberBahan)}
               aria-label="Filter sumber bahan"
-              className="rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-xs font-medium text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
+              className="rounded-lg border border-[#E5E5E5] bg-white px-3 py-2 text-xs font-medium text-[#111111] focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/10"
             >
               <option value="semua">Semua Sumber</option>
               <option value="eksternal">Eksternal (Beli PO)</option>
@@ -400,7 +400,7 @@ export default function MasterDataPage() {
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                    <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[11px] font-semibold uppercase tracking-wider text-[#737373]">
                       <th className="rounded-l-lg px-3 py-2.5">Nama Bahan</th>
                       <th className="px-3 py-2.5">Divisi &amp; Sumber</th>
                       <th className="px-3 py-2.5 text-right">Stok Saat Ini</th>
@@ -410,14 +410,14 @@ export default function MasterDataPage() {
                       <th className="rounded-r-lg px-3 py-2.5 text-right">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E2E8F0]">
+                  <tbody className="divide-y divide-[#E5E5E5]">
                     {filteredBahan.map((b) => {
                       const stok = hitungStokSaatIni(b.id, stockMovements);
                       return (
-                        <tr key={b.id} className="transition-colors hover:bg-[#F8FAFC]">
+                        <tr key={b.id} className="transition-colors hover:bg-[#FAFAFA]">
                           <td className="px-3 py-3">
-                            <p className="text-[13px] font-semibold text-[#0F172A]">{b.nama}</p>
-                            <p className="text-[11px] text-[#64748B]">{b.kategori}</p>
+                            <p className="text-[13px] font-semibold text-[#111111]">{b.nama}</p>
+                            <p className="text-[11px] text-[#737373]">{b.kategori}</p>
                           </td>
                           <td className="px-3 py-3">
                             <div className="flex flex-wrap items-center gap-1.5">
@@ -437,13 +437,13 @@ export default function MasterDataPage() {
                               </Badge>
                             </div>
                           </td>
-                          <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#0F172A]">
+                          <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#111111]">
                             {formatQty(stok, b.satuan)}
                           </td>
-                          <td className="tabular-mono px-3 py-3 text-right text-[#64748B]">
+                          <td className="tabular-mono px-3 py-3 text-right text-[#737373]">
                             {formatQty(b.stokMinimum, b.satuan)}
                           </td>
-                          <td className="tabular-mono px-3 py-3 text-right font-medium text-[#0F172A]">
+                          <td className="tabular-mono px-3 py-3 text-right font-medium text-[#111111]">
                             {formatRp(b.hargaSatuan)}
                           </td>
                           <td className="px-3 py-3">
@@ -503,7 +503,7 @@ export default function MasterDataPage() {
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                    <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[11px] font-semibold uppercase tracking-wider text-[#737373]">
                       <th className="rounded-l-lg px-3 py-2.5">Nama Menu</th>
                       <th className="px-3 py-2.5">Divisi &amp; Kategori</th>
                       <th className="px-3 py-2.5 text-right">Harga Jual</th>
@@ -511,10 +511,10 @@ export default function MasterDataPage() {
                       <th className="rounded-r-lg px-3 py-2.5 text-right">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E2E8F0]">
+                  <tbody className="divide-y divide-[#E5E5E5]">
                     {filteredMenu.map((m) => (
-                      <tr key={m.id} className="transition-colors hover:bg-[#F8FAFC]">
-                        <td className="px-3 py-3 text-[13px] font-semibold text-[#0F172A]">
+                      <tr key={m.id} className="transition-colors hover:bg-[#FAFAFA]">
+                        <td className="px-3 py-3 text-[13px] font-semibold text-[#111111]">
                           {m.nama}
                         </td>
                         <td className="px-3 py-3">
@@ -525,26 +525,26 @@ export default function MasterDataPage() {
                             <Badge tone="neutral">{m.kategori.replace('_', ' ')}</Badge>
                           </div>
                         </td>
-                        <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#0F172A]">
+                        <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#111111]">
                           {formatRp(m.harga)}
                         </td>
                         <td className="px-3 py-3">
                           <div className="flex flex-wrap gap-1.5">
                             {m.resep.length === 0 && (
-                              <span className="italic text-[#64748B]">Belum ada resep</span>
+                              <span className="italic text-[#737373]">Belum ada resep</span>
                             )}
                             {m.resep.map((r, idx) => {
                               const b = bahan.find((x) => x.id === r.bahanId);
                               return (
                                 <span
                                   key={r.bahanId}
-                                  className="inline-flex items-center gap-1 text-[12px] text-[#334155]"
+                                  className="inline-flex items-center gap-1 text-[12px] text-[#262626]"
                                 >
                                   <span>{b?.nama || r.bahanId}</span>
-                                  <span className="tabular-mono font-medium text-[#2563EB]">
+                                  <span className="tabular-mono font-medium text-[#111111]">
                                     ({r.qty} {b?.satuan || ''})
                                   </span>
-                                  {idx < m.resep.length - 1 && <span className="text-[#CBD5E1]">·</span>}
+                                  {idx < m.resep.length - 1 && <span className="text-[#D4D4D4]">·</span>}
                                 </span>
                               );
                             })}
@@ -599,7 +599,7 @@ export default function MasterDataPage() {
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                    <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[11px] font-semibold uppercase tracking-wider text-[#737373]">
                       <th className="rounded-l-lg px-3 py-2.5">Nama Supplier</th>
                       <th className="px-3 py-2.5">Kategori Pasokan</th>
                       <th className="px-3 py-2.5">Kontak / Telepon</th>
@@ -607,19 +607,19 @@ export default function MasterDataPage() {
                       <th className="rounded-r-lg px-3 py-2.5 text-right">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E2E8F0]">
+                  <tbody className="divide-y divide-[#E5E5E5]">
                     {filteredSuppliers.map((s) => {
                       const poCount = purchaseOrders.filter((p) => p.supplierId === s.id).length;
                       return (
-                        <tr key={s.id} className="transition-colors hover:bg-[#F8FAFC]">
-                          <td className="px-3 py-3 text-[13px] font-semibold text-[#0F172A]">
+                        <tr key={s.id} className="transition-colors hover:bg-[#FAFAFA]">
+                          <td className="px-3 py-3 text-[13px] font-semibold text-[#111111]">
                             {s.nama}
                           </td>
                           <td className="px-3 py-3">
                             <Badge tone="neutral">{s.kategori}</Badge>
                           </td>
-                          <td className="tabular-mono px-3 py-3 text-[#64748B]">{s.kontak}</td>
-                          <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#0F172A]">
+                          <td className="tabular-mono px-3 py-3 text-[#737373]">{s.kontak}</td>
+                          <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#111111]">
                             {poCount} PO
                           </td>
                           <td className="px-3 py-3 text-right">
@@ -664,7 +664,7 @@ export default function MasterDataPage() {
       >
         <form onSubmit={handleSaveBahan} className="space-y-4 text-sm">
           <div>
-            <label htmlFor="b-nama" className="mb-1 block text-xs font-medium text-[#475569]">
+            <label htmlFor="b-nama" className="mb-1 block text-xs font-medium text-[#737373]">
               Nama Bahan
             </label>
             <input
@@ -680,7 +680,7 @@ export default function MasterDataPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label htmlFor="b-kat" className="mb-1 block text-xs font-medium text-[#475569]">
+              <label htmlFor="b-kat" className="mb-1 block text-xs font-medium text-[#737373]">
                 Kategori
               </label>
               <input
@@ -693,7 +693,7 @@ export default function MasterDataPage() {
               />
             </div>
             <div>
-              <label htmlFor="b-sat" className="mb-1 block text-xs font-medium text-[#475569]">
+              <label htmlFor="b-sat" className="mb-1 block text-xs font-medium text-[#737373]">
                 Satuan
               </label>
               <input
@@ -710,7 +710,7 @@ export default function MasterDataPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label htmlFor="b-div" className="mb-1 block text-xs font-medium text-[#475569]">
+              <label htmlFor="b-div" className="mb-1 block text-xs font-medium text-[#737373]">
                 Divisi Pemakai
               </label>
               <select
@@ -725,7 +725,7 @@ export default function MasterDataPage() {
               </select>
             </div>
             <div>
-              <label htmlFor="b-sum" className="mb-1 block text-xs font-medium text-[#475569]">
+              <label htmlFor="b-sum" className="mb-1 block text-xs font-medium text-[#737373]">
                 Sumber Pengadaan
               </label>
               <select
@@ -742,7 +742,7 @@ export default function MasterDataPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label htmlFor="b-min" className="mb-1 block text-xs font-medium text-[#475569]">
+              <label htmlFor="b-min" className="mb-1 block text-xs font-medium text-[#737373]">
                 Stok Minimum
               </label>
               <input
@@ -756,7 +756,7 @@ export default function MasterDataPage() {
               />
             </div>
             <div>
-              <label htmlFor="b-hrg" className="mb-1 block text-xs font-medium text-[#475569]">
+              <label htmlFor="b-hrg" className="mb-1 block text-xs font-medium text-[#737373]">
                 Harga Satuan (Rp)
               </label>
               <input
@@ -771,12 +771,12 @@ export default function MasterDataPage() {
             </div>
           </div>
 
-          <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-[#334155]">
+          <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-[#262626]">
             <input
               type="checkbox"
               checked={bPerishable}
               onChange={(e) => setBPerishable(e.target.checked)}
-              className="h-4 w-4 rounded accent-[#2563EB]"
+              className="h-4 w-4 rounded accent-[#111111]"
             />
             Bahan mudah basi / perishable (dipantau ketat saat Closing &amp; Retur BOP)
           </label>
@@ -800,7 +800,7 @@ export default function MasterDataPage() {
       >
         <form onSubmit={handleSaveMenu} className="space-y-4 text-sm">
           <div>
-            <label htmlFor="m-nama" className="mb-1 block text-xs font-medium text-[#475569]">
+            <label htmlFor="m-nama" className="mb-1 block text-xs font-medium text-[#737373]">
               Nama Menu
             </label>
             <input
@@ -816,7 +816,7 @@ export default function MasterDataPage() {
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label htmlFor="m-div" className="mb-1 block text-xs font-medium text-[#475569]">
+              <label htmlFor="m-div" className="mb-1 block text-xs font-medium text-[#737373]">
                 Divisi
               </label>
               <select
@@ -830,7 +830,7 @@ export default function MasterDataPage() {
               </select>
             </div>
             <div>
-              <label htmlFor="m-kat" className="mb-1 block text-xs font-medium text-[#475569]">
+              <label htmlFor="m-kat" className="mb-1 block text-xs font-medium text-[#737373]">
                 Kategori
               </label>
               <select
@@ -846,7 +846,7 @@ export default function MasterDataPage() {
               </select>
             </div>
             <div>
-              <label htmlFor="m-hrg" className="mb-1 block text-xs font-medium text-[#475569]">
+              <label htmlFor="m-hrg" className="mb-1 block text-xs font-medium text-[#737373]">
                 Harga Jual
               </label>
               <input
@@ -862,14 +862,14 @@ export default function MasterDataPage() {
           </div>
 
           {/* Builder Resep */}
-          <div className="space-y-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5">
-            <p className="text-xs font-semibold text-[#0F172A]">Komposisi Bahan Baku Resep</p>
+          <div className="space-y-3 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-3.5">
+            <p className="text-xs font-semibold text-[#111111]">Komposisi Bahan Baku Resep</p>
             <div className="flex flex-wrap items-center gap-2">
               <select
                 value={pickBahanId}
                 onChange={(e) => setPickBahanId(e.target.value)}
                 aria-label="Pilih bahan untuk resep"
-                className="min-w-[160px] flex-1 rounded-lg border border-[#E2E8F0] bg-white px-2.5 py-1.5 text-xs text-[#0F172A] focus:border-[#2563EB] focus:outline-none"
+                className="min-w-[160px] flex-1 rounded-lg border border-[#E5E5E5] bg-white px-2.5 py-1.5 text-xs text-[#111111] focus:border-[#111111] focus:outline-none"
               >
                 {bahan.map((b) => (
                   <option key={b.id} value={b.id}>
@@ -884,7 +884,7 @@ export default function MasterDataPage() {
                 value={pickQty}
                 onChange={(e) => setPickQty(Number(e.target.value) || 0)}
                 aria-label="Takaran bahan resep"
-                className="tabular-mono w-20 rounded-lg border border-[#E2E8F0] bg-white px-2.5 py-1.5 text-xs font-semibold text-[#0F172A] focus:border-[#2563EB] focus:outline-none"
+                className="tabular-mono w-20 rounded-lg border border-[#E5E5E5] bg-white px-2.5 py-1.5 text-xs font-semibold text-[#111111] focus:border-[#111111] focus:outline-none"
               />
               <Button type="button" variant="secondary" size="sm" onClick={handleAddResepRow}>
                 + Pasang
@@ -892,7 +892,7 @@ export default function MasterDataPage() {
             </div>
 
             {mResep.length === 0 ? (
-              <p className="text-[11px] text-[#64748B]">
+              <p className="text-[11px] text-[#737373]">
                 Belum ada bahan ditambahkan ke resep menu ini.
               </p>
             ) : (
@@ -902,9 +902,9 @@ export default function MasterDataPage() {
                   return (
                     <div
                       key={r.bahanId}
-                      className="flex items-center justify-between rounded-lg border border-[#E2E8F0] bg-white px-2.5 py-1.5 text-xs"
+                      className="flex items-center justify-between rounded-lg border border-[#E5E5E5] bg-white px-2.5 py-1.5 text-xs"
                     >
-                      <span className="font-medium text-[#0F172A]">
+                      <span className="font-medium text-[#111111]">
                         {b?.nama || r.bahanId} ({r.qty} {b?.satuan || ''})
                       </span>
                       <button
@@ -942,7 +942,7 @@ export default function MasterDataPage() {
       >
         <form onSubmit={handleSaveSupplier} className="space-y-4 text-sm">
           <div>
-            <label htmlFor="s-nama" className="mb-1 block text-xs font-medium text-[#475569]">
+            <label htmlFor="s-nama" className="mb-1 block text-xs font-medium text-[#737373]">
               Nama Supplier
             </label>
             <input
@@ -956,7 +956,7 @@ export default function MasterDataPage() {
             />
           </div>
           <div>
-            <label htmlFor="s-kat" className="mb-1 block text-xs font-medium text-[#475569]">
+            <label htmlFor="s-kat" className="mb-1 block text-xs font-medium text-[#737373]">
               Kategori Pasokan
             </label>
             <input
@@ -969,7 +969,7 @@ export default function MasterDataPage() {
             />
           </div>
           <div>
-            <label htmlFor="s-kontak" className="mb-1 block text-xs font-medium text-[#475569]">
+            <label htmlFor="s-kontak" className="mb-1 block text-xs font-medium text-[#737373]">
               Nomor Kontak / WA
             </label>
             <input

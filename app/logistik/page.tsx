@@ -153,21 +153,21 @@ export default function LogistikDashboardPage() {
         <Card className="flex flex-col gap-4 lg:col-span-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-[17px] font-semibold text-[#0F172A]">
+              <h2 className="text-[17px] font-semibold text-[#111111]">
                 Verifikasi Laporan Stok Barista &amp; Kitchen
               </h2>
-              <p className="mt-0.5 text-[13px] font-normal text-[#64748B]">
+              <p className="mt-0.5 text-[13px] font-normal text-[#737373]">
                 Periksa hasil opname fisik dan waste sebelum memperbarui stok sistem.
               </p>
             </div>
-            <div className="inline-flex rounded-lg border border-[#E2E8F0] bg-[#F1F5F9] p-1 text-[12px]">
+            <div className="inline-flex rounded-lg border border-[#E5E5E5] bg-[#F5F5F5] p-1 text-[12px]">
               <button
                 type="button"
                 onClick={() => setFilterLap('perlu')}
                 className={`rounded-md px-3 py-1 transition-all ${
                   filterLap === 'perlu'
-                    ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
-                    : 'font-medium text-[#64748B] hover:text-[#0F172A]'
+                    ? 'bg-white font-semibold text-[#111111] shadow-[0_1px_2px_rgba(17,17,17,0.06)]'
+                    : 'font-medium text-[#737373] hover:text-[#111111]'
                 }`}
               >
                 Perlu Verifikasi ({pendingVerifCount})
@@ -177,8 +177,8 @@ export default function LogistikDashboardPage() {
                 onClick={() => setFilterLap('semua')}
                 className={`rounded-md px-3 py-1 transition-all ${
                   filterLap === 'semua'
-                    ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
-                    : 'font-medium text-[#64748B] hover:text-[#0F172A]'
+                    ? 'bg-white font-semibold text-[#111111] shadow-[0_1px_2px_rgba(17,17,17,0.06)]'
+                    : 'font-medium text-[#737373] hover:text-[#111111]'
                 }`}
               >
                 Terbaru
@@ -199,7 +199,7 @@ export default function LogistikDashboardPage() {
                 return (
                   <div
                     key={lap.id}
-                    className="flex flex-col justify-between gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 sm:flex-row sm:items-center"
+                    className="flex flex-col justify-between gap-3 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-4 sm:flex-row sm:items-center"
                   >
                     <div className="space-y-1">
                       <div className="flex flex-wrap items-center gap-1.5">
@@ -219,10 +219,10 @@ export default function LogistikDashboardPage() {
                                 : 'Draft'}
                         </Badge>
                       </div>
-                      <p className="text-[14px] font-medium text-[#0F172A]">
+                      <p className="text-[14px] font-medium text-[#111111]">
                         {formatTanggal(lap.tanggal)} · {petugasNama(lap.petugasId)}
                       </p>
-                      <div className="flex flex-wrap items-center gap-2 text-[12px] font-normal text-[#64748B]">
+                      <div className="flex flex-wrap items-center gap-2 text-[12px] font-normal text-[#737373]">
                         <span>{lap.items.length} bahan diopname</span>
                         <span>·</span>
                         <span className={selisihCount > 0 ? 'font-medium text-[#B45309]' : ''}>
@@ -267,7 +267,7 @@ export default function LogistikDashboardPage() {
         {/* Right: Bahan Perlu Perhatian & Aksi Cepat PO */}
         <Card className="flex flex-col gap-4 lg:col-span-4">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-[15px] font-semibold text-[#0F172A]">Bahan Perlu Restock</h2>
+            <h2 className="text-[15px] font-semibold text-[#111111]">Bahan Perlu Restock</h2>
             <Link href="/logistik/persediaan">
               <Button variant="ghost" size="sm">
                 Semua
@@ -277,9 +277,9 @@ export default function LogistikDashboardPage() {
           </div>
 
           {kritisBahan.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-5 text-center">
-              <p className="text-[13px] font-medium text-[#0F172A]">Seluruh stok aman</p>
-              <p className="mt-1 text-[12px] font-normal text-[#64748B]">
+            <div className="rounded-xl border border-dashed border-[#E5E5E5] bg-[#FAFAFA] p-5 text-center">
+              <p className="text-[13px] font-medium text-[#111111]">Seluruh stok aman</p>
+              <p className="mt-1 text-[12px] font-normal text-[#737373]">
                 Belum ada bahan yang menyentuh batas stok minimum.
               </p>
             </div>
@@ -288,11 +288,11 @@ export default function LogistikDashboardPage() {
               {kritisBahan.slice(0, 6).map(({ b, stok, status }) => (
                 <div
                   key={b.id}
-                  className="flex items-center justify-between gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5"
+                  className="flex items-center justify-between gap-2 rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] px-3 py-2.5"
                 >
                   <div className="min-w-0">
-                    <div className="truncate text-[13px] font-medium text-[#0F172A]">{b.nama}</div>
-                    <div className="text-[12px] font-normal capitalize text-[#64748B]">
+                    <div className="truncate text-[13px] font-medium text-[#111111]">{b.nama}</div>
+                    <div className="text-[12px] font-normal capitalize text-[#737373]">
                       {b.divisi} · Min {formatQty(b.stokMinimum, b.satuan)}
                     </div>
                   </div>
@@ -337,28 +337,28 @@ export default function LogistikDashboardPage() {
       >
         {inspectLaporan && (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3 text-[12px] sm:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-3 text-[12px] sm:grid-cols-3">
               <div>
-                <p className="text-[#64748B]">Tanggal &amp; Shift</p>
-                <p className="font-medium text-[#0F172A]">
+                <p className="text-[#737373]">Tanggal &amp; Shift</p>
+                <p className="font-medium text-[#111111]">
                   {formatTanggal(inspectLaporan.tanggal)} · {shiftNama(inspectLaporan.shiftId)}
                 </p>
               </div>
               <div>
-                <p className="text-[#64748B]">Divisi &amp; Sesi</p>
-                <p className="font-medium capitalize text-[#0F172A]">
+                <p className="text-[#737373]">Divisi &amp; Sesi</p>
+                <p className="font-medium capitalize text-[#111111]">
                   {inspectLaporan.divisi} · {inspectLaporan.sesi}
                 </p>
               </div>
               <div>
-                <p className="text-[#64748B]">Petugas</p>
-                <p className="font-medium text-[#0F172A]">{petugasNama(inspectLaporan.petugasId)}</p>
+                <p className="text-[#737373]">Petugas</p>
+                <p className="font-medium text-[#111111]">{petugasNama(inspectLaporan.petugasId)}</p>
               </div>
             </div>
 
-            <div className="max-h-60 overflow-y-auto rounded-xl border border-[#E2E8F0]">
+            <div className="max-h-60 overflow-y-auto rounded-xl border border-[#E5E5E5]">
               <table className="w-full border-collapse text-left text-[13px]">
-                <thead className="bg-[#F8FAFC] text-[12px] font-semibold text-[#64748B]">
+                <thead className="bg-[#FAFAFA] text-[12px] font-semibold text-[#737373]">
                   <tr>
                     <th className="px-3 py-2">Bahan</th>
                     <th className="px-3 py-2 text-right">Sistem</th>
@@ -366,16 +366,16 @@ export default function LogistikDashboardPage() {
                     <th className="px-3 py-2 text-right">Selisih</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E2E8F0]">
+                <tbody className="divide-y divide-[#E5E5E5]">
                   {inspectLaporan.items.map((item) => {
                     const b = bahan.find((x) => x.id === item.bahanId);
                     return (
                       <tr key={item.bahanId}>
-                        <td className="px-3 py-2 text-[#0F172A]">{b?.nama || item.bahanId}</td>
-                        <td className="tabular-mono px-3 py-2 text-right text-[#64748B]">
+                        <td className="px-3 py-2 text-[#111111]">{b?.nama || item.bahanId}</td>
+                        <td className="tabular-mono px-3 py-2 text-right text-[#737373]">
                           {formatQty(item.stokSistem, b?.satuan || '')}
                         </td>
-                        <td className="tabular-mono px-3 py-2 text-right font-medium">
+                        <td className="tabular-mono px-3 py-2 text-right font-medium text-[#111111]">
                           {formatQty(item.stokFisik, b?.satuan || '')}
                         </td>
                         <td
@@ -396,7 +396,7 @@ export default function LogistikDashboardPage() {
               </table>
             </div>
 
-            <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-3 text-[12px] text-[#64748B]">
+            <div className="flex items-center justify-between border-t border-[#E5E5E5] pt-3 text-[12px] text-[#737373]">
               <span>Dikirim: {formatWaktu(inspectLaporan.submittedAt || inspectLaporan.createdAt)}</span>
               {inspectLaporan.status === 'terkirim' && (
                 <div className="flex items-center gap-2">
@@ -429,16 +429,16 @@ export default function LogistikDashboardPage() {
         title="Kembalikan Laporan ke Divisi"
       >
         <div className="space-y-4">
-          <p className="text-[13px] font-normal text-[#64748B]">
+          <p className="text-[13px] font-normal text-[#737373]">
             Berikan catatan revisi untuk petugas{' '}
-            <span className="font-medium capitalize text-[#0F172A]">{returnModalLap?.divisi}</span>.
+            <span className="font-medium capitalize text-[#111111]">{returnModalLap?.divisi}</span>.
           </p>
           <textarea
             rows={3}
             value={returnReason}
             onChange={(e) => setReturnReason(e.target.value)}
             placeholder="Contoh: Selisih susu UHT belum disertai keterangan waste."
-            className="w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-[14px] text-[#0F172A] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
+            className="w-full rounded-lg border border-[#E5E5E5] bg-white px-3 py-2 text-[14px] text-[#111111] focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/10"
           />
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => setReturnModalLap(null)}>

@@ -258,7 +258,7 @@ export default function PengaturanPage() {
   const petugasNama = (id: string) => pegawai.find((p) => p.id === id)?.nama || 'Sistem';
 
   const inputCls =
-    'w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20';
+    'w-full rounded-lg border border-[#E5E5E5] bg-white px-3 py-2 text-sm text-[#111111] transition focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/10';
 
   return (
     <AppShell pageTitle="Master Pegawai, Shift & Pengaturan Data">
@@ -267,14 +267,14 @@ export default function PengaturanPage() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           <Card className="p-5 lg:col-span-7">
             <div className="mb-4 flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#EFF6FF] text-[#2563EB]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F5F5F5] text-[#111111]">
                 <Sliders className="h-4 w-4" aria-hidden="true" />
               </div>
               <div>
-                <h2 className="text-[16px] font-semibold text-[#0F172A]">
+                <h2 className="text-[16px] font-semibold text-[#111111]">
                   Parameter Operasional &amp; Pakem Outlet
                 </h2>
-                <p className="text-xs text-[#64748B]">
+                <p className="text-xs text-[#737373]">
                   Mengatur pengali stok akhir pekan dan toleransi selisih kasir vs POS Pawoon.
                 </p>
               </div>
@@ -283,7 +283,7 @@ export default function PengaturanPage() {
             <form onSubmit={handleSaveSettings} className="space-y-4 text-sm">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="set-nama" className="mb-1 block text-xs font-medium text-[#475569]">
+                  <label htmlFor="set-nama" className="mb-1 block text-xs font-medium text-[#737373]">
                     Nama Outlet
                   </label>
                   <input
@@ -295,7 +295,7 @@ export default function PengaturanPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="set-alamat" className="mb-1 block text-xs font-medium text-[#475569]">
+                  <label htmlFor="set-alamat" className="mb-1 block text-xs font-medium text-[#737373]">
                     Alamat Outlet
                   </label>
                   <input
@@ -310,7 +310,7 @@ export default function PengaturanPage() {
 
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="set-pakem" className="mb-1 block text-xs font-medium text-[#475569]">
+                  <label htmlFor="set-pakem" className="mb-1 block text-xs font-medium text-[#737373]">
                     Pakem Akhir Pekan (Pengali Sabtu-Minggu)
                   </label>
                   <input
@@ -323,13 +323,13 @@ export default function PengaturanPage() {
                     onChange={(e) => setFaktorAkhirPekan(Number(e.target.value) || 1.5)}
                     className={`${inputCls} tabular-mono`}
                   />
-                  <p className="mt-1 text-[11px] text-[#64748B]">
-                    Default Breakfree: <strong className="tabular-mono text-[#0F172A]">1.5x</strong> dari stok
+                  <p className="mt-1 text-[11px] text-[#737373]">
+                    Default Breakfree: <strong className="tabular-mono text-[#111111]">1.5x</strong> dari stok
                     minimum hari biasa.
                   </p>
                 </div>
                 <div>
-                  <label htmlFor="set-tol" className="mb-1 block text-xs font-medium text-[#475569]">
+                  <label htmlFor="set-tol" className="mb-1 block text-xs font-medium text-[#737373]">
                     Toleransi Selisih Omzet POS (Rp)
                   </label>
                   <input
@@ -341,7 +341,7 @@ export default function PengaturanPage() {
                     onChange={(e) => setToleransiSelisih(Math.max(0, Number(e.target.value) || 0))}
                     className={`${inputCls} tabular-mono`}
                   />
-                  <p className="mt-1 text-[11px] text-[#64748B]">
+                  <p className="mt-1 text-[11px] text-[#737373]">
                     Nilai 0 mewajibkan alasan setiap ada selisih kasir vs POS.
                   </p>
                 </div>
@@ -359,26 +359,26 @@ export default function PengaturanPage() {
           <Card className="flex flex-col justify-between gap-4 p-5 lg:col-span-5">
             <div className="space-y-3">
               <div>
-                <h2 className="text-[16px] font-semibold text-[#0F172A]">
+                <h2 className="text-[16px] font-semibold text-[#111111]">
                   Penyimpanan Lokal &amp; Backup JSON
                 </h2>
-                <p className="mt-0.5 text-xs text-[#64748B]">
+                <p className="mt-0.5 text-xs text-[#737373]">
                   Semua transaksi tersimpan lokal di browser tanpa server. Ekspor secara berkala untuk arsip testing atau pindah perangkat.
                 </p>
               </div>
 
-              <div className="space-y-2 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5 text-xs">
+              <div className="space-y-2 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-3.5 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[#64748B]">Kunci Storage</span>
-                  <code className="font-semibold text-[#0F172A]">{STORAGE_KEY}</code>
+                  <span className="text-[#737373]">Kunci Storage</span>
+                  <code className="font-semibold text-[#111111]">{STORAGE_KEY}</code>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[#64748B]">Ukuran Data Tersimpan</span>
-                  <span className="tabular-mono font-semibold text-[#0F172A]">{storageSizeKB} KB</span>
+                  <span className="text-[#737373]">Ukuran Data Tersimpan</span>
+                  <span className="tabular-mono font-semibold text-[#111111]">{storageSizeKB} KB</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[#64748B]">Ringkasan Rekord</span>
-                  <span className="tabular-mono text-[#0F172A]">
+                  <span className="text-[#737373]">Ringkasan Rekord</span>
+                  <span className="tabular-mono text-[#111111]">
                     {bahan.length} bahan · {rekapOmzet.length} omzet · {laporanStok.length} opname ·{' '}
                     {purchaseOrders.length} PO
                   </span>
@@ -425,14 +425,14 @@ export default function PengaturanPage() {
           <Card className="space-y-4 p-5 lg:col-span-5">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#EFF6FF] text-[#2563EB]">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F5F5F5] text-[#111111]">
                   <Clock className="h-4 w-4" aria-hidden="true" />
                 </div>
                 <div>
-                  <h2 className="text-[16px] font-semibold text-[#0F172A]">
+                  <h2 className="text-[16px] font-semibold text-[#111111]">
                     Master Shift ({shifts.length})
                   </h2>
-                  <p className="text-xs text-[#64748B]">Jadwal operasional harian Breakfree.</p>
+                  <p className="text-xs text-[#737373]">Jadwal operasional harian Breakfree.</p>
                 </div>
               </div>
               <Button variant="secondary" size="sm" onClick={openAddShift}>
@@ -451,11 +451,11 @@ export default function PengaturanPage() {
                 {shifts.map((s) => (
                   <div
                     key={s.id}
-                    className="flex items-center justify-between rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3"
+                    className="flex items-center justify-between rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] px-4 py-3"
                   >
                     <div>
-                      <p className="text-sm font-semibold text-[#0F172A]">{s.nama}</p>
-                      <p className="tabular-mono text-xs text-[#64748B]">
+                      <p className="text-sm font-semibold text-[#111111]">{s.nama}</p>
+                      <p className="tabular-mono text-xs text-[#737373]">
                         {s.jamMulai} - {s.jamSelesai} WIB
                       </p>
                     </div>
@@ -476,14 +476,14 @@ export default function PengaturanPage() {
           <Card className="space-y-4 p-5 lg:col-span-7">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#EFF6FF] text-[#2563EB]">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F5F5F5] text-[#111111]">
                   <Users className="h-4 w-4" aria-hidden="true" />
                 </div>
                 <div>
-                  <h2 className="text-[16px] font-semibold text-[#0F172A]">
+                  <h2 className="text-[16px] font-semibold text-[#111111]">
                     Daftar Pegawai &amp; Petugas ({pegawai.length})
                   </h2>
-                  <p className="text-xs text-[#64748B]">
+                  <p className="text-xs text-[#737373]">
                     Menentukan daftar petugas aktif pada Topbar &amp; pencatat laporan shift.
                   </p>
                 </div>
@@ -503,17 +503,17 @@ export default function PengaturanPage() {
               <div className="max-h-80 overflow-x-auto overflow-y-auto">
                 <table className="w-full border-collapse text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                    <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[11px] font-semibold uppercase tracking-wider text-[#737373]">
                       <th className="rounded-l-lg px-3 py-2.5">Nama Petugas</th>
                       <th className="px-3 py-2.5">Posisi / Role</th>
                       <th className="px-3 py-2.5">Status</th>
                       <th className="rounded-r-lg px-3 py-2.5 text-right">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E2E8F0]">
+                  <tbody className="divide-y divide-[#E5E5E5]">
                     {pegawai.map((p) => (
-                      <tr key={p.id} className="transition-colors hover:bg-[#F8FAFC]">
-                        <td className="px-3 py-2.5 text-[13px] font-normal text-[#0F172A]">
+                      <tr key={p.id} className="transition-colors hover:bg-[#FAFAFA]">
+                        <td className="px-3 py-2.5 text-[13px] font-normal text-[#111111]">
                           {p.nama}
                         </td>
                         <td className="px-3 py-2.5 capitalize">
@@ -557,14 +557,14 @@ export default function PengaturanPage() {
         {/* Baris 3: Log Aktivitas */}
         <Card className="space-y-4 p-5">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#EFF6FF] text-[#2563EB]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F5F5F5] text-[#111111]">
               <History className="h-4 w-4" aria-hidden="true" />
             </div>
             <div>
-              <h2 className="text-[16px] font-semibold text-[#0F172A]">
+              <h2 className="text-[16px] font-semibold text-[#111111]">
                 Log Aktivitas &amp; Jejak Audit ({activityLogs.length})
               </h2>
-              <p className="text-xs text-[#64748B]">
+              <p className="text-xs text-[#737373]">
                 Menyimpan maksimal 200 aktivitas terbaru lintas role di penyimpanan lokal.
               </p>
             </div>
@@ -579,7 +579,7 @@ export default function PengaturanPage() {
             <div className="max-h-72 overflow-x-auto overflow-y-auto">
               <table className="w-full border-collapse text-left text-xs">
                 <thead>
-                  <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                  <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[11px] font-semibold uppercase tracking-wider text-[#737373]">
                     <th className="rounded-l-lg px-3 py-2.5">Waktu</th>
                     <th className="px-3 py-2.5">Role</th>
                     <th className="px-3 py-2.5">Petugas</th>
@@ -587,20 +587,20 @@ export default function PengaturanPage() {
                     <th className="rounded-r-lg px-3 py-2.5">Entitas</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E2E8F0]">
+                <tbody className="divide-y divide-[#E5E5E5]">
                   {activityLogs.slice(0, 50).map((log) => (
-                    <tr key={log.id} className="hover:bg-[#F8FAFC]">
-                      <td className="tabular-mono px-3 py-2.5 text-[#64748B]">
+                    <tr key={log.id} className="hover:bg-[#FAFAFA]">
+                      <td className="tabular-mono px-3 py-2.5 text-[#737373]">
                         {formatTanggal(log.createdAt)} · {formatWaktu(log.createdAt)}
                       </td>
                       <td className="px-3 py-2.5 capitalize">
                         <Badge tone="neutral">{log.role}</Badge>
                       </td>
-                      <td className="px-3 py-2.5 font-normal text-[#0F172A]">
+                      <td className="px-3 py-2.5 font-normal text-[#111111]">
                         {petugasNama(log.petugasId)}
                       </td>
-                      <td className="px-3 py-2.5 text-[#0F172A]">{log.aksi}</td>
-                      <td className="tabular-mono px-3 py-2.5 text-[#64748B]">
+                      <td className="px-3 py-2.5 text-[#111111]">{log.aksi}</td>
+                      <td className="tabular-mono px-3 py-2.5 text-[#737373]">
                         {log.entitas} ({log.entitasId})
                       </td>
                     </tr>
@@ -620,7 +620,7 @@ export default function PengaturanPage() {
       >
         <form onSubmit={handleSaveShift} className="space-y-4 text-sm">
           <div>
-            <label htmlFor="sh-nama" className="mb-1 block text-xs font-medium text-[#475569]">
+            <label htmlFor="sh-nama" className="mb-1 block text-xs font-medium text-[#737373]">
               Nama Shift
             </label>
             <input
@@ -635,7 +635,7 @@ export default function PengaturanPage() {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label htmlFor="sh-mulai" className="mb-1 block text-xs font-medium text-[#475569]">
+              <label htmlFor="sh-mulai" className="mb-1 block text-xs font-medium text-[#737373]">
                 Jam Mulai
               </label>
               <input
@@ -647,7 +647,7 @@ export default function PengaturanPage() {
               />
             </div>
             <div>
-              <label htmlFor="sh-selesai" className="mb-1 block text-xs font-medium text-[#475569]">
+              <label htmlFor="sh-selesai" className="mb-1 block text-xs font-medium text-[#737373]">
                 Jam Selesai
               </label>
               <input
@@ -678,7 +678,7 @@ export default function PengaturanPage() {
       >
         <form onSubmit={handleSavePegawai} className="space-y-4 text-sm">
           <div>
-            <label htmlFor="p-nama" className="mb-1 block text-xs font-medium text-[#475569]">
+            <label htmlFor="p-nama" className="mb-1 block text-xs font-medium text-[#737373]">
               Nama Lengkap
             </label>
             <input
@@ -692,7 +692,7 @@ export default function PengaturanPage() {
             />
           </div>
           <div>
-            <label htmlFor="p-posisi" className="mb-1 block text-xs font-medium text-[#475569]">
+            <label htmlFor="p-posisi" className="mb-1 block text-xs font-medium text-[#737373]">
               Posisi / Role
             </label>
             <select
@@ -709,12 +709,12 @@ export default function PengaturanPage() {
               <option value="waiter">Waiter</option>
             </select>
           </div>
-          <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-[#334155]">
+          <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-[#262626]">
             <input
               type="checkbox"
               checked={pAktif}
               onChange={(e) => setPAktif(e.target.checked)}
-              className="h-4 w-4 rounded accent-[#2563EB]"
+              className="h-4 w-4 rounded accent-[#111111]"
             />
             Pegawai sedang aktif bertugas
           </label>
@@ -734,20 +734,20 @@ export default function PengaturanPage() {
         <div className="space-y-4 text-sm">
           <div className="flex items-start gap-3 rounded-xl border border-[#FECACA] bg-[#FEF2F2] p-3.5">
             <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-[#DC2626]" aria-hidden="true" />
-            <div className="space-y-1 text-xs text-[#334155]">
-              <p className="font-semibold text-[#B91C1C]">
+            <div className="space-y-1 text-xs text-[#262626]">
+              <p className="font-semibold text-[#DC2626]">
                 Tindakan ini menghapus seluruh data lokal!
               </p>
               <p>
                 Semua master data, rekap omzet, laporan stok, retur, PO, dan log aktivitas di{' '}
-                <code className="font-semibold text-[#0F172A]">{STORAGE_KEY}</code> akan
+                <code className="font-semibold text-[#111111]">{STORAGE_KEY}</code> akan
                 dikosongkan. Disarankan <strong>Ekspor JSON</strong> terlebih dahulu.
               </p>
             </div>
           </div>
 
           <div>
-            <label htmlFor="reset-input" className="mb-1 block text-xs font-medium text-[#475569]">
+            <label htmlFor="reset-input" className="mb-1 block text-xs font-medium text-[#737373]">
               Ketik <code className="font-semibold text-[#DC2626]">RESET</code> untuk mengonfirmasi:
             </label>
             <input

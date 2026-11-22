@@ -59,7 +59,7 @@ export default function LaporanPersediaanWastePage() {
   return (
     <AppShell pageTitle="Laporan Persediaan & Waste">
       <div className="no-print flex flex-wrap items-center justify-between gap-3">
-        <div className="inline-flex rounded-lg border border-[#E2E8F0] bg-[#F1F5F9] p-1">
+        <div className="inline-flex rounded-lg border border-[#E5E5E5] bg-[#F5F5F5] p-1">
           {([7, 30] as const).map((d) => (
             <button
               key={d}
@@ -67,8 +67,8 @@ export default function LaporanPersediaanWastePage() {
               onClick={() => setDaysWindow(d)}
               className={`rounded-md px-3.5 py-1.5 text-[13px] transition-all ${
                 daysWindow === d
-                  ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
-                  : 'font-medium text-[#64748B] hover:text-[#0F172A]'
+                  ? 'bg-white font-semibold text-[#111111] shadow-[0_1px_2px_rgba(17,17,17,0.06)]'
+                  : 'font-medium text-[#737373] hover:text-[#111111]'
               }`}
             >
               {d} Hari Terakhir
@@ -116,7 +116,7 @@ export default function LaporanPersediaanWastePage() {
 
       {/* Top Waste Table */}
       <Card className="flex flex-col gap-4">
-        <h2 className="text-[17px] font-semibold text-[#0F172A]">
+        <h2 className="text-[17px] font-semibold text-[#111111]">
           Ringkasan Spoil / Waste Berdasarkan Bahan ({daysWindow} Hari)
         </h2>
 
@@ -129,20 +129,20 @@ export default function LaporanPersediaanWastePage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-[13.5px]">
               <thead>
-                <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[12px] font-semibold uppercase text-[#64748B]">
+                <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[12px] font-semibold uppercase text-[#737373]">
                   <th className="rounded-l-lg px-3 py-2.5">Bahan Baku</th>
                   <th className="px-3 py-2.5">Divisi</th>
                   <th className="px-3 py-2.5 text-right">Total Qty Waste</th>
                   <th className="rounded-r-lg px-3 py-2.5 text-right">Nilai Kerugian</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2E8F0]">
+              <tbody className="divide-y divide-[#E5E5E5]">
                 {wasteSummary.top.map((item) => {
                   const b = item.bahan!;
                   return (
-                    <tr key={b.id} className="hover:bg-[#F8FAFC]">
-                      <td className="px-3 py-3 text-[#0F172A]">{b.nama}</td>
-                      <td className="px-3 py-3 capitalize text-[#64748B]">{b.divisi}</td>
+                    <tr key={b.id} className="hover:bg-[#FAFAFA]">
+                      <td className="px-3 py-3 text-[#111111]">{b.nama}</td>
+                      <td className="px-3 py-3 capitalize text-[#737373]">{b.divisi}</td>
                       <td className="tabular-mono px-3 py-3 text-right">
                         {formatQty(item.qty, b.satuan)}
                       </td>
@@ -160,14 +160,14 @@ export default function LaporanPersediaanWastePage() {
 
       {/* Current Stock Overview (Read-Only for Management) */}
       <Card className="flex flex-col gap-4">
-        <h2 className="text-[17px] font-semibold text-[#0F172A]">
+        <h2 className="text-[17px] font-semibold text-[#111111]">
           Kondisi Persediaan Bahan Baku Saat Ini
         </h2>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-[13.5px]">
             <thead>
-              <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[12px] font-semibold uppercase text-[#64748B]">
+              <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[12px] font-semibold uppercase text-[#737373]">
                 <th className="rounded-l-lg px-3 py-2.5">Bahan Baku</th>
                 <th className="px-3 py-2.5">Divisi</th>
                 <th className="px-3 py-2.5 text-right">Stok Saat Ini</th>
@@ -175,15 +175,15 @@ export default function LaporanPersediaanWastePage() {
                 <th className="rounded-r-lg px-3 py-2.5">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E2E8F0]">
+            <tbody className="divide-y divide-[#E5E5E5]">
               {stockRows.map(({ b, stok, status }) => (
-                <tr key={b.id} className="hover:bg-[#F8FAFC]">
-                  <td className="px-3 py-3 text-[#0F172A]">{b.nama}</td>
-                  <td className="px-3 py-3 capitalize text-[#64748B]">{b.divisi}</td>
-                  <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#0F172A]">
+                <tr key={b.id} className="hover:bg-[#FAFAFA]">
+                  <td className="px-3 py-3 text-[#111111]">{b.nama}</td>
+                  <td className="px-3 py-3 capitalize text-[#737373]">{b.divisi}</td>
+                  <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#111111]">
                     {formatQty(stok, b.satuan)}
                   </td>
-                  <td className="tabular-mono px-3 py-3 text-right text-[#64748B]">
+                  <td className="tabular-mono px-3 py-3 text-right text-[#737373]">
                     {formatQty(b.stokMinimum, b.satuan)}
                   </td>
                   <td className="px-3 py-3">

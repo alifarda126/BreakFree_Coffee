@@ -80,7 +80,7 @@ export function LaporKosongModal({
             id="kosong-bahan"
             value={activeBahanId}
             onChange={(e) => setSelectedBahanId(e.target.value)}
-            className="h-10 rounded-lg border border-[#E2E8F0] bg-white px-3 text-sm font-normal text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
+            className="h-10 rounded-lg border border-[#E5E5E5] bg-white px-3 text-sm font-normal text-[#111111] transition focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/10"
           >
             {divBahan.map((b) => {
               const cur = hitungStokSaatIni(b.id, stockMovements);

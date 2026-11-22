@@ -106,10 +106,10 @@ export function DivisiDashboardView({ divisi }: { divisi: Divisi }) {
       <Card className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-[17px] font-semibold text-[#0F172A]">
+            <h2 className="text-[17px] font-semibold text-[#111111]">
               Persediaan Bahan Baku {divTitle} ({divDesc})
             </h2>
-            <p className="mt-0.5 text-[13px] font-normal text-[#64748B]">
+            <p className="mt-0.5 text-[13px] font-normal text-[#737373]">
               Pantau stok saat ini terhadap stok minimum sebelum melakukan rekap opname shift.
             </p>
           </div>
@@ -130,7 +130,7 @@ export function DivisiDashboardView({ divisi }: { divisi: Divisi }) {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-[13.5px]">
               <thead>
-                <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[12px] font-semibold uppercase text-[#64748B]">
+                <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[12px] font-semibold uppercase text-[#737373]">
                   <th className="rounded-l-lg px-3 py-2.5">Nama Bahan</th>
                   <th className="px-3 py-2.5">Kategori</th>
                   <th className="px-3 py-2.5 text-right">Stok Saat Ini</th>
@@ -138,7 +138,7 @@ export function DivisiDashboardView({ divisi }: { divisi: Divisi }) {
                   <th className="rounded-r-lg px-3 py-2.5">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2E8F0]">
+              <tbody className="divide-y divide-[#E5E5E5]">
                 {rows.map(({ b, cur, st }) => {
                   const label =
                     st === 'habis'
@@ -155,8 +155,8 @@ export function DivisiDashboardView({ divisi }: { divisi: Divisi }) {
                         ? 'text-[#B45309]'
                         : 'text-[#15803D]';
                   return (
-                    <tr key={b.id} className="transition-colors hover:bg-[#F8FAFC]">
-                      <td className="px-3 py-3 font-normal text-[#0F172A]">{b.nama}</td>
+                    <tr key={b.id} className="transition-colors hover:bg-[#FAFAFA]">
+                      <td className="px-3 py-3 font-normal text-[#111111]">{b.nama}</td>
                       <td className="px-3 py-3">
                         <Badge tone="neutral" dot={false}>
                           {b.kategori}
@@ -165,7 +165,7 @@ export function DivisiDashboardView({ divisi }: { divisi: Divisi }) {
                       <td className={`tabular-mono px-3 py-3 text-right font-semibold ${clr}`}>
                         {formatQty(cur, b.satuan)}
                       </td>
-                      <td className="tabular-mono px-3 py-3 text-right font-normal text-[#64748B]">
+                      <td className="tabular-mono px-3 py-3 text-right font-normal text-[#737373]">
                         {formatQty(b.stokMinimum, b.satuan)}
                       </td>
                       <td className="px-3 py-3">

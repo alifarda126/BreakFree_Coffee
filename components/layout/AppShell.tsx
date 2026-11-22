@@ -7,7 +7,6 @@ import {
   BarChart3,
   Bell,
   Boxes,
-  CalendarDays,
   ChevronDown,
   ClipboardCheck,
   Coffee,
@@ -38,6 +37,7 @@ import {
   formatTanggal,
 } from '@/lib/domain/calculations';
 import { Badge } from '@/components/ui/primitives';
+import { PageHeader } from '@/components/layout/PageHeader';
 import type { RoleId } from '@/lib/types';
 
 interface NavEntry {
@@ -121,7 +121,6 @@ export function AppShell({
   const activeShift = shifts.find((s) => s.id === activeShiftId);
   const activePetugas = pegawai.find((p) => p.id === activePetugasId);
 
-  // Core operational counts
   const pendingVerifCount = laporanStok.filter((l) => l.status === 'terkirim').length;
   const pendingPOCount = purchaseOrders.filter((p) => p.status === 'diajukan').length;
   const kritisCount = useMemo(() => {
@@ -133,7 +132,6 @@ export function AppShell({
 
   const totalNotifCount = pendingVerifCount + pendingPOCount + kritisCount;
 
-  // Strictly role-scoped sidebar navigation
   const navItems: NavEntry[] = useMemo(() => {
     switch (activeRole) {
       case 'kasir':
@@ -203,12 +201,12 @@ export function AppShell({
   const renderNavLink = (item: NavEntry, collapsed = false) => {
     const isActive = pathname === item.href;
     const Icon = item.icon;
-    const cls = `group relative flex h-10 w-full items-center rounded-lg text-left text-[13.5px] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[#2563EB] ${
+    const cls = `group relative flex h-10 w-full items-center rounded-lg text-left text-[13.5px] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[#111111] ${
       collapsed ? 'justify-center px-0' : 'gap-2.5 px-3'
     } ${
       isActive
-        ? 'bg-[#EFF6FF] font-semibold text-[#2563EB]'
-        : 'font-medium text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]'
+        ? 'bg-[#F5F5F5] font-semibold text-[#111111]'
+        : 'font-medium text-[#525252] hover:bg-[#FAFAFA] hover:text-[#111111]'
     }`;
 
     return (
@@ -221,13 +219,13 @@ export function AppShell({
       >
         {isActive && !collapsed && (
           <span
-            className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full bg-[#2563EB]"
+            className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full bg-[#111111]"
             aria-hidden="true"
           />
         )}
         <Icon
           className={`h-[18px] w-[18px] shrink-0 transition-colors ${
-            isActive ? 'text-[#2563EB]' : 'text-[#64748B] group-hover:text-[#0F172A]'
+            isActive ? 'text-[#111111]' : 'text-[#737373] group-hover:text-[#111111]'
           }`}
           strokeWidth={1.75}
           aria-hidden="true"
@@ -236,7 +234,7 @@ export function AppShell({
         {!collapsed && item.count != null && item.count > 0 && (
           <span
             className={`tabular-mono text-[12px] font-semibold ${
-              item.tone === 'danger' ? 'text-[#DC2626]' : 'text-[#B45309]'
+              item.tone === 'danger' ? 'text-[#DC2626]' : 'text-[#737373]'
             }`}
           >
             {item.count}
@@ -245,7 +243,7 @@ export function AppShell({
         {collapsed && item.count != null && item.count > 0 && (
           <span
             className={`absolute right-1.5 top-1.5 h-2 w-2 rounded-full ${
-              item.tone === 'danger' ? 'bg-[#DC2626]' : 'bg-[#F59E0B]'
+              item.tone === 'danger' ? 'bg-[#DC2626]' : 'bg-[#111111]'
             }`}
             aria-hidden="true"
           />
@@ -255,10 +253,10 @@ export function AppShell({
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC] text-[#0F172A]">
+    <div className="flex min-h-screen bg-white text-[#111111]">
       {/* Desktop Sidebar */}
       <aside
-        className={`no-print sticky top-0 hidden h-screen shrink-0 flex-col justify-between border-r border-[#E2E8F0] bg-white transition-[width] duration-200 lg:flex ${
+        className={`no-print sticky top-0 hidden h-screen shrink-0 flex-col justify-between border-r border-[#E5E5E5] bg-white transition-[width] duration-200 lg:flex ${
           sidebarCollapsed ? 'w-[76px] px-3 py-4' : 'w-[256px] px-4 py-5'
         }`}
       >
@@ -275,14 +273,14 @@ export function AppShell({
                 alt="Logo Breakfree Coffee"
                 width={36}
                 height={36}
-                className="h-9 w-9 shrink-0 rounded-lg border border-[#E2E8F0] object-cover"
+                className="h-9 w-9 shrink-0 rounded-lg border border-[#E5E5E5] object-cover"
               />
               {!sidebarCollapsed && (
                 <div className="min-w-0">
-                  <div className="truncate text-[15px] font-bold leading-[1.3] tracking-[-0.01em] text-[#0F172A]">
+                  <div className="truncate text-[15px] font-bold leading-[1.3] tracking-[-0.01em] text-[#111111]">
                     Breakfree Coffee SI
                   </div>
-                  <div className="truncate text-[12px] font-normal leading-[1.4] text-[#64748B]">
+                  <div className="truncate text-[12px] font-normal leading-[1.4] text-[#737373]">
                     Operasional &amp; Logistik
                   </div>
                 </div>
@@ -292,7 +290,7 @@ export function AppShell({
             <button
               type="button"
               onClick={() => setSidebarCollapsed((v) => !v)}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#64748B] transition hover:bg-[#F1F5F9] hover:text-[#0F172A] focus-visible:outline-2 focus-visible:outline-[#2563EB]"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#737373] transition hover:bg-[#F5F5F5] hover:text-[#111111] focus-visible:outline-2 focus-visible:outline-[#111111]"
               aria-label={sidebarCollapsed ? 'Perluas sidebar' : 'Ciutkan sidebar'}
               title={sidebarCollapsed ? 'Perluas sidebar' : 'Ciutkan sidebar'}
             >
@@ -307,7 +305,7 @@ export function AppShell({
           {/* Role-Scoped Navigation Group */}
           <div className="flex flex-col gap-1">
             {!sidebarCollapsed && (
-              <span className="px-3 pb-1 text-[11px] font-medium text-[#64748B]">
+              <span className="px-3 pb-1 text-[11px] font-medium text-[#737373]">
                 Menu {roleMeta.label}
               </span>
             )}
@@ -317,25 +315,25 @@ export function AppShell({
           </div>
         </div>
 
-        {/* Sidebar Bottom: User Profile + Admin Settings (Manajemen / Logistik) */}
-        <div className="flex flex-col gap-2 border-t border-[#E2E8F0] pt-3">
+        {/* Sidebar Bottom: User Profile + Admin Settings */}
+        <div className="flex flex-col gap-2 border-t border-[#E5E5E5] pt-3">
           {!sidebarCollapsed ? (
-            <div className="flex flex-col gap-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3">
+            <div className="flex flex-col gap-2.5 rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] p-3">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#EFF6FF] text-xs font-semibold text-[#2563EB]">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#111111] text-xs font-semibold text-white">
                   {getInitials(activePetugas?.nama ?? roleMeta.label)}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-[13px] font-semibold text-[#0F172A]">
+                  <div className="truncate text-[13px] font-semibold text-[#111111]">
                     {activePetugas?.nama ?? settings.outletNama}
                   </div>
-                  <div className="truncate text-[12px] font-normal text-[#64748B]">
+                  <div className="truncate text-[12px] font-normal text-[#737373]">
                     {roleMeta.label}
                   </div>
                 </div>
               </div>
               <div className="flex flex-col gap-1">
-                <label htmlFor="sidebar-petugas-select" className="text-[12px] font-normal text-[#64748B]">
+                <label htmlFor="sidebar-petugas-select" className="text-[12px] font-normal text-[#737373]">
                   Petugas Aktif
                 </label>
                 <select
@@ -343,7 +341,7 @@ export function AppShell({
                   value={activePetugasId}
                   onChange={(e) => setActivePetugasId(e.target.value)}
                   aria-label="Pilih petugas aktif"
-                  className="h-8 rounded-lg border border-[#E2E8F0] bg-white px-2 text-[13px] font-normal text-[#0F172A] transition focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/15"
+                  className="h-8 rounded-md border border-[#E5E5E5] bg-white px-2 text-[13px] font-normal text-[#111111] transition focus:border-[#111111] focus:outline-none focus:ring-2 focus:ring-[#111111]/10"
                 >
                   {pegawai
                     .filter((p) => p.aktif && p.posisi !== 'kapten')
@@ -357,7 +355,7 @@ export function AppShell({
             </div>
           ) : (
             <div
-              className="mx-auto flex h-9 w-9 items-center justify-center rounded-lg bg-[#EFF6FF] text-xs font-semibold text-[#2563EB]"
+              className="mx-auto flex h-9 w-9 items-center justify-center rounded-md bg-[#111111] text-xs font-semibold text-white"
               title={`${activePetugas?.nama ?? roleMeta.label} (${roleMeta.label})`}
             >
               {getInitials(activePetugas?.nama ?? roleMeta.label)}
@@ -373,13 +371,13 @@ export function AppShell({
                   sidebarCollapsed ? 'justify-center px-0' : 'gap-2.5 px-3'
                 } ${
                   pathname === '/master'
-                    ? 'bg-[#EFF6FF] font-semibold text-[#2563EB]'
-                    : 'font-medium text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]'
+                    ? 'bg-[#F5F5F5] font-semibold text-[#111111]'
+                    : 'font-medium text-[#525252] hover:bg-[#FAFAFA] hover:text-[#111111]'
                 }`}
               >
                 <Package
                   className={`h-[17px] w-[17px] shrink-0 ${
-                    pathname === '/master' ? 'text-[#2563EB]' : 'text-[#64748B]'
+                    pathname === '/master' ? 'text-[#111111]' : 'text-[#737373]'
                   }`}
                   strokeWidth={1.75}
                   aria-hidden="true"
@@ -393,13 +391,13 @@ export function AppShell({
                   sidebarCollapsed ? 'justify-center px-0' : 'gap-2.5 px-3'
                 } ${
                   pathname === '/pengaturan'
-                    ? 'bg-[#EFF6FF] font-semibold text-[#2563EB]'
-                    : 'font-medium text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]'
+                    ? 'bg-[#F5F5F5] font-semibold text-[#111111]'
+                    : 'font-medium text-[#525252] hover:bg-[#FAFAFA] hover:text-[#111111]'
                 }`}
               >
                 <Settings
                   className={`h-[17px] w-[17px] shrink-0 ${
-                    pathname === '/pengaturan' ? 'text-[#2563EB]' : 'text-[#64748B]'
+                    pathname === '/pengaturan' ? 'text-[#111111]' : 'text-[#737373]'
                   }`}
                   strokeWidth={1.75}
                   aria-hidden="true"
@@ -414,31 +412,31 @@ export function AppShell({
       {/* Mobile Drawer */}
       {mobileDrawerOpen && (
         <div
-          className="fixed inset-0 z-50 flex bg-[#0F172A]/40 lg:hidden"
+          className="fixed inset-0 z-50 flex bg-[#111111]/40 lg:hidden"
           onClick={(e) => {
             if (e.target === e.currentTarget) setMobileDrawerOpen(false);
           }}
         >
-          <div className="flex w-[276px] flex-col justify-between bg-white px-4 py-5 shadow-[0_24px_48px_-12px_rgba(15,23,42,0.22)]">
+          <div className="flex w-[276px] flex-col justify-between bg-white px-4 py-5 shadow-[0_20px_40px_-12px_rgba(17,17,17,0.2)]">
             <div className="flex flex-col gap-5">
-              <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-4">
+              <div className="flex items-center justify-between border-b border-[#E5E5E5] pb-4">
                 <div className="flex items-center gap-2.5">
                   <img
                     src="/images/breakfree-logo.png"
                     alt="Logo Breakfree Coffee"
                     width={32}
                     height={32}
-                    className="h-8 w-8 rounded-lg border border-[#E2E8F0] object-cover"
+                    className="h-8 w-8 rounded-lg border border-[#E5E5E5] object-cover"
                   />
                   <div>
-                    <div className="text-sm font-bold text-[#0F172A]">Breakfree Coffee SI</div>
-                    <div className="text-[11px] font-normal text-[#64748B]">Operasional &amp; Logistik</div>
+                    <div className="text-sm font-bold text-[#111111]">Breakfree Coffee SI</div>
+                    <div className="text-[11px] font-normal text-[#737373]">Operasional &amp; Logistik</div>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setMobileDrawerOpen(false)}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#0F172A]"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-[#737373] hover:bg-[#F5F5F5] hover:text-[#111111]"
                   aria-label="Tutup menu"
                 >
                   <X className="h-4 w-4" aria-hidden="true" />
@@ -449,21 +447,21 @@ export function AppShell({
               </nav>
             </div>
             {showAdminLinks && (
-              <div className="flex flex-col gap-1 border-t border-[#E2E8F0] pt-3">
+              <div className="flex flex-col gap-1 border-t border-[#E5E5E5] pt-3">
                 <Link
                   href="/master"
                   onClick={() => setMobileDrawerOpen(false)}
-                  className="flex h-10 items-center gap-2.5 rounded-lg px-3 text-[13px] font-medium text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]"
+                  className="flex h-10 items-center gap-2.5 rounded-lg px-3 text-[13px] font-medium text-[#525252] hover:bg-[#F5F5F5] hover:text-[#111111]"
                 >
-                  <Package className="h-[18px] w-[18px] text-[#64748B]" strokeWidth={1.75} aria-hidden="true" />
+                  <Package className="h-[18px] w-[18px] text-[#737373]" strokeWidth={1.75} aria-hidden="true" />
                   <span>Master Bahan &amp; Supplier</span>
                 </Link>
                 <Link
                   href="/pengaturan"
                   onClick={() => setMobileDrawerOpen(false)}
-                  className="flex h-10 items-center gap-2.5 rounded-lg px-3 text-[13px] font-medium text-[#475569] hover:bg-[#F1F5F9] hover:text-[#0F172A]"
+                  className="flex h-10 items-center gap-2.5 rounded-lg px-3 text-[13px] font-medium text-[#525252] hover:bg-[#F5F5F5] hover:text-[#111111]"
                 >
-                  <Settings className="h-[18px] w-[18px] text-[#64748B]" strokeWidth={1.75} aria-hidden="true" />
+                  <Settings className="h-[18px] w-[18px] text-[#737373]" strokeWidth={1.75} aria-hidden="true" />
                   <span>Pengaturan &amp; Pegawai</span>
                 </Link>
               </div>
@@ -474,29 +472,23 @@ export function AppShell({
 
       {/* Right Workspace Column */}
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* Minimalist Top Navbar (64px) */}
-        <header className="no-print sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between gap-3 border-b border-[#E2E8F0] bg-white/95 px-4 backdrop-blur-xs lg:px-8">
-          <div className="flex min-w-0 items-center gap-3">
+        {/* Global Spacious Top Navbar & PageHeader */}
+        <header className="no-print sticky top-0 z-30 flex shrink-0 items-center justify-between gap-4 border-b border-[#E5E5E5] bg-white px-4 pt-5 pb-4 sm:px-6 lg:px-8 lg:pt-6 lg:pb-5">
+          <div className="flex min-w-0 flex-1 items-center gap-3">
             <button
               type="button"
               onClick={() => setMobileDrawerOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#E2E8F0] bg-white text-[#0F172A] transition hover:bg-[#F8FAFC] lg:hidden"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#E5E5E5] bg-white text-[#111111] transition hover:bg-[#F5F5F5] lg:hidden"
               aria-label="Buka menu navigasi"
             >
               <MenuIcon className="h-5 w-5" aria-hidden="true" />
             </button>
-            <div className="min-w-0">
-              <h1 className="truncate text-[20px] font-bold leading-[1.3] tracking-[-0.02em] text-[#0F172A] sm:text-[24px]">
-                {pageTitle}
-              </h1>
-              <div className="flex items-center gap-1.5 truncate text-[12px] font-normal leading-[1.5] text-[#64748B]">
-                <CalendarDays className="hidden h-3.5 w-3.5 shrink-0 text-[#64748B] sm:inline" aria-hidden="true" />
-                <span className="truncate">
-                  {formatTanggal(todayISO())}
-                  {activeShift ? ` · ${activeShift.nama} (${activeShift.jamMulai}-${activeShift.jamSelesai})` : ''}
-                </span>
-              </div>
-            </div>
+            <PageHeader
+              title={pageTitle}
+              subtitle={`${formatTanggal(todayISO())}${
+                activeShift ? ` · ${activeShift.nama} (${activeShift.jamMulai}-${activeShift.jamSelesai})` : ''
+              }`}
+            />
           </div>
 
           <div className="flex shrink-0 items-center gap-2">
@@ -508,33 +500,33 @@ export function AppShell({
                   setNotifOpen((v) => !v);
                   setRoleMenuOpen(false);
                 }}
-                className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-[#E2E8F0] bg-white text-[#475569] transition hover:bg-[#F8FAFC] hover:text-[#0F172A] focus-visible:outline-2 focus-visible:outline-[#2563EB]"
+                className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-[#E5E5E5] bg-white text-[#525252] transition hover:bg-[#F5F5F5] hover:text-[#111111] focus-visible:outline-2 focus-visible:outline-[#111111]"
                 aria-label="Notifikasi operasional"
                 aria-expanded={notifOpen}
               >
                 <Bell
-                  className={`h-[18px] w-[18px] ${totalNotifCount > 0 ? 'text-[#2563EB]' : 'text-[#475569]'}`}
+                  className={`h-[18px] w-[18px] ${totalNotifCount > 0 ? 'text-[#111111]' : 'text-[#737373]'}`}
                   strokeWidth={1.75}
                   aria-hidden="true"
                 />
                 {totalNotifCount > 0 && (
-                  <span className="tabular-mono absolute -right-1 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#DC2626] px-1 text-[10px] font-semibold text-white">
+                  <span className="tabular-mono absolute -right-1 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#111111] px-1 text-[10px] font-semibold text-white">
                     {totalNotifCount}
                   </span>
                 )}
               </button>
 
               {notifOpen && (
-                <div className="absolute right-0 mt-2 w-[340px] max-w-[calc(100vw-2rem)] rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-[0_10px_28px_-8px_rgba(15,23,42,0.14)]">
-                  <div className="mb-3 flex items-center justify-between border-b border-[#E2E8F0] pb-2.5">
-                    <span className="text-[14px] font-semibold text-[#0F172A]">Notifikasi Operasional</span>
+                <div className="absolute right-0 mt-2 w-[340px] max-w-[calc(100vw-2rem)] rounded-lg border border-[#E5E5E5] bg-white p-4 shadow-[0_10px_28px_-8px_rgba(17,17,17,0.14)]">
+                  <div className="mb-3 flex items-center justify-between border-b border-[#E5E5E5] pb-2.5">
+                    <span className="text-[14px] font-semibold text-[#111111]">Notifikasi Operasional</span>
                     <Badge tone={totalNotifCount > 0 ? 'danger' : 'success'}>
                       {totalNotifCount} Aktif
                     </Badge>
                   </div>
                   <div className="flex flex-col gap-2">
                     {totalNotifCount === 0 ? (
-                      <p className="py-4 text-center text-[12px] font-normal text-[#64748B]">
+                      <p className="py-4 text-center text-[12px] font-normal text-[#737373]">
                         Semua laporan stok, persediaan, dan PO sudah terkendali.
                       </p>
                     ) : (
@@ -546,12 +538,12 @@ export function AppShell({
                               setActiveRole('logistik');
                               setNotifOpen(false);
                             }}
-                            className="rounded-lg border border-[#FDE68A] bg-[#FFFBEB] p-2.5 text-left transition hover:bg-[#FEF3C7]"
+                            className="rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] p-2.5 text-left transition hover:bg-[#F5F5F5]"
                           >
-                            <div className="text-[13px] font-semibold text-[#B45309]">
+                            <div className="text-[13px] font-semibold text-[#111111]">
                               {pendingVerifCount} Laporan Stok Menunggu Verifikasi
                             </div>
-                            <div className="mt-0.5 text-[12px] font-normal text-[#475569]">
+                            <div className="mt-0.5 text-[12px] font-normal text-[#737373]">
                               Buka Dashboard Logistik untuk verifikasi laporan divisi
                             </div>
                           </Link>
@@ -563,12 +555,12 @@ export function AppShell({
                               setActiveRole('manajemen');
                               setNotifOpen(false);
                             }}
-                            className="rounded-lg border border-[#BFDBFE] bg-[#EFF6FF] p-2.5 text-left transition hover:bg-[#DBEAFE]"
+                            className="rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] p-2.5 text-left transition hover:bg-[#F5F5F5]"
                           >
-                            <div className="text-[13px] font-semibold text-[#1E40AF]">
+                            <div className="text-[13px] font-semibold text-[#111111]">
                               {pendingPOCount} Purchase Order Menunggu Persetujuan
                             </div>
-                            <div className="mt-0.5 text-[12px] font-normal text-[#475569]">
+                            <div className="mt-0.5 text-[12px] font-normal text-[#737373]">
                               Review &amp; proses persetujuan PO oleh Manajemen
                             </div>
                           </Link>
@@ -580,12 +572,12 @@ export function AppShell({
                               setActiveRole('logistik');
                               setNotifOpen(false);
                             }}
-                            className="rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] p-2.5 text-left transition hover:bg-[#F1F5F9]"
+                            className="rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] p-2.5 text-left transition hover:bg-[#F5F5F5]"
                           >
-                            <div className="text-[13px] font-semibold text-[#B91C1C]">
+                            <div className="text-[13px] font-semibold text-[#DC2626]">
                               {kritisCount} Bahan Mencapai Batas Stok Kritis
                             </div>
-                            <div className="mt-0.5 text-[12px] font-normal text-[#475569]">
+                            <div className="mt-0.5 text-[12px] font-normal text-[#737373]">
                               Pantau persediaan &amp; ajukan PO restock di Logistik
                             </div>
                           </Link>
@@ -605,30 +597,30 @@ export function AppShell({
                   setRoleMenuOpen((v) => !v);
                   setNotifOpen(false);
                 }}
-                className="flex h-9 items-center gap-2 rounded-lg border border-[#E2E8F0] bg-white pl-2 pr-2.5 text-[13px] font-medium text-[#0F172A] transition hover:border-[#CBD5E1] hover:bg-[#F8FAFC] focus-visible:outline-2 focus-visible:outline-[#2563EB]"
+                className="flex h-9 items-center gap-2 rounded-lg border border-[#E5E5E5] bg-white pl-2 pr-2.5 text-[13px] font-medium text-[#111111] transition hover:border-[#D4D4D4] hover:bg-[#FAFAFA] focus-visible:outline-2 focus-visible:outline-[#111111]"
                 aria-expanded={roleMenuOpen}
                 aria-label="Profil pengguna dan pilih role workspace"
               >
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#EFF6FF] text-[11px] font-semibold text-[#2563EB]">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#111111] text-[11px] font-semibold text-white">
                   {getInitials(activePetugas?.nama ?? roleMeta.label)}
                 </span>
                 <div className="hidden text-left sm:block">
-                  <div className="max-w-[130px] truncate text-[13px] font-semibold leading-tight text-[#0F172A]">
+                  <div className="max-w-[130px] truncate text-[13px] font-semibold leading-tight text-[#111111]">
                     {activePetugas?.nama ?? roleMeta.label}
                   </div>
-                  <div className="text-[11px] font-normal leading-tight text-[#64748B]">{roleMeta.label}</div>
+                  <div className="text-[11px] font-normal leading-tight text-[#737373]">{roleMeta.label}</div>
                 </div>
                 <span className="text-[13px] font-medium sm:hidden">{roleMeta.label}</span>
-                <ChevronDown className="h-3.5 w-3.5 text-[#64748B]" aria-hidden="true" />
+                <ChevronDown className="h-3.5 w-3.5 text-[#737373]" aria-hidden="true" />
               </button>
 
               {roleMenuOpen && (
-                <div className="absolute right-0 mt-2 w-[288px] rounded-xl border border-[#E2E8F0] bg-white p-2 shadow-[0_10px_28px_-8px_rgba(15,23,42,0.14)]">
-                  <div className="border-b border-[#E2E8F0] px-2.5 py-2">
-                    <div className="text-[13px] font-semibold text-[#0F172A]">
+                <div className="absolute right-0 mt-2 w-[288px] rounded-lg border border-[#E5E5E5] bg-white p-2 shadow-[0_10px_28px_-8px_rgba(17,17,17,0.14)]">
+                  <div className="border-b border-[#E5E5E5] px-2.5 py-2">
+                    <div className="text-[13px] font-semibold text-[#111111]">
                       {activePetugas?.nama ?? 'Pengguna Aktif'}
                     </div>
-                    <div className="text-[12px] font-normal text-[#64748B]">
+                    <div className="text-[12px] font-normal text-[#737373]">
                       Pindah Role Workspace
                     </div>
                   </div>
@@ -638,30 +630,30 @@ export function AppShell({
                         key={r.id}
                         type="button"
                         onClick={() => handleSelectRole(r.id, r.homeHref)}
-                        className={`flex items-center rounded-lg px-2.5 py-2 text-left transition ${
+                        className={`flex items-center rounded-md px-2.5 py-2 text-left transition ${
                           activeRole === r.id
-                            ? 'bg-[#EFF6FF] text-[#2563EB]'
-                            : 'text-[#0F172A] hover:bg-[#F8FAFC]'
+                            ? 'bg-[#F5F5F5] text-[#111111]'
+                            : 'text-[#404040] hover:bg-[#FAFAFA]'
                         }`}
                       >
                         <div className="min-w-0 flex-1">
                           <div
                             className={`text-[13px] ${
-                              activeRole === r.id ? 'font-semibold text-[#2563EB]' : 'font-medium text-[#0F172A]'
+                              activeRole === r.id ? 'font-semibold text-[#111111]' : 'font-medium text-[#262626]'
                             }`}
                           >
                             {r.label}
                           </div>
-                          <div className="truncate text-[12px] font-normal text-[#64748B]">{r.desc}</div>
+                          <div className="truncate text-[12px] font-normal text-[#737373]">{r.desc}</div>
                         </div>
                       </button>
                     ))}
                   </div>
-                  <div className="mt-1.5 border-t border-[#E2E8F0] pt-1.5">
+                  <div className="mt-1.5 border-t border-[#E5E5E5] pt-1.5">
                     <Link
                       href="/setup"
                       onClick={() => setRoleMenuOpen(false)}
-                      className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-[12px] font-medium text-[#475569] transition hover:bg-[#F8FAFC] hover:text-[#0F172A]"
+                      className="flex items-center gap-2 rounded-md px-2.5 py-2 text-[12px] font-medium text-[#737373] transition hover:bg-[#FAFAFA] hover:text-[#111111]"
                     >
                       <Settings className="h-3.5 w-3.5" aria-hidden="true" />
                       <span>Buka Setup Wizard / Master Data</span>
@@ -674,14 +666,14 @@ export function AppShell({
         </header>
 
         {/* Main Content Area */}
-        <main className="mx-auto flex w-full max-w-[1320px] flex-1 flex-col gap-6 p-4 pb-24 lg:p-8 lg:pb-10">
+        <main className="mx-auto flex w-full max-w-[1320px] flex-1 flex-col gap-6 px-4 pt-6 pb-24 sm:px-6 lg:px-8 lg:pt-7 lg:pb-10">
           {children}
         </main>
       </div>
 
       {/* Mobile Bottom Nav (< lg) */}
       <nav
-        className="no-print fixed bottom-0 left-0 right-0 z-30 flex h-[68px] items-center justify-around border-t border-[#E2E8F0] bg-white px-2 lg:hidden"
+        className="no-print fixed bottom-0 left-0 right-0 z-30 flex h-[68px] items-center justify-around border-t border-[#E5E5E5] bg-white px-2 lg:hidden"
         aria-label="Navigasi mobile"
       >
         {navItems.slice(0, 4).map((item) => {
@@ -692,7 +684,7 @@ export function AppShell({
               key={item.href}
               href={item.href}
               className={`flex min-h-[44px] min-w-[68px] flex-col items-center justify-center gap-0.5 rounded-lg px-2 py-1.5 text-[11px] transition-colors ${
-                active ? 'bg-[#EFF6FF] font-semibold text-[#2563EB]' : 'font-medium text-[#64748B]'
+                active ? 'bg-[#F5F5F5] font-semibold text-[#111111]' : 'font-medium text-[#737373]'
               }`}
             >
               <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden="true" />

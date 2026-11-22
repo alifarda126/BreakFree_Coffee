@@ -10,14 +10,14 @@ const BADGE_CLASSES: Record<BadgeTone, string> = {
   success: 'text-[#15803D]',
   warning: 'text-[#B45309]',
   danger: 'text-[#DC2626]',
-  info: 'text-[#2563EB]',
-  primary: 'text-[#2563EB]',
-  neutral: 'text-[#64748B]',
+  info: 'text-[#111111]',
+  primary: 'text-[#111111]',
+  neutral: 'text-[#737373]',
 };
 
 export function Badge({
   children,
-  tone = 'info',
+  tone = 'neutral',
   dot: _dot,
   className = '',
 }: {
@@ -39,11 +39,11 @@ export function Badge({
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'dangerSolid' | 'ghost';
 
 const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
-  primary: 'bg-[#2563EB] text-white font-semibold hover:bg-[#1E40AF] border border-transparent shadow-[0_1px_2px_rgba(37,99,235,0.18)]',
-  secondary: 'bg-white text-[#0F172A] font-medium border border-[#E2E8F0] hover:bg-[#F8FAFC] hover:border-[#CBD5E1]',
-  danger: 'bg-white text-[#DC2626] font-medium border border-[#FECACA] hover:bg-[#FEF2F2] hover:border-[#FCA5A5]',
+  primary: 'bg-[#111111] text-white font-semibold hover:bg-[#262626] border border-transparent',
+  secondary: 'bg-white text-[#111111] font-medium border border-[#E5E5E5] hover:bg-[#F5F5F5] hover:border-[#D4D4D4]',
+  danger: 'bg-white text-[#DC2626] font-medium border border-[#E5E5E5] hover:bg-[#FEF2F2] hover:border-[#FECACA]',
   dangerSolid: 'bg-[#DC2626] text-white font-semibold hover:bg-[#B91C1C] border border-transparent',
-  ghost: 'bg-transparent text-[#475569] font-medium border border-transparent hover:bg-[#F1F5F9] hover:text-[#0F172A]',
+  ghost: 'bg-transparent text-[#525252] font-medium border border-transparent hover:bg-[#F5F5F5] hover:text-[#111111]',
 };
 
 export function Button({
@@ -66,7 +66,7 @@ export function Button({
   return (
     <button
       type={type}
-      className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-lg whitespace-nowrap transition-colors duration-150 active:scale-[0.99] disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB] ${heightCls} ${BUTTON_VARIANTS[variant]} ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-lg whitespace-nowrap transition-colors duration-150 active:scale-[0.99] disabled:opacity-45 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] ${heightCls} ${BUTTON_VARIANTS[variant]} ${className}`}
       {...props}
     >
       {children}
@@ -83,20 +83,12 @@ export function Card({
 }) {
   return (
     <div
-      className={`rounded-xl border border-[#E2E8F0] bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] ${className}`}
+      className={`rounded-lg border border-[#E5E5E5] bg-white p-5 ${className}`}
     >
       {children}
     </div>
   );
 }
-
-const KPI_ICON_TONES = {
-  primary: 'bg-[#EFF6FF] text-[#2563EB]',
-  success: 'bg-[#F0FDF4] text-[#16A34A]',
-  warning: 'bg-[#FFFBEB] text-[#D97706]',
-  danger: 'bg-[#FEF2F2] text-[#DC2626]',
-  neutral: 'bg-[#F1F5F9] text-[#475569]',
-};
 
 export function KpiCard({
   label,
@@ -105,7 +97,7 @@ export function KpiCard({
   tone = 'neutral',
   hero = false,
   icon,
-  iconTone,
+  iconTone: _iconTone,
   className = '',
 }: {
   label: string;
@@ -117,30 +109,25 @@ export function KpiCard({
   iconTone?: 'primary' | 'success' | 'warning' | 'danger' | 'neutral';
   className?: string;
 }) {
+  void _iconTone;
   const valColor =
     tone === 'danger'
       ? 'text-[#DC2626]'
-      : tone === 'warning'
-        ? 'text-[#B45309]'
-        : tone === 'success'
-          ? 'text-[#15803D]'
-          : tone === 'primary'
-            ? 'text-[#2563EB]'
-            : 'text-[#0F172A]';
-
-  const resolvedIconTone = iconTone ?? (hero ? 'primary' : tone);
+      : tone === 'success'
+        ? 'text-[#15803D]'
+        : 'text-[#111111]';
 
   return (
     <div
-      className={`flex flex-col justify-between gap-3 rounded-xl border bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors ${
-        hero ? 'border-[#BFDBFE] bg-gradient-to-b from-white to-[#F8FAFF]' : 'border-[#E2E8F0]'
+      className={`flex flex-col justify-between gap-3 rounded-lg border bg-white p-5 transition-colors ${
+        hero ? 'border-[#D4D4D4]' : 'border-[#E5E5E5]'
       } ${className}`}
     >
       <div className="flex items-start justify-between gap-3">
-        <span className="text-[13px] font-medium leading-[1.4] text-[#64748B]">{label}</span>
+        <span className="text-[13px] font-medium leading-[1.4] text-[#737373]">{label}</span>
         {icon && (
           <div
-            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${KPI_ICON_TONES[resolvedIconTone]}`}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#F5F5F5] text-[#111111]"
             aria-hidden="true"
           >
             {icon}
@@ -150,13 +137,13 @@ export function KpiCard({
       <div className="flex flex-col gap-1">
         <span
           className={`tabular-mono font-bold tracking-[-0.02em] ${
-            hero ? 'text-[30px] leading-[1.2] sm:text-[32px]' : 'text-[28px] leading-[1.2]'
+            hero ? 'text-[30px] leading-[1.2] sm:text-[32px]' : 'text-[26px] leading-[1.2] sm:text-[28px]'
           } ${valColor}`}
         >
           {value}
         </span>
         {subtext && (
-          <span className="text-[12px] font-normal leading-[1.5] text-[#64748B]">{subtext}</span>
+          <span className="text-[12px] font-normal leading-[1.5] text-[#737373]">{subtext}</span>
         )}
       </div>
     </div>
@@ -178,13 +165,13 @@ export function StockBar({
     status === 'aman'
       ? 'bg-[#16A34A]'
       : status === 'menipis'
-        ? 'bg-[#F59E0B]'
+        ? 'bg-[#737373]'
         : status === 'kritis'
           ? 'bg-[#DC2626]'
-          : 'bg-[#CBD5E1]';
+          : 'bg-[#D4D4D4]';
 
   return (
-    <div className="h-1.5 w-24 overflow-hidden rounded-full bg-[#F1F5F9]">
+    <div className="h-1.5 w-24 overflow-hidden rounded-full bg-[#F5F5F5]">
       <div
         className={`h-full rounded-full transition-all duration-150 ${barColor}`}
         style={{ width: `${status === 'habis' ? 6 : pct}%` }}
@@ -221,12 +208,12 @@ export function StepperQty({
         type="button"
         onClick={() => adjust(-step)}
         aria-label={`Kurangi ${ariaLabel ?? 'jumlah'}`}
-        className={`flex shrink-0 items-center justify-center rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] text-[#0F172A] transition hover:border-[#CBD5E1] hover:bg-[#F1F5F9] focus-visible:outline-2 focus-visible:outline-[#2563EB] ${btnCls}`}
+        className={`flex shrink-0 items-center justify-center rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] text-[#111111] transition hover:border-[#D4D4D4] hover:bg-[#F5F5F5] focus-visible:outline-2 focus-visible:outline-[#111111] ${btnCls}`}
       >
         <Minus className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />
       </button>
       <div
-        className={`flex items-center gap-1 rounded-lg border border-[#E2E8F0] bg-white px-2.5 transition focus-within:border-[#2563EB] focus-within:ring-2 focus-within:ring-[#2563EB]/15 ${inputH}`}
+        className={`flex items-center gap-1 rounded-lg border border-[#E5E5E5] bg-white px-2.5 transition focus-within:border-[#111111] focus-within:ring-2 focus-within:ring-[#111111]/10 ${inputH}`}
       >
         <input
           type="number"
@@ -238,15 +225,15 @@ export function StepperQty({
             onChange(Number.isNaN(parsed) ? 0 : Math.max(0, parsed));
           }}
           aria-label={ariaLabel ?? 'Input stok fisik'}
-          className="tabular-mono w-14 bg-transparent text-right text-[14px] font-normal text-[#0F172A] focus:outline-none"
+          className="tabular-mono w-14 bg-transparent text-right text-[14px] font-normal text-[#111111] focus:outline-none"
         />
-        <span className="tabular-mono text-[12px] font-normal text-[#64748B]">{unit}</span>
+        <span className="tabular-mono text-[12px] font-normal text-[#737373]">{unit}</span>
       </div>
       <button
         type="button"
         onClick={() => adjust(step)}
         aria-label={`Tambah ${ariaLabel ?? 'jumlah'}`}
-        className={`flex shrink-0 items-center justify-center rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] text-[#0F172A] transition hover:border-[#CBD5E1] hover:bg-[#F1F5F9] focus-visible:outline-2 focus-visible:outline-[#2563EB] ${btnCls}`}
+        className={`flex shrink-0 items-center justify-center rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] text-[#111111] transition hover:border-[#D4D4D4] hover:bg-[#F5F5F5] focus-visible:outline-2 focus-visible:outline-[#111111] ${btnCls}`}
       >
         <Plus className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />
       </button>
@@ -275,15 +262,15 @@ export function CurrencyInput({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-[13px] font-medium text-[#0F172A]">
+      <label htmlFor={id} className="text-[13px] font-medium text-[#111111]">
         {label}
       </label>
       <div
-        className={`flex h-10 items-center justify-between gap-2 rounded-lg border bg-white px-3 transition focus-within:ring-2 focus-within:ring-[#2563EB]/20 ${
-          error ? 'border-[#DC2626]' : 'border-[#E2E8F0] focus-within:border-[#2563EB]'
+        className={`flex h-10 items-center justify-between gap-2 rounded-lg border bg-white px-3 transition focus-within:ring-2 focus-within:ring-[#111111]/10 ${
+          error ? 'border-[#DC2626]' : 'border-[#E5E5E5] focus-within:border-[#111111]'
         }`}
       >
-        {prefix && <span className="tabular-mono text-[13px] font-normal text-[#64748B]">{prefix}</span>}
+        {prefix && <span className="tabular-mono text-[13px] font-normal text-[#737373]">{prefix}</span>}
         <input
           id={id}
           type="number"
@@ -295,14 +282,14 @@ export function CurrencyInput({
             const v = Number.parseFloat(e.target.value);
             onChange(Number.isNaN(v) ? 0 : Math.max(0, v));
           }}
-          className="tabular-mono w-full bg-transparent text-right text-[14px] font-normal text-[#0F172A] focus:outline-none"
+          className="tabular-mono w-full bg-transparent text-right text-[14px] font-normal text-[#111111] focus:outline-none"
         />
-        {suffix && <span className="tabular-mono text-[12px] font-normal text-[#64748B]">{suffix}</span>}
+        {suffix && <span className="tabular-mono text-[12px] font-normal text-[#737373]">{suffix}</span>}
       </div>
       {error ? (
         <span className="text-[12px] font-normal leading-[1.5] text-[#DC2626]">{error}</span>
       ) : helper ? (
-        <span className="text-[12px] font-normal leading-[1.5] text-[#64748B]">{helper}</span>
+        <span className="text-[12px] font-normal leading-[1.5] text-[#737373]">{helper}</span>
       ) : null}
     </div>
   );
@@ -333,7 +320,7 @@ export function Modal({
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0F172A]/40 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#111111]/40 p-4"
       role="dialog"
       aria-modal="true"
       aria-label={title}
@@ -341,16 +328,16 @@ export function Modal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="max-h-[90vh] w-full max-w-[540px] overflow-y-auto rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-[0_24px_48px_-12px_rgba(15,23,42,0.22)]">
-        <div className="mb-4 flex items-center justify-between gap-3 border-b border-[#E2E8F0] pb-3.5">
+      <div className="max-h-[90vh] w-full max-w-[540px] overflow-y-auto rounded-xl border border-[#E5E5E5] bg-white p-6 shadow-[0_20px_40px_-12px_rgba(17,17,17,0.2)]">
+        <div className="mb-4 flex items-center justify-between gap-3 border-b border-[#E5E5E5] pb-3.5">
           <div className="flex flex-wrap items-center gap-2.5">
-            <h2 className="text-[16px] font-semibold leading-[1.3] text-[#0F172A]">{title}</h2>
+            <h2 className="text-[16px] font-semibold leading-[1.3] text-[#111111]">{title}</h2>
             {badgeEl}
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-[#64748B] transition hover:bg-[#F1F5F9] hover:text-[#0F172A] focus-visible:outline-2 focus-visible:outline-[#2563EB]"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-[#737373] transition hover:bg-[#F5F5F5] hover:text-[#111111] focus-visible:outline-2 focus-visible:outline-[#111111]"
             aria-label="Tutup dialog"
           >
             <X className="h-4 w-4" aria-hidden="true" />
@@ -374,16 +361,16 @@ export function EmptyState({
   icon?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-6 py-10 text-center">
+    <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-[#D4D4D4] bg-[#FAFAFA] px-6 py-10 text-center">
       <div
-        className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#E2E8F0] bg-white text-[#64748B] shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
+        className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#E5E5E5] bg-white text-[#737373]"
         aria-hidden="true"
       >
         {icon ?? <ClipboardList className="h-5 w-5" strokeWidth={1.75} />}
       </div>
       <div className="max-w-md space-y-1">
-        <p className="text-[14px] font-semibold leading-[1.4] text-[#0F172A]">{title}</p>
-        <p className="text-[13px] font-normal leading-[1.5] text-[#64748B]">{description}</p>
+        <p className="text-[14px] font-semibold leading-[1.4] text-[#111111]">{title}</p>
+        <p className="text-[13px] font-normal leading-[1.5] text-[#737373]">{description}</p>
       </div>
       {action}
     </div>

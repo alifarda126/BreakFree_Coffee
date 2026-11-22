@@ -178,7 +178,7 @@ export default function ManajemenDashboardPage() {
       {/* Toolbar: Segmented Period Control + Action Buttons */}
       <div className="no-print flex flex-wrap items-center justify-between gap-3">
         <div
-          className="inline-flex rounded-lg border border-[#E2E8F0] bg-[#F1F5F9] p-1"
+          className="inline-flex rounded-lg border border-[#E5E5E5] bg-[#F5F5F5] p-1"
           role="tablist"
           aria-label="Filter periode laporan"
         >
@@ -191,8 +191,8 @@ export default function ManajemenDashboardPage() {
               onClick={() => setDaysWindow(d)}
               className={`rounded-md px-3.5 py-1.5 text-[13px] transition-all ${
                 daysWindow === d
-                  ? 'bg-white font-semibold text-[#2563EB] shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
-                  : 'font-medium text-[#64748B] hover:text-[#0F172A]'
+                  ? 'bg-white font-semibold text-[#111111] shadow-[0_1px_2px_rgba(17,17,17,0.06)]'
+                  : 'font-medium text-[#737373] hover:text-[#111111]'
               }`}
             >
               {d} Hari Terakhir
@@ -256,20 +256,20 @@ export default function ManajemenDashboardPage() {
           <Card className="flex flex-col gap-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h2 className="text-[17px] font-semibold leading-[1.3] text-[#0F172A]">
+                <h2 className="text-[17px] font-semibold leading-[1.3] text-[#111111]">
                   Omzet Harian 7 Hari Terakhir (Cash vs QRIS)
                 </h2>
-                <p className="mt-0.5 text-[13px] font-normal leading-[1.5] text-[#64748B]">
+                <p className="mt-0.5 text-[13px] font-normal leading-[1.5] text-[#737373]">
                   Rekapitulasi langsung dari laporan Closing Kasir POS Pawoon per shift
                 </p>
               </div>
-              <div className="flex items-center gap-4 text-[13px] font-medium text-[#475569]">
+              <div className="flex items-center gap-4 text-[13px] font-medium text-[#737373]">
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-[3px] bg-[#1E40AF]" aria-hidden="true" />
+                  <span className="h-2.5 w-2.5 rounded-[3px] bg-[#111111]" aria-hidden="true" />
                   Cash
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-[3px] bg-[#60A5FA]" aria-hidden="true" />
+                  <span className="h-2.5 w-2.5 rounded-[3px] bg-[#A3A3A3]" aria-hidden="true" />
                   QRIS
                 </span>
               </div>
@@ -289,15 +289,15 @@ export default function ManajemenDashboardPage() {
               <div className="h-[260px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-                    <CartesianGrid stroke="#E2E8F0" strokeDasharray="3 3" vertical={false} />
+                    <CartesianGrid stroke="#E5E5E5" strokeDasharray="3 3" vertical={false} />
                     <XAxis
                       dataKey="label"
-                      tick={{ fill: '#64748B', fontSize: 12, fontWeight: 400 }}
+                      tick={{ fill: '#737373', fontSize: 12, fontWeight: 400 }}
                       axisLine={false}
                       tickLine={false}
                     />
                     <YAxis
-                      tick={{ fill: '#64748B', fontSize: 12, fontWeight: 400 }}
+                      tick={{ fill: '#737373', fontSize: 12, fontWeight: 400 }}
                       axisLine={false}
                       tickLine={false}
                       tickFormatter={(v) =>
@@ -307,23 +307,23 @@ export default function ManajemenDashboardPage() {
                       }
                     />
                     <Tooltip
-                      cursor={{ fill: '#F1F5F9' }}
+                      cursor={{ fill: '#F5F5F5' }}
                       formatter={(val, name) => [
                         formatRp(Number(val ?? 0)),
                         name === 'cash' ? 'Cash' : 'QRIS',
                       ]}
                       contentStyle={{
                         backgroundColor: '#FFFFFF',
-                        borderColor: '#E2E8F0',
+                        borderColor: '#E5E5E5',
                         borderRadius: 10,
-                        boxShadow: '0 10px 28px -8px rgba(15,23,42,0.14)',
+                        boxShadow: '0 8px 20px -6px rgba(17,17,17,0.1)',
                         fontSize: 13,
                         fontWeight: 500,
-                        color: '#0F172A',
+                        color: '#111111',
                       }}
                     />
-                    <Bar dataKey="cash" stackId="a" fill="#1E40AF" radius={[0, 0, 4, 4]} maxBarSize={42} />
-                    <Bar dataKey="qris" stackId="a" fill="#60A5FA" radius={[4, 4, 0, 0]} maxBarSize={42} />
+                    <Bar dataKey="cash" stackId="a" fill="#111111" radius={[0, 0, 4, 4]} maxBarSize={42} />
+                    <Bar dataKey="qris" stackId="a" fill="#A3A3A3" radius={[4, 4, 0, 0]} maxBarSize={42} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -333,10 +333,10 @@ export default function ManajemenDashboardPage() {
           <Card className="flex flex-col gap-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <h2 className="text-[17px] font-semibold leading-[1.3] text-[#0F172A]">
+                <h2 className="text-[17px] font-semibold leading-[1.3] text-[#111111]">
                   Top 5 Bahan Nilai Waste Tertinggi ({daysWindow} Hari)
                 </h2>
-                <p className="mt-0.5 text-[13px] font-normal leading-[1.5] text-[#64748B]">
+                <p className="mt-0.5 text-[13px] font-normal leading-[1.5] text-[#737373]">
                   Akumulasi kerugian bahan tidak layak dari shift Barista &amp; Kitchen
                 </p>
               </div>
@@ -358,7 +358,7 @@ export default function ManajemenDashboardPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-[13px]">
                   <thead>
-                    <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[12px] font-semibold uppercase tracking-normal text-[#64748B]">
+                    <tr className="border-b border-[#E5E5E5] bg-[#FAFAFA] text-[12px] font-semibold uppercase tracking-normal text-[#737373]">
                       <th className="rounded-l-lg px-3 py-2.5">Bahan Baku</th>
                       <th className="px-3 py-2.5">Divisi</th>
                       <th className="px-3 py-2.5 text-right">Qty Waste</th>
@@ -366,17 +366,17 @@ export default function ManajemenDashboardPage() {
                       <th className="rounded-r-lg px-3 py-2.5">Status Retur</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E2E8F0]">
+                  <tbody className="divide-y divide-[#E5E5E5]">
                     {topWaste.map((item) => {
                       const b = item.bahan!;
                       const retur = item.returId
                         ? returs.find((r) => r.id === item.returId)
                         : undefined;
                       return (
-                        <tr key={b.id} className="transition-colors hover:bg-[#F8FAFC]">
-                          <td className="px-3 py-3 font-normal text-[#0F172A]">{b.nama}</td>
-                          <td className="px-3 py-3 font-normal capitalize text-[#64748B]">{b.divisi}</td>
-                          <td className="tabular-mono px-3 py-3 text-right font-normal text-[#334155]">
+                        <tr key={b.id} className="transition-colors hover:bg-[#FAFAFA]">
+                          <td className="px-3 py-3 font-normal text-[#111111]">{b.nama}</td>
+                          <td className="px-3 py-3 font-normal capitalize text-[#737373]">{b.divisi}</td>
+                          <td className="tabular-mono px-3 py-3 text-right font-normal text-[#262626]">
                             {formatQty(item.qty, b.satuan)}
                           </td>
                           <td className="tabular-mono px-3 py-3 text-right font-semibold text-[#DC2626]">
@@ -413,17 +413,17 @@ export default function ManajemenDashboardPage() {
         <div className="flex flex-col gap-6 lg:col-span-4">
           <Card className="flex flex-col gap-4">
             <div className="flex items-center justify-between gap-2">
-              <h2 className="text-[15px] font-semibold leading-[1.3] text-[#0F172A]">Antrean Persetujuan PO</h2>
+              <h2 className="text-[15px] font-semibold leading-[1.3] text-[#111111]">Antrean Persetujuan PO</h2>
               <Badge tone={pendingPOs.length > 0 ? 'warning' : 'success'}>
                 {pendingPOs.length} Menunggu
               </Badge>
             </div>
 
             {pendingPOs.length === 0 ? (
-              <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-4 py-7 text-center">
-                <CheckCircle2 className="h-6 w-6 text-[#16A34A]" strokeWidth={1.75} aria-hidden="true" />
-                <p className="text-[13px] font-semibold text-[#0F172A]">Antrean persetujuan bersih</p>
-                <p className="text-[12px] font-normal leading-[1.5] text-[#64748B]">
+              <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-[#E5E5E5] bg-[#FAFAFA] px-4 py-7 text-center">
+                <CheckCircle2 className="h-6 w-6 text-[#15803D]" strokeWidth={1.75} aria-hidden="true" />
+                <p className="text-[13px] font-semibold text-[#111111]">Antrean persetujuan bersih</p>
+                <p className="text-[12px] font-normal leading-[1.5] text-[#737373]">
                   Tidak ada Purchase Order yang menunggu persetujuan Manajemen saat ini.
                 </p>
               </div>
@@ -434,14 +434,14 @@ export default function ManajemenDashboardPage() {
                   return (
                     <div
                       key={po.id}
-                      className="flex flex-col gap-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5 transition-colors hover:border-[#CBD5E1]"
+                      className="flex flex-col gap-2.5 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-3.5 transition-colors hover:border-[#D4D4D4]"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
-                          <span className="tabular-mono text-[13px] font-semibold text-[#2563EB]">
+                          <span className="tabular-mono text-[13px] font-semibold text-[#111111]">
                             {po.nomor}
                           </span>
-                          <p className="mt-0.5 truncate text-[13px] font-medium text-[#0F172A]">
+                          <p className="mt-0.5 truncate text-[13px] font-medium text-[#111111]">
                             {sup?.nama ?? 'Supplier'}
                           </p>
                         </div>
@@ -450,14 +450,14 @@ export default function ManajemenDashboardPage() {
                         </Badge>
                       </div>
 
-                      <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-2 text-[12px]">
-                        <div className="font-normal text-[#64748B]">
+                      <div className="flex items-center justify-between border-t border-[#E5E5E5] pt-2 text-[12px]">
+                        <div className="font-normal text-[#737373]">
                           <div>{formatTanggal(po.tanggal)}</div>
                           <div>
                             Pengaju: {getPoRequester(po.nomor)} · {po.items.length} bahan
                           </div>
                         </div>
-                        <span className="tabular-mono text-[15px] font-bold text-[#0F172A]">
+                        <span className="tabular-mono text-[15px] font-bold text-[#111111]">
                           {formatRp(po.total)}
                         </span>
                       </div>
@@ -489,7 +489,7 @@ export default function ManajemenDashboardPage() {
 
           <Card className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-[15px] font-semibold leading-[1.3] text-[#0F172A]">
+              <h2 className="text-[15px] font-semibold leading-[1.3] text-[#111111]">
                 Kesehatan Stok &amp; Logistik
               </h2>
               <Badge tone={isLogistikNormal ? 'success' : 'warning'}>
@@ -498,13 +498,13 @@ export default function ManajemenDashboardPage() {
             </div>
 
             <div className="flex flex-col gap-2.5 text-[13px]">
-              <div className="flex items-center justify-between gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5">
+              <div className="flex items-center justify-between gap-2 rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] px-3 py-2.5">
                 <div className="flex items-center gap-2.5">
                   <AlertTriangle
-                    className={`h-4 w-4 shrink-0 ${kritisCount > 0 ? 'text-[#DC2626]' : 'text-[#64748B]'}`}
+                    className={`h-4 w-4 shrink-0 ${kritisCount > 0 ? 'text-[#DC2626]' : 'text-[#737373]'}`}
                     aria-hidden="true"
                   />
-                  <span className="font-normal text-[#334155]">Bahan Stok Kritis / Habis</span>
+                  <span className="font-normal text-[#262626]">Bahan Stok Kritis / Habis</span>
                 </div>
                 <span
                   className={`tabular-mono text-[13px] font-semibold ${
@@ -515,13 +515,13 @@ export default function ManajemenDashboardPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5">
+              <div className="flex items-center justify-between gap-2 rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] px-3 py-2.5">
                 <div className="flex items-center gap-2.5">
                   <ClipboardCheck
-                    className={`h-4 w-4 shrink-0 ${pendingVerifCount > 0 ? 'text-[#D97706]' : 'text-[#64748B]'}`}
+                    className={`h-4 w-4 shrink-0 ${pendingVerifCount > 0 ? 'text-[#B45309]' : 'text-[#737373]'}`}
                     aria-hidden="true"
                   />
-                  <span className="font-normal text-[#334155]">Laporan Stok Menunggu Verifikasi</span>
+                  <span className="font-normal text-[#262626]">Laporan Stok Menunggu Verifikasi</span>
                 </div>
                 <span
                   className={`tabular-mono text-[13px] font-semibold ${
@@ -532,30 +532,30 @@ export default function ManajemenDashboardPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5">
+              <div className="flex items-center justify-between gap-2 rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] px-3 py-2.5">
                 <div className="flex items-center gap-2.5">
                   <RotateCcw
-                    className={`h-4 w-4 shrink-0 ${activeReturCount > 0 ? 'text-[#2563EB]' : 'text-[#64748B]'}`}
+                    className={`h-4 w-4 shrink-0 ${activeReturCount > 0 ? 'text-[#111111]' : 'text-[#737373]'}`}
                     aria-hidden="true"
                   />
-                  <span className="font-normal text-[#334155]">Retur BOP Aktif (H+1)</span>
+                  <span className="font-normal text-[#262626]">Retur BOP Aktif (H+1)</span>
                 </div>
                 <span
                   className={`tabular-mono text-[13px] font-semibold ${
-                    activeReturCount > 0 ? 'text-[#2563EB]' : 'text-[#15803D]'
+                    activeReturCount > 0 ? 'text-[#111111]' : 'text-[#15803D]'
                   }`}
                 >
                   {activeReturCount} dokumen
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5">
+              <div className="flex items-center justify-between gap-2 rounded-lg border border-[#E5E5E5] bg-[#FAFAFA] px-3 py-2.5">
                 <div className="flex items-center gap-2.5">
                   <PackageX
-                    className={`h-4 w-4 shrink-0 ${activeKosongCount > 0 ? 'text-[#DC2626]' : 'text-[#64748B]'}`}
+                    className={`h-4 w-4 shrink-0 ${activeKosongCount > 0 ? 'text-[#DC2626]' : 'text-[#737373]'}`}
                     aria-hidden="true"
                   />
-                  <span className="font-normal text-[#334155]">Bahan / Menu Kosong Aktif</span>
+                  <span className="font-normal text-[#262626]">Bahan / Menu Kosong Aktif</span>
                 </div>
                 <span
                   className={`tabular-mono text-[13px] font-semibold ${
@@ -567,7 +567,7 @@ export default function ManajemenDashboardPage() {
               </div>
             </div>
 
-            <div className="border-t border-[#E2E8F0] pt-2.5 text-[12px] font-normal text-[#64748B]">
+            <div className="border-t border-[#E5E5E5] pt-2.5 text-[12px] font-normal text-[#737373]">
               Tanggal operasional aktif: {formatTanggal(todayISO())}
             </div>
           </Card>
