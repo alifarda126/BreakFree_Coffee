@@ -57,7 +57,7 @@ export default function SetupPage() {
       <div className="flex flex-col justify-between gap-6 border-b border-[#E5E5E5] bg-white p-6 lg:col-span-6 lg:border-b-0 lg:border-r lg:p-10">
         <div className="flex items-center gap-3">
           <img
-            src="/images/breakfree-logo.png"
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/breakfree-logo.png`}
             alt="Logo Breakfree Coffee"
             width={44}
             height={44}
@@ -76,7 +76,7 @@ export default function SetupPage() {
         <div className="flex flex-col gap-3.5">
           <div className="overflow-hidden rounded-2xl border border-[#E5E5E5] bg-[#FAFAFA]">
             <img
-              src="/images/breakfree-outlet.jpg"
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/breakfree-outlet.jpg`}
               alt="Suasana outlet Breakfree Coffee Malang"
               width={960}
               height={540}

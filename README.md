@@ -20,3 +20,13 @@ npm run dev
 ```
 
 Buka `http://localhost:3000` di browser.
+
+## Deploy ke GitHub Pages
+
+Workflow GitHub Actions akan otomatis membangun dan menerbitkan aplikasi ke GitHub Pages saat ada push ke branch `main` (atau bisa dijalankan manual dari tab **Actions**).
+
+1. Di repository GitHub, buka **Settings → Pages**.
+2. Pada **Build and deployment → Source**, pilih **GitHub Actions**.
+3. Setelah workflow selesai, buka URL Pages repository: `https://alifarda126.github.io/BreakFree_Coffee/`.
+
+Build static menghasilkan folder `out`. Karena aplikasi ini berjalan sepenuhnya di browser, data tetap tersimpan di `localStorage` browser/perangkat masing-masing dan tidak tersinkron antar pengguna.

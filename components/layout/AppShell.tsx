@@ -269,7 +269,7 @@ export function AppShell({
               title="Breakfree Coffee SI"
             >
               <img
-                src="/images/breakfree-logo.png"
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/breakfree-logo.png`}
                 alt="Logo Breakfree Coffee"
                 width={36}
                 height={36}
@@ -422,7 +422,7 @@ export function AppShell({
               <div className="flex items-center justify-between border-b border-[#E5E5E5] pb-4">
                 <div className="flex items-center gap-2.5">
                   <img
-                    src="/images/breakfree-logo.png"
+                    src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/breakfree-logo.png`}
                     alt="Logo Breakfree Coffee"
                     width={32}
                     height={32}
