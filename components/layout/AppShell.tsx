@@ -48,6 +48,24 @@ interface NavEntry {
   tone?: 'danger' | 'warning';
 }
 
+function normalizePath(path: string | null | undefined): string {
+  if (!path) return '/';
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+  let clean = path.split('?')[0].split('#')[0];
+  if (basePath && clean.startsWith(basePath)) {
+    clean = clean.slice(basePath.length) || '/';
+  }
+  if (clean.length > 1) {
+    clean = clean.replace(/\/+$/, '');
+  }
+  return clean || '/';
+}
+
+const ADMIN_NAV_ITEMS: NavEntry[] = [
+  { label: 'Master Bahan & Supplier', href: '/master', icon: Package },
+  { label: 'Pengaturan & Pegawai', href: '/pengaturan', icon: Settings },
+];
+
 function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/);
   if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
@@ -62,6 +80,7 @@ export function AppShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const currentPath = normalizePath(pathname);
   const router = useRouter();
 
   const isInitialized = useBreakfreeStore((s) => s.isInitialized);
@@ -87,10 +106,10 @@ export function AppShell({
   const notifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!isInitialized && pathname !== '/setup') {
+    if (!isInitialized && currentPath !== '/setup') {
       router.replace('/setup');
     }
-  }, [isInitialized, pathname, router]);
+  }, [isInitialized, currentPath, router]);
 
   useEffect(() => {
     const onMouseDown = (e: MouseEvent) => {
@@ -198,15 +217,17 @@ export function AppShell({
     router.push(homeHref);
   };
 
-  const renderNavLink = (item: NavEntry, collapsed = false) => {
-    const isActive = pathname === item.href;
+  const renderNavLink = (item: NavEntry, collapsed = false, compact = false) => {
+    const isActive = currentPath === normalizePath(item.href);
     const Icon = item.icon;
-    const cls = `group relative flex h-10 w-full items-center rounded-lg text-left text-[13.5px] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[#111111] ${
+    const heightCls = compact ? 'h-9 text-[13px]' : 'h-10 text-[13.5px]';
+    const iconSizeCls = compact ? 'h-[17px] w-[17px]' : 'h-[18px] w-[18px]';
+    const cls = `group relative flex ${heightCls} w-full items-center rounded-lg text-left transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[#111111] ${
       collapsed ? 'justify-center px-0' : 'gap-2.5 px-3'
     } ${
       isActive
-        ? 'bg-[#F5F5F5] font-semibold text-[#111111]'
-        : 'font-medium text-[#525252] hover:bg-[#FAFAFA] hover:text-[#111111]'
+        ? 'bg-[#111111] font-semibold text-white'
+        : 'font-medium text-[#525252] hover:bg-[#F5F5F5] hover:text-[#111111]'
     }`;
 
     return (
@@ -214,27 +235,28 @@ export function AppShell({
         key={item.href}
         href={item.href}
         title={collapsed ? item.label : undefined}
+        aria-current={isActive ? 'page' : undefined}
         onClick={() => setMobileDrawerOpen(false)}
         className={cls}
       >
-        {isActive && !collapsed && (
-          <span
-            className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full bg-[#111111]"
-            aria-hidden="true"
-          />
-        )}
         <Icon
-          className={`h-[18px] w-[18px] shrink-0 transition-colors ${
-            isActive ? 'text-[#111111]' : 'text-[#737373] group-hover:text-[#111111]'
+          className={`${iconSizeCls} shrink-0 transition-colors ${
+            isActive ? 'text-white' : 'text-[#737373] group-hover:text-[#111111]'
           }`}
-          strokeWidth={1.75}
+          strokeWidth={isActive ? 2 : 1.75}
           aria-hidden="true"
         />
         {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
         {!collapsed && item.count != null && item.count > 0 && (
           <span
             className={`tabular-mono text-[12px] font-semibold ${
-              item.tone === 'danger' ? 'text-[#DC2626]' : 'text-[#737373]'
+              isActive
+                ? item.tone === 'danger'
+                  ? 'text-[#FCA5A5]'
+                  : 'text-white/80'
+                : item.tone === 'danger'
+                  ? 'text-[#DC2626]'
+                  : 'text-[#737373]'
             }`}
           >
             {item.count}
@@ -243,7 +265,11 @@ export function AppShell({
         {collapsed && item.count != null && item.count > 0 && (
           <span
             className={`absolute right-1.5 top-1.5 h-2 w-2 rounded-full ${
-              item.tone === 'danger' ? 'bg-[#DC2626]' : 'bg-[#111111]'
+              item.tone === 'danger'
+                ? 'bg-[#DC2626]'
+                : isActive
+                  ? 'bg-white'
+                  : 'bg-[#111111]'
             }`}
             aria-hidden="true"
           />
@@ -364,46 +390,7 @@ export function AppShell({
 
           {showAdminLinks && (
             <div className="flex flex-col gap-1">
-              <Link
-                href="/master"
-                title={sidebarCollapsed ? 'Master Bahan & Supplier' : undefined}
-                className={`flex h-9 items-center rounded-lg text-[13px] transition-colors ${
-                  sidebarCollapsed ? 'justify-center px-0' : 'gap-2.5 px-3'
-                } ${
-                  pathname === '/master'
-                    ? 'bg-[#F5F5F5] font-semibold text-[#111111]'
-                    : 'font-medium text-[#525252] hover:bg-[#FAFAFA] hover:text-[#111111]'
-                }`}
-              >
-                <Package
-                  className={`h-[17px] w-[17px] shrink-0 ${
-                    pathname === '/master' ? 'text-[#111111]' : 'text-[#737373]'
-                  }`}
-                  strokeWidth={1.75}
-                  aria-hidden="true"
-                />
-                {!sidebarCollapsed && <span className="truncate">Master Bahan &amp; Supplier</span>}
-              </Link>
-              <Link
-                href="/pengaturan"
-                title={sidebarCollapsed ? 'Pengaturan & Pegawai' : undefined}
-                className={`flex h-9 items-center rounded-lg text-[13px] transition-colors ${
-                  sidebarCollapsed ? 'justify-center px-0' : 'gap-2.5 px-3'
-                } ${
-                  pathname === '/pengaturan'
-                    ? 'bg-[#F5F5F5] font-semibold text-[#111111]'
-                    : 'font-medium text-[#525252] hover:bg-[#FAFAFA] hover:text-[#111111]'
-                }`}
-              >
-                <Settings
-                  className={`h-[17px] w-[17px] shrink-0 ${
-                    pathname === '/pengaturan' ? 'text-[#111111]' : 'text-[#737373]'
-                  }`}
-                  strokeWidth={1.75}
-                  aria-hidden="true"
-                />
-                {!sidebarCollapsed && <span className="truncate">Pengaturan &amp; Pegawai</span>}
-              </Link>
+              {ADMIN_NAV_ITEMS.map((item) => renderNavLink(item, sidebarCollapsed, true))}
             </div>
           )}
         </div>
@@ -448,22 +435,7 @@ export function AppShell({
             </div>
             {showAdminLinks && (
               <div className="flex flex-col gap-1 border-t border-[#E5E5E5] pt-3">
-                <Link
-                  href="/master"
-                  onClick={() => setMobileDrawerOpen(false)}
-                  className="flex h-10 items-center gap-2.5 rounded-lg px-3 text-[13px] font-medium text-[#525252] hover:bg-[#F5F5F5] hover:text-[#111111]"
-                >
-                  <Package className="h-[18px] w-[18px] text-[#737373]" strokeWidth={1.75} aria-hidden="true" />
-                  <span>Master Bahan &amp; Supplier</span>
-                </Link>
-                <Link
-                  href="/pengaturan"
-                  onClick={() => setMobileDrawerOpen(false)}
-                  className="flex h-10 items-center gap-2.5 rounded-lg px-3 text-[13px] font-medium text-[#525252] hover:bg-[#F5F5F5] hover:text-[#111111]"
-                >
-                  <Settings className="h-[18px] w-[18px] text-[#737373]" strokeWidth={1.75} aria-hidden="true" />
-                  <span>Pengaturan &amp; Pegawai</span>
-                </Link>
+                {ADMIN_NAV_ITEMS.map((item) => renderNavLink(item, false))}
               </div>
             )}
           </div>
@@ -678,16 +650,17 @@ export function AppShell({
       >
         {navItems.slice(0, 4).map((item) => {
           const Icon = item.icon;
-          const active = pathname === item.href;
+          const active = currentPath === normalizePath(item.href);
           return (
             <Link
               key={item.href}
               href={item.href}
+              aria-current={active ? 'page' : undefined}
               className={`flex min-h-[44px] min-w-[68px] flex-col items-center justify-center gap-0.5 rounded-lg px-2 py-1.5 text-[11px] transition-colors ${
-                active ? 'bg-[#F5F5F5] font-semibold text-[#111111]' : 'font-medium text-[#737373]'
+                active ? 'bg-[#111111] font-semibold text-white' : 'font-medium text-[#737373]'
               }`}
             >
-              <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden="true" />
+              <Icon className="h-[18px] w-[18px]" strokeWidth={active ? 2 : 1.75} aria-hidden="true" />
               <span className="max-w-[76px] truncate">{item.label.split(' ')[0]}</span>
             </Link>
           );
